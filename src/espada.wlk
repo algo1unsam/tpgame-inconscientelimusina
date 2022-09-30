@@ -6,13 +6,13 @@ import obtenibles.*
 
 class Espada inherits Obtenibles{
 	
-	override method image() = "sword11.png"
+	override method image() = "assets/sword11.png"
 	
 	override method chocar() {
 		game.addVisual(iconoEspada)
 		juego.visuals().add(iconoEspada)
 		player.tieneEspada(true)
-		player.animIdle()
+		player.jugadorEnReposo()
 		super()
 
 
@@ -42,8 +42,8 @@ class Espada inherits Obtenibles{
 
 object ataque {
 
-	var property position = game.at(0, 0)
-	var property image = "pixel.png"
+	var property position = game.at(40, 40)
+	var property image = "assets/pixel.png"
 	var property danho = 0
 
 	method mover(direccion) {

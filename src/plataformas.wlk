@@ -6,7 +6,7 @@ class Plataforma {
 
 	method esSuelo() = true
 
-	method image() = "muro12.png"
+	method image() = "assets/muro12.png"
 
 	method chocar() {
 	}

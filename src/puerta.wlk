@@ -6,16 +6,16 @@ object puerta{
 	
 	var estaAbierta = false
 	var property position = game.at(juego.tamanho() - 8, 1)
-	var property image = "puertaCerradaChica.png"
+	var property image = "assets/puertaCerradaChica.png"
 	
 	method abrirPuerta(){
 		estaAbierta = true
-		image = "puertaAbiertaChica.png"
+		image = "assets/puertaAbiertaChica.png"
 	}
 	
 	method cerrarPuerta(){
 		estaAbierta = false
-		image = "puertaCerradaChica.png"
+		image = "assets/puertaCerradaChica.png"
 	}
 	
 	method chocar() {

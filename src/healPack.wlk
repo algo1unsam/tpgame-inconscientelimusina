@@ -5,7 +5,7 @@ import obtenibles.*
 
 class HealPack inherits Obtenibles {
 
-	override method image() = "heal.png"
+	override method image() = "assets/heal.png"
 
 	override method chocar() {
 		player.subirSalud(1)

@@ -1,14 +1,15 @@
 import wollok.game.*
 import juego.*
 import espada.*
+import playerHit.*
 
 object player {
 
 	var vivo = true
 	var property salud = 6
-	// var position = game.at(1, suelo.position().y())
 	var property position = self.posicionInicial()
-	var property anim_time = 200
+	var property anim_time = 400
+	const animIdleTime = 10**5
 	var property image = 0
 	var property mov = false
 	var property saltando = false
@@ -19,26 +20,31 @@ object player {
 	var property tieneEspada = false
 	var property att_combo = false
 	const property hitbox = []
-	var property vulnerable = true
+
 	// ANIMACIONES
-	const salto_right = [ "tile069.png", "tile070.png", "tile071.png" ]
-	const salto_left = [ "tile069i.png", "tile070i.png", "tile071i.png" ]
-	const muere_right = [ "tile065.png", "tile066.png", "tile067.png", "tile068.png", "tile068.png" ]
-	const muere_left = [ "tile065i.png", "tile066i.png", "tile067i.png", "tile068i.png", "tile068i.png" ]
-	const att1_right = [ "tile042.png", "tile043.png", "tile044.png", "tile045.png", "tile046.png", "tile047.png", "tile047.png" ]
-	const att1_left = [ "tile042i.png", "tile043i.png", "tile044i.png", "tile045i.png", "tile046i.png", "tile047i.png", "tile047i.png" ]
-	const att2_right = [ "tile047.png", "tile048.png", "tile049.png", "tile050.png", "tile051.png", "tile052.png", "tile052.png" ]
-	const att2_left = [ "tile047i.png", "tile048i.png", "tile049i.png", "tile050i.png", "tile051i.png", "tile052i.png", "tile052i.png" ]
-	const att3_right = [ "tile053.png", "tile054.png", "tile055.png", "tile056.png", "tile057.png", "tile058.png", "tile058.png" ]
-	const att3_left = [ "tile053i.png", "tile054i.png", "tile055i.png", "tile056i.png", "tile057i.png", "tile058i.png", "tile058i.png" ]
-	const idle_right = [ "tile000.png", "tile001.png", "tile002.png", "tile003.png" ]
-	const idle_left = [ "tile000i.png", "tile001i.png", "tile002i.png", "tile003i.png" ]
-	const idle_espada_right = [ "tile038.png", "tile039.png", "tile040.png", "tile041.png" ]
-	const idle_espada_left = [ "tile038i.png", "tile039i.png", "tile040i.png", "tile041i.png" ]
-	const walk_right = [ "tile008.png", "tile009.png", "tile010.png", "tile011.png", "tile012.png", "tile013.png" ]
-	const walk_left = [ "tile008i.png", "tile009i.png", "tile010i.png", "tile011i.png", "tile012i.png", "tile013i.png" ]
-	const caida_right = [ "tile022.png", "tile023.png" ]
-	const caida_left = [ "tile022i.png", "tile023i.png" ]
+	const salto_right = [ "assets/tile069.png"]
+	const salto_left = [ "assets/tile069i.png"]
+	const muere_right = [ "assets/tile065.png", "assets/tile066.png", "assets/tile067.png", "assets/tile068.png", "assets/tile068.png" ]
+	const muere_left = [ "assets/tile065i.png", "assets/tile066i.png", "assets/tile067i.png", "assets/tile068i.png", "assets/tile068i.png" ]
+	const att1_right = [ "assets/tile042.png", "assets/tile043.png", "assets/tile044.png", "assets/tile045.png", "assets/tile046.png", "assets/tile047.png", "assets/tile047.png" ]
+	const att1_left = [ "assets/tile042i.png", "assets/tile043i.png", "assets/tile044i.png", "assets/tile045i.png", "assets/tile046i.png", "assets/tile047i.png", "assets/tile047i.png" ]
+	const att2_right = [ "assets/tile047.png", "assets/tile048.png", "assets/tile049.png", "assets/tile050.png", "assets/tile051.png", "assets/tile052.png", "assets/tile052.png" ]
+	const att2_left = [ "assets/tile047i.png", "assets/tile048i.png", "assets/tile049i.png", "assets/tile050i.png", "assets/tile051i.png", "assets/tile052i.png", "assets/tile052i.png" ]
+	const att3_right = [ "assets/tile053.png", "assets/tile054.png", "assets/tile055.png", "assets/tile056.png", "assets/tile057.png", "assets/tile058.png", "assets/tile058.png" ]
+	const att3_left = [ "assets/tile053i.png", "assets/tile054i.png", "assets/tile055i.png", "assets/tile056i.png", "assets/tile057i.png", "assets/tile058i.png", "assets/tile058i.png" ]
+	/*const idle_right = [ "assets/tile000.png", "assets/tile001.png", "assets/tile002.png", "assets/tile003.png" ]
+	const idle_left = [ "assets/tile000i.png", "assets/tile001i.png", "assets/tile002i.png", "assets/tile003i.png" ]
+	const idle_espada_right = [ "assets/tile038.png", "assets/tile039.png", "assets/tile040.png", "assets/tile041.png" ]
+	const idle_espada_left = [ "assets/tile038i.png", "assets/tile039i.png", "assets/tile040i.png", "assets/tile041i.png" ]
+	* */
+	const idle_right = [ "assets/tile000.png" ]
+	const idle_left = [ "assets/tile000i.png" ]
+	const idle_espada_right = [ "assets/tile038.png" ]
+	const idle_espada_left = [ "assets/tile038i.png" ]
+	const walk_right = [ "assets/tile008.png", "assets/tile009.png", "assets/tile010.png", "assets/tile011.png", "assets/tile012.png", "assets/tile013.png" ]
+	const walk_left = [ "assets/tile008i.png", "assets/tile009i.png", "assets/tile010i.png", "assets/tile011i.png", "assets/tile012i.png", "assets/tile013i.png" ]
+	const caida_right = [ "assets/tile022.png"]
+	const caida_left = [ "assets/tile022i.png"]
 	var miraDerecha = true
 	// SELECTOR DE LA ANIMACION ACTUAL
 	var property sprites = idle_right
@@ -83,24 +89,19 @@ object player {
 	}
 
 	method grounded() {
-		if (self.position().y() == -4) {
-			self.caerAlPozo()
-			return false
-		} else {
 			const objAbajo = game.getObjectsIn(game.at(self.position().x() + 4, self.position().y() - 1))
 			if (objAbajo.size() > 0) {
 				return objAbajo.get(0).esSuelo()
 			} else {
-				return false
+				if (self.position().y() == -4) {
+					self.caerAlPozo()}
+							return false
 			}
 		}
-	}
 
-	// console.println(game.getObjectsIn(game.at(self.position().x(), self.position().y()-1)).get(0).esSuelo())
-	// return game.getObjectsIn(game.at(self.position().x(), self.position().y()-1))}
-	// game.getObjectsIn(game.at(self.position().x(), self.position().y()-1)).esSuelo()
+
 	method saltar() {
-		if (self.grounded()) {
+		if (vivo and self.grounded()) {
 			console.println("saltando")
 			saltando = true
 			self.animSaltar(miraDerecha)
@@ -142,46 +143,54 @@ object player {
 
 	method aterrizar() {
 		cayendo = false
-		self.animIdle()
+		self.jugadorEnReposo()
 	}
 
-	method animIdle() {
+	method jugadorEnReposo() {
 		mov = false
 		if (!atacando) {
 			if (tieneEspada) {
-				if (miraDerecha) { // TODO
-					self.cambiarAnimate(idle_espada_right, 500)
-				} else {
-					self.cambiarAnimate(idle_espada_left, 500)
-				}
+				self.animarReposoConEspada()
 			} else {
-				if (miraDerecha) { // TODO
-					self.cambiarAnimate(idle_right, 500)
-				} else {
-					self.cambiarAnimate(idle_left, 500)
-				}
+				self.animarReposo()
 			}
+		}
+	}
+	
+	method animarReposoConEspada() {
+		if (miraDerecha) { // TODO
+			self.cambiarAnimate(idle_espada_right, animIdleTime)
+		} else {
+			self.cambiarAnimate(idle_espada_left, animIdleTime)
+		}
+	}
+	
+	method animarReposo() {
+		if (miraDerecha) { // TODO
+			self.cambiarAnimate(idle_right, animIdleTime)
+		} else {
+			self.cambiarAnimate(idle_left, animIdleTime)
 		}
 	}
 
 	method caminar(direccion) {
-		if (self.grounded() and !mov) {
+		if (vivo and self.grounded() and !mov) {
 			self.animCaminar(direccion)
 			mov = true
-			self.mover(direccion)
-			3.times({ i => game.schedule(400 * (i / 3), { self.mover(direccion)})}) // TODO 18 hace que se buggeeee todo
-			game.schedule(400, { self.animIdle()})
+			
+			4.times({ i => game.schedule(400 * (i - 1) / 3, { self.mover(direccion)})}) 
+			game.schedule(400, { self.jugadorEnReposo()})
 		} else if (!mov) {
 			mov = true
 			self.animCaer(direccion)
-			self.mover(direccion)
-			2.times({ i => game.schedule(500 * (i / 2), { self.mover(direccion)})})
+			
+			2.times({ i => game.schedule(500 * (i-1) / 2, { self.mover(direccion)})})
 			game.schedule(500, { self.mov(false)})
 		}
 	}
 
 	method animCaminar(direccion) {
-		if (direccion) { // TODO
+		if (direccion) { 
 			self.cambiarAnimate(walk_right, 200)
 			miraDerecha = true
 		} else {
@@ -250,12 +259,12 @@ object player {
 			mov = true
 			atacando = true
 			self.animAtacar1()
-				// 2.times({ i => game.schedule(350 * (i / 2), { self.mover(miraDerecha)})})
+				
 			game.schedule(300, { self.ataque1(true)})
 			game.schedule(600, { self.mov(false)})
 			game.schedule(550, { self.atacando(false)}) // NECESITO PODER ABORTAR ESTO PARA QUE FUNCIONE!!
 			game.schedule(575, { self.ataque1(false)})
-			game.schedule(600, { self.animIdle()}) // NECESITO PODER ABORTAR ESTO PARA QUE FUNCIONE!!
+			game.schedule(600, { self.jugadorEnReposo()}) // NECESITO PODER ABORTAR ESTO PARA QUE FUNCIONE!!
 		}
 	}
 
@@ -267,13 +276,13 @@ object player {
 			atacando = true
 			att_combo = true
 			self.animAtacar2()
-			1.times({ i => game.schedule(350 * (i / 2), { self.mover(miraDerecha)})})
+			//game.schedule(350 * (i / 2), { self.mover(miraDerecha)})
 			game.schedule(350, { self.ataque2(true)})
 			game.schedule(600, { self.mov(false)})
 			game.schedule(550, { self.atacando(false)}) // NECESITO PODER ABORTAR ESTO PARA QUE FUNCIONE!!
 			game.schedule(575, { self.ataque2(false)})
 			game.schedule(325, { self.att_combo(false)})
-			game.schedule(600, { self.animIdle()})
+			game.schedule(600, { self.jugadorEnReposo()})
 		}
 	}
 
@@ -290,26 +299,26 @@ object player {
 			game.schedule(550, { self.mov(false)})
 			game.schedule(400, { self.att_combo(false)})
 			game.schedule(550, { self.atacando(false)})
-			game.schedule(600, { self.animIdle()})
+			game.schedule(600, { self.jugadorEnReposo()})
 		}
 	}
 
 	method animSaltar(direccion) {
-		if (direccion) { // TODO
-			self.cambiarAnimate(salto_right, 350)
+		if (direccion) { 
+			self.cambiarAnimate(salto_right, animIdleTime)
 			miraDerecha = true
 		} else {
-			self.cambiarAnimate(salto_left, 350)
+			self.cambiarAnimate(salto_left, animIdleTime)
 			miraDerecha = false
 		}
 	}
 
 	method animCaer(direccion) {
-		if (direccion) { // TODO
-			self.cambiarAnimate(caida_right, 350)
+		if (direccion) { 
+			self.cambiarAnimate(caida_right, animIdleTime)
 			miraDerecha = true
 		} else {
-			self.cambiarAnimate(caida_left, 350)
+			self.cambiarAnimate(caida_left, animIdleTime)
 			miraDerecha = false
 		}
 	}
@@ -318,11 +327,11 @@ object player {
 		const diffX = pos.x() - position.x()
 		const diffY = pos.y() - position.y()
 		hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().right(diffX).up(diffY))})
-		position = pos // anular moviemiento s anteriores?
+		position = pos 
 	}
 
 	method mover(direccion) {
-		if (direccion) { // TODO
+		if (direccion) { 
 			position = position.right(1)
 			hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().right(1))})
 		} else {
@@ -348,8 +357,8 @@ object player {
 	method morir() {
 		self.quitarVida()
 		self.animMorir(miraDerecha)
-		game.schedule(500, {game.removeTickEvent("anima")})
-		game.schedule(500,{juego.tickEvents().remove("anima")})
+		game.schedule(450, {game.removeTickEvent("anima")})
+		game.schedule(450,{juego.tickEvents().remove("anima")})
 
 
 		game.say(self, "Game Over")
@@ -361,21 +370,7 @@ object player {
 		
 	}
 	
-	method morir2() {
-		self.quitarVida()
-		self.animMorir(miraDerecha)
-		game.schedule(500, {game.removeTickEvent("anima")})
-		game.schedule(500,{juego.tickEvents().remove("anima")})
 
-		game.schedule(500,{game.say(self, "Game Over")})
-		if (juego.tickEvents().contains("tiempo")) {
-			game.removeTickEvent("tiempo")
-			juego.tickEvents().remove("tiempo")
-		}
-		game.schedule(1000, { game.say(self, "Apreta R para reiniciar")})
-		
-	}
-	
 	method quitarVida(){
 	vivo = false}
 
@@ -409,35 +404,4 @@ object player {
 
 }
 
-class Player_hitbox {
 
-	var property position
-
-	method image() = "pixel.png" 
-
-	method chocar() {
-	}
-
-	method serAtacado(x) {
-	}
-
-}
-
-object player_hit {
-
-	method cargar() {
-//	HITBOX
-		const ancho = 2
-			// const alto = 3
-		const posHitbox = []
-		(0 .. ancho).forEach{ n => posHitbox.add(new Position(x = player.position().x() + 2 + n, y = player.position().y()))} // bordeAbajo
-		posHitbox.forEach{ p => self.dibujar(new Player_hitbox(position = p))}
-	}
-
-	method dibujar(dibujo) {
-		game.addVisual(dibujo)
-		player.hitbox().add(dibujo)
-		return dibujo
-	}
-
-}

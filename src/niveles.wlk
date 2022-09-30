@@ -8,6 +8,7 @@ import plataformas.*
 import moneda.*
 import teletransportadores.*
 import puerta.*
+import playerHit.*
 
 object selectorNiveles{
 	
@@ -43,18 +44,19 @@ object nivel1 inherits Nivel {
 	const espada1 = new Espada(position = game.at(15,  1))
 	const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22, animName = "animSlime1", moveTickName = "moveSlime1")
 
-	const nombreNivel1 = new NombreNivel(image = "nivel_1.png")
+	const nombreNivel1 = new NombreNivel(image = "assets/nivel_1.png")
 	
 	juego.objetivoMonedas(1)
 	juego.dropCoin().addAll(rng.copy())
 	juego.objetos().addAll([ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD ])
 	juego.animables().addAll([ player, reloj, vida, slime1, iconoEspada ])
 	juego.reInstanciables().addAll([espada1, slime1 ])
+	juego.enemigos().addAll([ slime1 ])
 		
 	juego.objetos().forEach({ unObjeto => game.addVisual(unObjeto)})
 	juego.objetos().forEach({ unObjeto => juego.visuals().add(unObjeto)})
 	game.addVisual(nombreNivel1)
-	game.schedule(1500, {game.removeVisual(nombreNivel1)})
+	game.schedule(2000, {game.removeVisual(nombreNivel1)})
 	}
 	
 
@@ -80,7 +82,7 @@ object nivel2 inherits Nivel {
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma(position = p))}
 		
 		const espada2 = new Espada(position = game.at(juego.tamanho() * (41 / 50), (4 / 5) * juego.tamanho() + 1))
-		const slime4 = new Slime(position = game.at(15, (2 / 5) * juego.tamanho() + 1), izquierda = 9, derecha = 22, animName = "animSlime1", moveTickName = "moveSlime1")
+		const slime1 = new Slime(position = game.at(15, (2 / 5) * juego.tamanho() + 1), izquierda = 9, derecha = 22, animName = "animSlime1", moveTickName = "moveSlime1")
 		const slime2 = new Slime(position = game.at(30, (2 / 5) * juego.tamanho() + 1), izquierda = 26, derecha = 33, animName = "animSlime2", moveTickName = "moveSlime2")
 		const slime3 = new Slime(position = game.at(30, (3 / 5) * juego.tamanho() + 1), izquierda = 25, derecha = 35, animName = "animSlime3", moveTickName = "moveSlime3")
 		const moneda1 = new Moneda(position = game.at(juego.tamanho() * (7 / 10), (3 / 5) * juego.tamanho() + 1))
@@ -88,18 +90,19 @@ object nivel2 inherits Nivel {
 		const moneda3 = new Moneda(position = game.at(juego.tamanho() * (3 / 10), (2 / 5) * juego.tamanho() + 1))
 		const moneda4 = new Moneda(position = game.at(juego.tamanho() * (6 / 10), (2 / 5) * juego.tamanho() + 1))
 		const moneda5 = new Moneda(position = game.at(juego.tamanho() * (36 / 50), (1 / 5) * juego.tamanho() + 1))
-		const nombreNivel2 = new NombreNivel(image = "nivel_2.png")
+		const nombreNivel2 = new NombreNivel(image = "assets/nivel_2.png")
 		
 
 		juego.objetivoMonedas(6)
 		juego.dropCoin().addAll(rng.copy())
-		juego.objetos().addAll([ vida, reloj, monedaHUD, contadorMonedas, ataque, espada2, slime4, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, tp1, r1, tp2, r2, tp3, r3, tp4, r4, puerta, player ])
-		juego.animables().addAll([ player, reloj, vida, slime4, slime2, slime3, iconoEspada ])
-		juego.reInstanciables().addAll([ slime4, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, espada2 ])
+		juego.objetos().addAll([ vida, reloj, monedaHUD, contadorMonedas, ataque, espada2, slime1, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, tp1, r1, tp2, r2, tp3, r3, tp4, r4, puerta, player ])
+		juego.animables().addAll([ player, reloj, vida, slime1, slime2, slime3, iconoEspada ])
+		juego.reInstanciables().addAll([ slime1, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, espada2 ])
+		juego.enemigos().addAll([ slime1, slime2, slime3 ])
 		juego.objetos().forEach({ unObjeto => game.addVisual(unObjeto)})
 		juego.objetos().forEach({ unObjeto => juego.visuals().add(unObjeto)})
 		game.addVisual(nombreNivel2)
-		game.schedule(1500, { game.removeVisual(nombreNivel2)})
+		game.schedule(2000, { game.removeVisual(nombreNivel2)})
 	}
 
 

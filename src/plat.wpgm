@@ -9,6 +9,7 @@ import moneda.*
 import teletransportadores.*
 import puerta.*
 import niveles.*
+import playerHit.*
 
 
 program plat {
@@ -17,6 +18,7 @@ program plat {
 	
 	
 	selectorNiveles.listaNiveles().get(juego.nivel()).cargar()
+
 	juego.iniciar()
 	player_hit.cargar()
 	juego.colisiones()
