@@ -42,7 +42,7 @@ object nivel1 inherits Nivel {
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 	
 	const espada1 = new Espada(position = game.at(15,  1))
-	const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22, animName = "animSlime1", moveTickName = "moveSlime1")
+	const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
 
 	const nombreNivel1 = new NombreNivel(image = "assets/nivel_1.png")
 	
@@ -82,9 +82,9 @@ object nivel2 inherits Nivel {
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma(position = p))}
 		
 		const espada2 = new Espada(position = game.at(juego.tamanho() * (41 / 50), (4 / 5) * juego.tamanho() + 1))
-		const slime1 = new Slime(position = game.at(15, (2 / 5) * juego.tamanho() + 1), izquierda = 9, derecha = 22, animName = "animSlime1", moveTickName = "moveSlime1")
-		const slime2 = new Slime(position = game.at(30, (2 / 5) * juego.tamanho() + 1), izquierda = 26, derecha = 33, animName = "animSlime2", moveTickName = "moveSlime2")
-		const slime3 = new Slime(position = game.at(30, (3 / 5) * juego.tamanho() + 1), izquierda = 25, derecha = 35, animName = "animSlime3", moveTickName = "moveSlime3")
+		const slime1 = new Slime(position = game.at(15, (2 / 5) * juego.tamanho() + 1), izquierda = 9, derecha = 22)
+		const slime2 = new Slime(position = game.at(30, (2 / 5) * juego.tamanho() + 1), izquierda = 26, derecha = 33)
+		const slime3 = new Slime(position = game.at(30, (3 / 5) * juego.tamanho() + 1), izquierda = 25, derecha = 35)
 		const moneda1 = new Moneda(position = game.at(juego.tamanho() * (7 / 10), (3 / 5) * juego.tamanho() + 1))
 		const moneda2 = new Moneda(position = game.at(juego.tamanho() * (1 / 10), (7 / 10) * juego.tamanho() + 1))
 		const moneda3 = new Moneda(position = game.at(juego.tamanho() * (3 / 10), (2 / 5) * juego.tamanho() + 1))

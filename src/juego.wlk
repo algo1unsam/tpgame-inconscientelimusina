@@ -80,7 +80,7 @@ object juego {
 	method iniciar() {
 		animables.forEach({ unObjeto => unObjeto.iniciar()})
 		game.onTick(350, "tiempo", { self.pasarTiempo()})
-		juego.tickEvents().add("tiempo")
+		tickEvents.add("tiempo")
 	}
 	
 	method pasarTiempo(){

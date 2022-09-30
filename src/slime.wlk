@@ -18,8 +18,6 @@ class Slime {
 	const derecha
 	var vida = 5
 	var transpasable = false
-	const moveTickName
-	const animName
 	var vivo = true
 
 	method image() {
