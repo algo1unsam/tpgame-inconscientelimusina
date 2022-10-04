@@ -52,7 +52,7 @@ object monedaHUD {
 
 object contadorMonedas {
 
-	method text() = juego.monedas().toString() + "/ " + juego.objetivoMonedas()
+	method text() = juego.monedas().toString() + "/ " + juego.nivelActual().objetivoMonedas()
 
 	method position() = game.at(2, juego.tamanho() * (9 / 10) - 3)
 

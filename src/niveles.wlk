@@ -17,8 +17,17 @@ object selectorNiveles{
 
 class Nivel {
 
-	const posPlataformas = []
+	var property posPlataformas = []
+	var property objetos = []
+	var property animables = []
+	var property reInstanciables = []
+	var property enemigos = []
+	
+	
+	var property objetivoMonedas = 0
+	var property dropCoin = []
 
+	
 	method dibujar(dibujo) {
 		game.addVisual(dibujo)
 		juego.visuals().add(dibujo)
@@ -46,15 +55,20 @@ object nivel1 inherits Nivel {
 
 	const nombreNivel1 = new NombreNivel(image = "assets/nivel_1.png")
 	
-	juego.objetivoMonedas(1)
-	juego.dropCoin().addAll(rng.copy())
-	juego.objetos().addAll([ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD ])
-	juego.animables().addAll([ player, reloj, vida, slime1, iconoEspada ])
-	juego.reInstanciables().addAll([espada1, slime1 ])
-	juego.enemigos().addAll([ slime1 ])
+	objetivoMonedas = 1
+	dropCoin = rng.copy()
+	objetos = [ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD ]
+	animables = [ player, reloj, vida, slime1, iconoEspada ]
+	reInstanciables = [espada1, slime1 ]
+	enemigos = [ slime1 ]
 		
-	juego.objetos().forEach({ unObjeto => game.addVisual(unObjeto)})
-	juego.objetos().forEach({ unObjeto => juego.visuals().add(unObjeto)})
+	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
+	
+
+	
+
+	
+	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 	game.addVisual(nombreNivel1)
 	game.schedule(2000, {game.removeVisual(nombreNivel1)})
 	}
@@ -91,16 +105,27 @@ object nivel2 inherits Nivel {
 		const moneda4 = new Moneda(position = game.at(juego.tamanho() * (6 / 10), (2 / 5) * juego.tamanho() + 1))
 		const moneda5 = new Moneda(position = game.at(juego.tamanho() * (36 / 50), (1 / 5) * juego.tamanho() + 1))
 		const nombreNivel2 = new NombreNivel(image = "assets/nivel_2.png")
+		const tp1 = new Teleporter(position = game.at(juego.tamanho() * (2 / 15) + 2, 1), sprite = "assets/tp1", x = juego.tamanho() - 4, y = (3 / 5) * juego.tamanho() + 1)
+		const tp2 = new Teleporter(position = game.at(juego.tamanho() - 6, (2 / 5) * juego.tamanho() + 1), sprite = "assets/tp2", x = juego.tamanho() * (2 / 10), y = (1 / 5) * juego.tamanho() + 1)
+		const tp3 = new Teleporter(position = game.at(juego.tamanho() * (1 / 10) + 2, (2 / 5) * juego.tamanho() + 1), sprite = "assets/tp3", x = 1, y = (7 / 10) * juego.tamanho() + 1)
+		const tp4 = new Teleporter(position = game.at(juego.tamanho() - 5, 1), sprite = "assets/tp4", x = juego.tamanho() - 4, y = (4 / 5) * juego.tamanho() + 1)
+		const r1 = new Receiver(teleporter = tp1)
+		const r2 = new Receiver(teleporter = tp2)
+		const r3 = new Receiver(teleporter = tp3)
+		const r4 = new Receiver(teleporter = tp4)
 		
 
-		juego.objetivoMonedas(6)
-		juego.dropCoin().addAll(rng.copy())
-		juego.objetos().addAll([ vida, reloj, monedaHUD, contadorMonedas, ataque, espada2, slime1, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, tp1, r1, tp2, r2, tp3, r3, tp4, r4, puerta, player ])
-		juego.animables().addAll([ player, reloj, vida, slime1, slime2, slime3, iconoEspada ])
-		juego.reInstanciables().addAll([ slime1, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, espada2 ])
-		juego.enemigos().addAll([ slime1, slime2, slime3 ])
-		juego.objetos().forEach({ unObjeto => game.addVisual(unObjeto)})
-		juego.objetos().forEach({ unObjeto => juego.visuals().add(unObjeto)})
+		objetivoMonedas = 6
+		objetos = [ vida, reloj, monedaHUD, contadorMonedas, ataque, espada2, slime1, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, tp1, r1, tp2, r2, tp3, r3, tp4, r4, puerta, player ]
+		animables = [ player, reloj, vida, slime1, slime2, slime3, iconoEspada ]
+		reInstanciables = [ slime1, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, espada2 ]
+		enemigos = [ slime1, slime2, slime3 ]
+
+		
+		dropCoin = rng.copy()
+
+		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
+		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 		game.addVisual(nombreNivel2)
 		game.schedule(2000, { game.removeVisual(nombreNivel2)})
 	}
