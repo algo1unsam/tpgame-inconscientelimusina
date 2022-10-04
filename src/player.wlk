@@ -32,11 +32,6 @@ object player {
 	const att2_left = [ "assets/tile047i.png", "assets/tile048i.png", "assets/tile049i.png", "assets/tile050i.png", "assets/tile051i.png", "assets/tile052i.png", "assets/tile052i.png" ]
 	const att3_right = [ "assets/tile053.png", "assets/tile054.png", "assets/tile055.png", "assets/tile056.png", "assets/tile057.png", "assets/tile058.png", "assets/tile058.png" ]
 	const att3_left = [ "assets/tile053i.png", "assets/tile054i.png", "assets/tile055i.png", "assets/tile056i.png", "assets/tile057i.png", "assets/tile058i.png", "assets/tile058i.png" ]
-	/*const idle_right = [ "assets/tile000.png", "assets/tile001.png", "assets/tile002.png", "assets/tile003.png" ]
-	const idle_left = [ "assets/tile000i.png", "assets/tile001i.png", "assets/tile002i.png", "assets/tile003i.png" ]
-	const idle_espada_right = [ "assets/tile038.png", "assets/tile039.png", "assets/tile040.png", "assets/tile041.png" ]
-	const idle_espada_left = [ "assets/tile038i.png", "assets/tile039i.png", "assets/tile040i.png", "assets/tile041i.png" ]
-	* */
 	const idle_right = [ "assets/tile000.png" ]
 	const idle_left = [ "assets/tile000i.png" ]
 	const idle_espada_right = [ "assets/tile038.png" ]
@@ -88,25 +83,16 @@ object player {
 		self.bajarSalud(1)
 	}
 
-	method grounded() {
-			const objAbajo = game.getObjectsIn(game.at(self.position().x() + 4, self.position().y() - 1))
-			if (objAbajo.size() > 0) {
-				return objAbajo.get(0).esSuelo()
-			} else {
-				if (self.position().y() == -4) {
-					self.caerAlPozo()}
-							return false
-			}
-		}
-
-
+	method grounded() = juego.plataformas().contains(game.at(self.position().x() + 4, self.position().y() - 1))
+		
 	method saltar() {
 		if (vivo and self.grounded()) {
-			console.println("saltando")
+			
 			saltando = true
 			self.animSaltar(miraDerecha)
 			self.subir()
-			2.times{i => game.schedule(i*150, { self.subir()})}
+			game.schedule(150, { self.subir()})
+			game.schedule(300, { self.subir()})
 			game.schedule(350, { self.saltando(false)})
 		}
 	}
@@ -126,12 +112,17 @@ object player {
 		position = position.up(1)
 		hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().up(1))})
 	}
+	
+	
+
 
 	method caer() {
 		if (!self.grounded() and !saltando) {
 			if (!cayendo) {
 				self.animCaer(miraDerecha)
 			}
+			if (self.position().y() == -4) {
+					self.caerAlPozo()}
 			cayendo = true
 			position = position.down(1)
 			hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().down(1))})
@@ -158,7 +149,7 @@ object player {
 	}
 	
 	method animarReposoConEspada() {
-		if (miraDerecha) { // TODO
+		if (miraDerecha) { 
 			self.cambiarAnimate(idle_espada_right, animIdleTime)
 		} else {
 			self.cambiarAnimate(idle_espada_left, animIdleTime)
@@ -166,7 +157,7 @@ object player {
 	}
 	
 	method animarReposo() {
-		if (miraDerecha) { // TODO
+		if (miraDerecha) { 
 			self.cambiarAnimate(idle_right, animIdleTime)
 		} else {
 			self.cambiarAnimate(idle_left, animIdleTime)
@@ -177,13 +168,11 @@ object player {
 		if (vivo and self.grounded() and !mov) {
 			self.animCaminar(direccion)
 			mov = true
-			
-			4.times({ i => game.schedule(400 * (i - 1) / 3, { self.mover(direccion)})}) 
+			3.times({ i => game.schedule(400 * (i - 1) / 2, { self.mover(direccion)})}) 
 			game.schedule(400, { self.jugadorEnReposo()})
-		} else if (!mov) {
+		} else if (vivo and !mov) {
 			mov = true
-			self.animCaer(direccion)
-			
+			self.animCaer(direccion)			
 			2.times({ i => game.schedule(500 * (i-1) / 2, { self.mover(direccion)})})
 			game.schedule(500, { self.mov(false)})
 		}
@@ -191,10 +180,10 @@ object player {
 
 	method animCaminar(direccion) {
 		if (direccion) { 
-			self.cambiarAnimate(walk_right, 200)
+			self.cambiarAnimate(walk_right, 250)
 			miraDerecha = true
 		} else {
-			self.cambiarAnimate(walk_left, 200)
+			self.cambiarAnimate(walk_left, 250)
 			miraDerecha = false
 		}
 	}
@@ -262,9 +251,9 @@ object player {
 				
 			game.schedule(300, { self.ataque1(true)})
 			game.schedule(600, { self.mov(false)})
-			game.schedule(550, { self.atacando(false)}) // NECESITO PODER ABORTAR ESTO PARA QUE FUNCIONE!!
+			game.schedule(550, { self.atacando(false)}) 
 			game.schedule(575, { self.ataque1(false)})
-			game.schedule(600, { self.jugadorEnReposo()}) // NECESITO PODER ABORTAR ESTO PARA QUE FUNCIONE!!
+			game.schedule(600, { self.jugadorEnReposo()}) 
 		}
 	}
 
@@ -279,7 +268,7 @@ object player {
 			//game.schedule(350 * (i / 2), { self.mover(miraDerecha)})
 			game.schedule(350, { self.ataque2(true)})
 			game.schedule(600, { self.mov(false)})
-			game.schedule(550, { self.atacando(false)}) // NECESITO PODER ABORTAR ESTO PARA QUE FUNCIONE!!
+			game.schedule(550, { self.atacando(false)}) 
 			game.schedule(575, { self.ataque2(false)})
 			game.schedule(325, { self.att_combo(false)})
 			game.schedule(600, { self.jugadorEnReposo()})

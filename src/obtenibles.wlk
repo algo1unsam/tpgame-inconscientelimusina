@@ -16,6 +16,6 @@ class Obtenibles{
 	
 	method serAtacado(x){}
 	
-	method esSuelo() = false
+
 }
 

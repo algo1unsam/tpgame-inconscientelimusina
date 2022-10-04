@@ -24,7 +24,7 @@ class Slime {
 		return sprites.get(image)
 	}
 
-	method esSuelo() = false
+
 
 	method chocar() {
 		if (!transpasable and player.estaVivo()) { player.bajarSalud(2)
@@ -92,7 +92,7 @@ class Slime {
 	}
 
 	method dropear(){
-		const dropearMoneda = juego.dropCoin().anyOne()
+		const dropearMoneda = juego.nivelActual().dropCoin().anyOne()
 		if (dropearMoneda) {
 			const dropeable = new Moneda(position = self.position())
 		} else {
@@ -100,7 +100,7 @@ class Slime {
 		}
 		game.addVisual(dropeable)
 		juego.visuals().add(dropeable)
-		juego.dropCoin().remove(dropearMoneda)
+		juego.nivelActual().dropCoin().remove(dropearMoneda)
 	}
 
 	method reiniciar() {
@@ -117,7 +117,7 @@ class Slime {
 			vivo = !vivo
 			game.removeVisual(self)
 			juego.visuals().remove(self)
-			juego.enemigos().remove(self)
+			juego.nivelActual().enemigos().remove(self)
 		}
 	}
 

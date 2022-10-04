@@ -23,14 +23,12 @@ object puerta{
 			juego.ganar()
 		}
 		else{
-			game.say(player, "Me faltan " + (6-juego.monedas()).toString() + " monedas")
+			game.say(player, "Me faltan " + (6-juego.nivelActual().objetivoMonedas()).toString() + " monedas")
 		}
 	}
 
 	method serAtacado(x) {
 	}
-
-	method esSuelo() = false
 
 
 	

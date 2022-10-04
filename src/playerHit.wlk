@@ -22,9 +22,11 @@ object player_hit {
 
 	method cargar() {
 //	HITBOX
+		
+		player.hitbox().clear()
 		const ancho = 2
 			// const alto = 3
-		const posHitbox = []
+		var posHitbox = []
 		(0 .. ancho).forEach{ n => posHitbox.add(new Position(x = player.position().x() + 2 + n, y = player.position().y()))} // bordeAbajo
 		posHitbox.forEach({ p => self.dibujar(new Player_hitbox(position = p))})
 	}

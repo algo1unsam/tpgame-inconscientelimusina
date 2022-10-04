@@ -14,14 +14,7 @@ import playerHit.*
 
 program plat {
 
-	juego.configurar()
-	
-	
-	selectorNiveles.listaNiveles().get(juego.nivel()).cargar()
-
-	juego.iniciar()
-	player_hit.cargar()
-	juego.colisiones()
+	juego.InstanciarNivel()
 	
 	game.start()
 
