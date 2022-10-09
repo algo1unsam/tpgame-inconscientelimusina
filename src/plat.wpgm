@@ -10,6 +10,8 @@ import teletransportadores.*
 import puerta.*
 import niveles.*
 import playerHit.*
+import ghost.*
+import librito.*
 
 
 program plat {

@@ -9,6 +9,8 @@ import teletransportadores.*
 import puerta.*
 import niveles.*
 import playerHit.*
+import ghost.*
+import librito.*
 
 object juego {
 

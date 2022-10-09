@@ -2,6 +2,7 @@ import wollok.game.*
 import juego.*
 import espada.*
 import playerHit.*
+import librito.*
 
 object player {
 
@@ -20,6 +21,7 @@ object player {
 	var property tieneEspada = false
 	var property att_combo = false
 	const property hitbox = []
+	var property tieneLibro = false
 
 	// ANIMACIONES
 	const salto_right = [ "assets/tile069.png"]

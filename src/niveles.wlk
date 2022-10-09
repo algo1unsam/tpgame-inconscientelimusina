@@ -9,6 +9,8 @@ import moneda.*
 import teletransportadores.*
 import puerta.*
 import playerHit.*
+import ghost.*
+import librito.*
 
 object selectorNiveles{
 	
@@ -130,5 +132,41 @@ object nivel2 inherits Nivel {
 		game.schedule(2000, { game.removeVisual(nombreNivel2)})
 	}
 
+
+}
+
+object nivel3 inherits Nivel {
+	
+	const property rng = [ false ]
+
+
+	override method cargar() {
+			
+	(1 .. game.width() - 2).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
+	
+	const espada1 = new Espada (position = game.at(12,  1))
+	const libro1 = new Librito(position = game.at(14,  1))
+	//const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
+	const moneda1 = new Moneda (position = game.at(15,  1))
+	
+	
+	objetivoMonedas = 1
+	dropCoin = rng.copy()
+	objetos = [ vida, reloj, espada1, ghost1, ataque, contadorMonedas, puerta, player, monedaHUD, moneda1,libro1 ]
+	animables = [ player, reloj, vida, ghost1, iconoEspada ]
+	reInstanciables = [espada1, ghost1, moneda1, libro1 ]
+	enemigos = [ ghost1 ]
+		
+	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
+	
+
+	
+
+	
+	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+	
+	}
+	
 
 }
