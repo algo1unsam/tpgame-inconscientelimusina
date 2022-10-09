@@ -11,7 +11,7 @@ class Librito inherits Obtenibles{
 	override method image() = "assets/librito.png"
 
 	override method chocar() {
-		player.tieneLibro(true)
+		ghost1.morir()
 		super()
 	}
 

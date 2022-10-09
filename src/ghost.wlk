@@ -41,15 +41,7 @@ class Ghost{
 		}
 	}
 	
-	method serAtacado(x){
-		if(player.tieneLibro()){
-			vida -= x
-			fueAtacado = true
-			ataque.position(game.at(juego.tamanho(), juego.tamanho()))
-			game.say(self,"Me muero")
-			self.morir()	
-		}
-			else	
+	method serAtacado(x){	
 				game.say(self,"jajaja soy inmune a tus ataques")
 		
 	}
@@ -107,6 +99,6 @@ class Ghost{
 
 
 
-const ghost1 = new Ghost(position = game.at(15, 1), izquierda = 14, derecha = 23)
+const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
 const ghost2 = new Ghost(position = game.at(23,1), izquierda = 23, derecha = 23)
 

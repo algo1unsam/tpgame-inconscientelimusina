@@ -14,7 +14,7 @@ import librito.*
 
 object selectorNiveles{
 	
-	const property listaNiveles = [nivel1, nivel2]
+	const property listaNiveles = [nivel3, nivel2]
 }
 
 class Nivel {
@@ -142,13 +142,22 @@ object nivel3 inherits Nivel {
 
 	override method cargar() {
 			
-	(1 .. game.width() - 2).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+	(1 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+	(21 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+	(13 .. 20).forEach{ n => posPlataformas.add(new Position(x = n, y = 3))}
+	(20 .. 22).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
+	(13 .. 18).forEach{ n => posPlataformas.add(new Position(x = n, y = 9))}
+	(9 .. 11).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
+	(0 .. 5).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
+	(24 .. 27).forEach{ n => posPlataformas.add(new Position(x = n, y = 9))}
+	(27 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 	
-	const espada1 = new Espada (position = game.at(12,  1))
-	const libro1 = new Librito(position = game.at(14,  1))
+	const espada1 = new Espada (position = game.at(21,  7))
+	const libro1 = new Librito(position = game.at(30,  12))
 	//const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
-	const moneda1 = new Moneda (position = game.at(15,  1))
+	const moneda1 = new Moneda (position = game.at(4,  12))
+	
 	
 	
 	objetivoMonedas = 1
