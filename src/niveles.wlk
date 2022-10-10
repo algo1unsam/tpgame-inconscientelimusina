@@ -9,10 +9,12 @@ import moneda.*
 import teletransportadores.*
 import puerta.*
 import playerHit.*
+import ghost.*
+import librito.*
 
 object selectorNiveles{
 	
-	const property listaNiveles = [nivel1, nivel2]
+	const property listaNiveles = [nivel1, nivel2, nivel3]
 }
 
 class Nivel {
@@ -58,7 +60,7 @@ object nivel1 inherits Nivel {
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
 	objetos = [ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD ]
-	animables = [ player, reloj, vida, slime1, iconoEspada ]
+	animables = [  reloj, player, vida, slime1, iconoEspada ]
 	reInstanciables = [espada1, slime1 ]
 	enemigos = [ slime1 ]
 		
@@ -130,5 +132,51 @@ object nivel2 inherits Nivel {
 		game.schedule(2000, { game.removeVisual(nombreNivel2)})
 	}
 
+
+}
+
+object nivel3 inherits Nivel {
+	
+	const property rng = [ false ]
+
+
+	override method cargar() {
+		
+	
+			
+	(1 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+	(21 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+	(13 .. 20).forEach{ n => posPlataformas.add(new Position(x = n, y = 3))}
+	(20 .. 22).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
+	(13 .. 18).forEach{ n => posPlataformas.add(new Position(x = n, y = 9))}
+	(9 .. 11).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
+	(0 .. 5).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
+	(24 .. 27).forEach{ n => posPlataformas.add(new Position(x = n, y = 9))}
+	(27 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
+	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
+	
+	const espada1 = new Espada (position = game.at(21,  7))
+	const moneda1 = new Moneda (position = game.at(4,  12))
+	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
+	const libro1 = new Librito(position = game.at(30,  12), blancos = [ghost1])
+	
+	
+	objetivoMonedas = 1
+	dropCoin = rng.copy()
+	objetos = [ vida, reloj, espada1, ghost1, ataque, contadorMonedas, puerta, player, monedaHUD, moneda1,libro1 ]
+	animables = [ player, reloj, vida, ghost1, iconoEspada ]
+	reInstanciables = [espada1, ghost1, moneda1, libro1 ]
+	enemigos = [ ghost1 ]
+		
+	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
+	
+
+	
+
+	
+	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+	
+	}
+	
 
 }

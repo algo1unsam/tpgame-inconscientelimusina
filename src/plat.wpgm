@@ -10,11 +10,13 @@ import teletransportadores.*
 import puerta.*
 import niveles.*
 import playerHit.*
+import ghost.*
+import librito.*
 
 
 program plat {
 
-	juego.InstanciarNivel()
+	juego.instanciarNivel()
 	
 	game.start()
 
