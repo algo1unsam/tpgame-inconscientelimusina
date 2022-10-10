@@ -85,8 +85,10 @@ object player {
 		self.bajarSalud(1)
 	}
 
-	method grounded() = juego.plataformas().contains(game.at(self.position().x() + 4, self.position().y() - 1))
+	//method grounded() = if (miraDerecha) juego.plataformas().contains(game.at(self.position().x() + 3, self.position().y() - 1)) else juego.plataformas().contains(game.at(self.position().x() + 4, self.position().y() - 1)) 
 		
+	method grounded() = juego.plataformas().contains(game.at(self.position().x() + 3, self.position().y() - 1)) or juego.plataformas().contains(game.at(self.position().x() + 4, self.position().y() - 1)) 
+	
 	method saltar() {
 		if (vivo and self.grounded()) {
 			
@@ -129,7 +131,7 @@ object player {
 			position = position.down(1)
 			hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().down(1))})
 		}
-		else if (self.grounded() and cayendo) {
+		else if (self.grounded() and (sprites == caida_right or sprites == caida_left)) {
 			self.aterrizar()
 		}
 	}
@@ -267,7 +269,7 @@ object player {
 			atacando = true
 			att_combo = true
 			self.animAtacar2()
-			//game.schedule(350 * (i / 2), { self.mover(miraDerecha)})
+			game.schedule(350/2, { self.mover(miraDerecha)})
 			game.schedule(350, { self.ataque2(true)})
 			game.schedule(600, { self.mov(false)})
 			game.schedule(550, { self.atacando(false)}) 
@@ -338,10 +340,7 @@ object player {
 			game.removeTickEvent("anima")
 			juego.tickEvents().remove("anima")
 		}
-		if (juego.tickEvents().contains("tiempo")) {
-			game.removeTickEvent("tiempo")
-			juego.tickEvents().remove("tiempo")
-		}
+
 
 	}
 

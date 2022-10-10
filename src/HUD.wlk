@@ -82,11 +82,9 @@ object reloj {
 	}
 
 	method detener() {
-		if (juego.tickEvents().contains("tiempo")) {
-			game.removeTickEvent("tiempo")
-			juego.tickEvents().remove("tiempo")
+
 		}
-	}
+	
 
 
 

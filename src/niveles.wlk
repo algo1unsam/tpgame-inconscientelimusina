@@ -14,7 +14,7 @@ import librito.*
 
 object selectorNiveles{
 	
-	const property listaNiveles = [nivel3, nivel2]
+	const property listaNiveles = [nivel1, nivel2, nivel3]
 }
 
 class Nivel {
@@ -60,7 +60,7 @@ object nivel1 inherits Nivel {
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
 	objetos = [ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD ]
-	animables = [ player, reloj, vida, slime1, iconoEspada ]
+	animables = [  reloj, player, vida, slime1, iconoEspada ]
 	reInstanciables = [espada1, slime1 ]
 	enemigos = [ slime1 ]
 		
@@ -141,6 +141,8 @@ object nivel3 inherits Nivel {
 
 
 	override method cargar() {
+		
+	
 			
 	(1 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
 	(21 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
@@ -154,10 +156,9 @@ object nivel3 inherits Nivel {
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 	
 	const espada1 = new Espada (position = game.at(21,  7))
-	const libro1 = new Librito(position = game.at(30,  12))
-	//const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
 	const moneda1 = new Moneda (position = game.at(4,  12))
-	
+	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
+	const libro1 = new Librito(position = game.at(30,  12), blancos = [ghost1])
 	
 	
 	objetivoMonedas = 1
