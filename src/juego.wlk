@@ -20,7 +20,7 @@ object juego {
 	var property monedas = 0
 
 	var property nivelActual = 0
-	var nivelAnterior = 0
+	var nivelAnterior = nivelActual
 	const property tickEvents = []
 	
 	
@@ -34,7 +34,7 @@ object juego {
 		keyboard.space().onPressDo{ player.saltar()}
 		keyboard.right().onPressDo{ player.caminar(true)}
 		keyboard.left().onPressDo{ player.caminar(false)}
-		keyboard.r().onPressDo{ self.InstanciarNivel()}
+		keyboard.r().onPressDo{ self.instanciarNivel()}
 		keyboard.g().onPressDo{ self.ganar()}
 
 		
@@ -55,21 +55,41 @@ object juego {
 	method nivelAnterior() = selectorNiveles.listaNiveles().get(nivelAnterior)
 	
 	method ganar(){
-		//player.quitarVida()
+		player.transportar(game.at(tamanho, tamanho))
 		puerta.cerrarPuerta()
 
-		game.say(player, "Yo ya gané")
+		game.say(puerta, "Yo ya gané")
 		nivelActual += 1
-		self.InstanciarNivel()
-		nivelAnterior += 1
+		self.detenerTiempo()
+		game.schedule(1000, {self.reInstanciarNivel()})
+		game.schedule(1200, {nivelAnterior += 1})
 	}
 	
-
-	
-	
-	method InstanciarNivel() {
+	method reInstanciarNivel() {
 		
 		self.nivelAnterior().animables().forEach({ unObjeto => self.detener(unObjeto)})
+		
+		game.clear()
+		
+		self.configurar()
+		puerta.cerrarPuerta()
+		monedas = 0
+		
+		
+		self.nivelActual().cargar()
+		
+		self.iniciar()
+		player_hit.cargar()
+		self.colisiones()
+		
+		 
+	}
+	
+	
+	method instanciarNivel() {
+		
+		self.nivelAnterior().animables().forEach({ unObjeto => self.detener(unObjeto)})
+		
 		game.clear()
 		self.configurar()
 		puerta.cerrarPuerta()
@@ -88,23 +108,27 @@ object juego {
 	method iniciar() {
 		self.nivelActual().animables().forEach({ unObjeto => unObjeto.iniciar()})
 		game.onTick(1000, "tiempo", { self.pasarTiempo()})
+
 		tickEvents.add("tiempo")
 	}
+	
+	method detenerTiempo(){
+	
+			if (juego.tickEvents().contains("tiempo")) {
+			game.removeTickEvent("tiempo")
+			juego.tickEvents().remove("tiempo")}
+			}
+		
 	
 	method pasarTiempo(){
 		
 		reloj.pasoElTiempo(1)
-
-		//player.caer()
 		
-		//enemigos.forEach({unEnemigo => unEnemigo.mover()})
-		
-
 		
 		3.times({i => game.schedule( (i-1) * 1000/3, { player.caer()})})
 			
 		3.times({i => game.schedule( (i-1) * 1000/3, { self.nivelActual().enemigos().forEach({unEnemigo => unEnemigo.mover()})})})
-		
+
 
 	}
 		

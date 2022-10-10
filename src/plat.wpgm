@@ -16,7 +16,7 @@ import librito.*
 
 program plat {
 
-	juego.InstanciarNivel()
+	juego.instanciarNivel()
 	
 	game.start()
 

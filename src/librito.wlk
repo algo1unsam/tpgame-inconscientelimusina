@@ -8,10 +8,12 @@ import player.*
 
 class Librito inherits Obtenibles{
 	
+	const blancos
+	
 	override method image() = "assets/librito.png"
 
 	override method chocar() {
-		ghost1.morir()
+		blancos.forEach{unBlanco => unBlanco.morir()}
 		super()
 	}
 
