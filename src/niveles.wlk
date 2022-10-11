@@ -14,7 +14,7 @@ import librito.*
 
 object selectorNiveles{
 	
-	const property listaNiveles = [nivel1, nivel2,nivel3,nivel4]
+	const property listaNiveles = [nivel1,nivel2,nivel3]
 }
 
 class Nivel {
