@@ -14,7 +14,7 @@ import librito.*
 
 object selectorNiveles{
 	
-	const property listaNiveles = [nivel4, nivel2, nivel3]
+	const property listaNiveles = [nivel1, nivel2,nivel3,nivel4]
 }
 
 class Nivel {
@@ -191,35 +191,35 @@ object nivel4 inherits Nivel{
 	override method cargar() {
 		
 		(0 .. 6).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-		(1 .. 6).forEach{ n => posPlataformas.add(new Position(x = n, y = 33))}
-		(0 .. 9).forEach{ n => posPlataformas.add(new Position(x = n, y = 28))}
-		(14 .. 16).forEach{ n => posPlataformas.add(new Position(x = n, y = 28))}
-		(20.. 23).forEach{ n => posPlataformas.add(new Position(x = n, y = 28))}
-		(29.. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 28))}
+		(1 .. 6).forEach{ n => posPlataformas.add(new Position(x = n, y = 30))}
+		(0 .. 9).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
+		(14 .. 16).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
+		(20.. 23).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
+		(29.. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
 		(28 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-		(9 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 22))}
-		(0 .. 4).forEach{ n => posPlataformas.add(new Position(x = n, y = 22))}
-		(18 .. 24).forEach{ n => posPlataformas.add(new Position(x = n, y = 22))}
-		(29 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 22))}
-		(15 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 15))}
-		(8 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 8))}
-		(18 .. 20).forEach{ n => posPlataformas.add(new Position(x = n, y = 8))}
-		(25 .. 28).forEach{ n => posPlataformas.add(new Position(x = n, y = 8))}
+		(9 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
+		(0 .. 4).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
+		(18 .. 24).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
+		(29 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
+		(15 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 12))}
+		(8 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
+		(18 .. 20).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
+		(25 .. 28).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
 		(7.. 26).forEach{ n => posPlataformas2.add(new Position(x = n, y = 0))}
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 		posPlataformas2.forEach{ p => self.dibujar(new Spikes (position = p))}
 		
 		
 		
-		const slime1 = new Slime(position = game.at(30, 29), izquierda = 29, derecha = 34)
-		const slime2 = new Slime(position = game.at(20, 16), izquierda = 20, derecha = 28)
-		const espada1 = new Espada (position = game.at(35,  29))
-		const tp1 = new Teleporter(position = game.at(1, 1), sprite = "assets/tp1", x = 1,y =34)
+		const slime1 = new Slime(position = game.at(30, 26), izquierda = 29, derecha = 34)
+		const slime2 = new Slime(position = game.at(20, 13), izquierda = 20, derecha = 28)
+		const espada1 = new Espada (position = game.at(35,  26))
+		const tp1 = new Teleporter(position = game.at(1, 1), sprite = "assets/tp1", x = 1,y =31)
 		const r1 = new Receiver(teleporter = tp1)
-		const ghost1 = new Ghost(position = game.at(29, 23), izquierda = 19, derecha = 19)
-		const libro1 = new Librito(position = game.at(1,  23), blancos = [ghost1])
-		const moneda1 = new Moneda (position = game.at(32,  23))
-		const moneda2 = new Moneda (position = game.at(27,  9))
+		const ghost1 = new Ghost(position = game.at(29, 20), izquierda = 19, derecha = 19)
+		const libro1 = new Librito(position = game.at(1,  20), blancos = [ghost1])
+		const moneda1 = new Moneda (position = game.at(32,  20))
+		const moneda2 = new Moneda (position = game.at(27,  7))
 		
 		objetivoMonedas = 4
 		dropCoin = rng.copy()
