@@ -14,7 +14,8 @@ import librito.*
 
 object selectorNiveles{
 	
-	const property listaNiveles = [nivel1,nivel2,nivel3]
+
+	const property listaNiveles = [nivel1, nivel2,nivel3,nivel4]
 }
 
 class Nivel {
@@ -191,6 +192,7 @@ object nivel4 inherits Nivel{
 	override method cargar() {
 		
 		(0 .. 6).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+
 		(1 .. 6).forEach{ n => posPlataformas.add(new Position(x = n, y = 30))}
 		(0 .. 9).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
 		(14 .. 16).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
@@ -205,12 +207,14 @@ object nivel4 inherits Nivel{
 		(8 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
 		(18 .. 20).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
 		(25 .. 28).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
+
 		(7.. 26).forEach{ n => posPlataformas2.add(new Position(x = n, y = 0))}
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 		posPlataformas2.forEach{ p => self.dibujar(new Spikes (position = p))}
 		
 		
 		
+
 		const slime1 = new Slime(position = game.at(30, 26), izquierda = 29, derecha = 34)
 		const slime2 = new Slime(position = game.at(20, 13), izquierda = 20, derecha = 28)
 		const espada1 = new Espada (position = game.at(35,  26))
@@ -220,6 +224,7 @@ object nivel4 inherits Nivel{
 		const libro1 = new Librito(position = game.at(1,  20), blancos = [ghost1])
 		const moneda1 = new Moneda (position = game.at(32,  20))
 		const moneda2 = new Moneda (position = game.at(27,  7))
+
 		
 		objetivoMonedas = 4
 		dropCoin = rng.copy()
