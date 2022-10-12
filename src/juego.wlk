@@ -2,15 +2,12 @@ import wollok.game.*
 import player.*
 import HUD.*
 import espada.*
-import slime.*
 import plataformas.* 
-import moneda.*
 import teletransportadores.*
 import puerta.*
 import niveles.*
 import playerHit.*
-import ghost.*
-import librito.*
+
 
 object juego {
 
