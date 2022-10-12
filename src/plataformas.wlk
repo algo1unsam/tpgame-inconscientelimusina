@@ -13,11 +13,13 @@ class Plataforma {
 
 }
 
-class Spikes inherits Plataforma{
+class Spikes {
 	
-	override method image () = "assets/spike B.png"
+	var property position
 	
-	override method chocar(){
+	method image () = "assets/spike B.png"
+	
+	method chocar(){
 		if (player.estaVivo()) { player.bajarSalud(5)
 			if (player.salud() > 0){
 				player.transportar(player.posicionInicial())

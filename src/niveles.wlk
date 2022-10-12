@@ -3,20 +3,15 @@ import juego.*
 import player.*
 import HUD.*
 import espada.*
-import slime.*
 import plataformas.*
-import moneda.*
 import teletransportadores.*
 import puerta.*
 import playerHit.*
-import ghost.*
-import librito.*
+import obtenibles.*
+import enemigos.*
 
-object selectorNiveles{
-	
 
-	const property listaNiveles = [nivel1, nivel2,nivel3,nivel4]
-}
+
 
 class Nivel {
 
@@ -39,7 +34,8 @@ class Nivel {
 
 	method cargar()
 	
-
+	method nivelSiguiente()
+	
 
 }
 
@@ -47,6 +43,7 @@ object nivel1 inherits Nivel {
 	
 	const property rng = [ true ]
 
+	override method nivelSiguiente() = nivel2
 
 	override method cargar() {
 			
@@ -83,6 +80,8 @@ object nivel1 inherits Nivel {
 object nivel2 inherits Nivel {
 	
 	const property rng = [ true, false, false ]
+	
+	override method nivelSiguiente() = nivel3
 
 	override method cargar() {
 
@@ -140,6 +139,7 @@ object nivel3 inherits Nivel {
 	
 	const property rng = [ false ]
 
+	override method nivelSiguiente() = nivel4
 
 	override method cargar() {
 		
@@ -187,7 +187,11 @@ object nivel4 inherits Nivel{
 
 	var property posPlataformas2 = []
 	
+	
+	
 	const property rng = [ true, true ]
+	
+	override method nivelSiguiente() = nivel1
 	
 	override method cargar() {
 		

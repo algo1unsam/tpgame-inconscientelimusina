@@ -23,7 +23,7 @@ object puerta{
 			juego.ganar()
 		}
 		else{
-			game.say(player, "Me faltan " + (6-juego.nivelActual().objetivoMonedas()).toString() + " monedas")
+			game.say(player, "Me faltan " + (juego.nivelActual().objetivoMonedas() - juego.monedas()).toString() + " monedas")
 		}
 	}
 

@@ -19,8 +19,8 @@ object juego {
 	const property visuals = []
 	var property monedas = 0
 
-	var property nivelActual = 0
-	var nivelAnterior = nivelActual
+	var property nivelActual = nivel1
+	var property nivelAnterior = nivelActual
 	const property tickEvents = []
 	
 	
@@ -50,53 +50,31 @@ object juego {
 		}
 	}
 	
-	method nivelActual() = selectorNiveles.listaNiveles().get(nivelActual)
-	
-	method nivelAnterior() = selectorNiveles.listaNiveles().get(nivelAnterior)
 	
 	method ganar(){
 		player.transportar(game.at(tamanho, tamanho))
 		puerta.cerrarPuerta()
 
 		game.say(puerta, "Yo ya gané")
-		nivelActual += 1
+		nivelActual = nivelActual.nivelSiguiente()
 		self.detenerTiempo()
-		game.schedule(1000, {self.reInstanciarNivel()})
+		game.schedule(1000, {self.instanciarNivel()})
 		game.schedule(1200, {nivelAnterior += 1})
 	}
 	
-	method reInstanciarNivel() {
-		
-		self.nivelAnterior().animables().forEach({ unObjeto => self.detener(unObjeto)})
-		
-		game.clear()
-		
-		self.configurar()
-		puerta.cerrarPuerta()
-		monedas = 0
-		
-		
-		self.nivelActual().cargar()
-		
-		self.iniciar()
-		player_hit.cargar()
-		self.colisiones()
-		
-		 
-	}
+
 	
 	
-	method instanciarNivel() {
+	method instanciarNivel() { //separar en terminar e iniciar
 		
-		self.nivelAnterior().animables().forEach({ unObjeto => self.detener(unObjeto)})
+		nivelAnterior.animables().forEach({ unObjeto => self.detener(unObjeto)})
 		
 		game.clear()
 		self.configurar()
 		puerta.cerrarPuerta()
 		monedas = 0
-		
-		
-		self.nivelActual().cargar()
+				
+		nivelActual.cargar()
 		
 		self.iniciar()
 		player_hit.cargar()
@@ -113,10 +91,10 @@ object juego {
 	}
 	
 	method detenerTiempo(){
-	
-			if (juego.tickEvents().contains("tiempo")) {
+			
+			if (self.tickEvents().contains("tiempo")) {
 			game.removeTickEvent("tiempo")
-			juego.tickEvents().remove("tiempo")}
+			self.tickEvents().remove("tiempo")}
 			}
 		
 	
@@ -125,14 +103,17 @@ object juego {
 		reloj.pasoElTiempo(1)
 		
 		
-		3.times({i => game.schedule( (i-1) * 1000/3, { player.caer()})})
+		3.times({i => game.schedule( (i-1) * 1000/3, { player.caer() 
+			nivelActual.enemigos().forEach({unEnemigo => unEnemigo.mover()})})})
 			
-		3.times({i => game.schedule( (i-1) * 1000/3, { self.nivelActual().enemigos().forEach({unEnemigo => unEnemigo.mover()})})})
+		//3.times({i => game.schedule( (i-1) * 1000/3, { nivelActual.enemigos().forEach({unEnemigo => unEnemigo.mover()})})})
 
 
 	}
 		
-	method plataformas() = 	selectorNiveles.listaNiveles().get(nivelActual).posPlataformas()
+	method plataformas() = 	nivelActual.posPlataformas()
+	
+	method enemigos() = nivelActual.enemigos()
 	
 
 	method colisiones() {

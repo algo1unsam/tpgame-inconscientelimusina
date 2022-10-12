@@ -2,7 +2,7 @@ import wollok.game.*
 import juego.*
 import espada.*
 import playerHit.*
-import librito.*
+
 
 object player {
 
@@ -20,6 +20,7 @@ object player {
 	var cayendo = false
 	var property tieneEspada = false
 	var property att_combo = false
+	var property vulnerable = true
 	const property hitbox = []
 	
 
@@ -271,7 +272,7 @@ object player {
 			self.animAtacar2()
 			game.schedule(350/2, { self.mover(miraDerecha)})
 			game.schedule(350, { self.ataque2(true)})
-			game.schedule(600, { self.mov(false)})
+			//game.schedule(600, { self.mov(false)})
 			game.schedule(550, { self.atacando(false)}) 
 			game.schedule(575, { self.ataque2(false)})
 			game.schedule(325, { self.att_combo(false)})
@@ -286,12 +287,13 @@ object player {
 			ataque2 = false // sacar si se quiere un combo mas buggeado pero copado
 			atacando = true
 			att_combo = true
+			vulnerable = false
 			self.animAtacar3()
 				// 2.times({ i => game.schedule(150 * (i / 2), { self.mover(miraDerecha)})})
 			6.times({ i => game.schedule(150 + 200 * (i / 8), { self.mover(miraDerecha)})})
 			game.schedule(550, { self.mov(false)})
 			game.schedule(400, { self.att_combo(false)})
-			game.schedule(550, { self.atacando(false)})
+			game.schedule(550, { self.atacando(false) vulnerable = true})
 			game.schedule(600, { self.jugadorEnReposo()})
 		}
 	}
