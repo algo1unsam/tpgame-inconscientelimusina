@@ -173,5 +173,12 @@ class Slime inherits Enemigo(danho = 2,
 }
 
 
+class Boss inherits Enemigo(danho = 0,
+							position = game.at(15, 20),
+							derecha = 16,
+							izquierda = 14,
+							mensaje = [ "no deberias estar aquí..."], 
+							sprite_mov = [ "assets/bossRight1.png", "assets/bossRight2.png" ]
+							) {}
 
 

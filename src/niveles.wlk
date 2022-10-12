@@ -54,13 +54,14 @@ object nivel1 inherits Nivel {
 	const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
 
 	const nombreNivel1 = new NombreNivel(image = "assets/nivel_1.png")
+	const boss = new Boss()
 	
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
-	objetos = [ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD ]
-	animables = [  reloj, player, vida, slime1, iconoEspada ]
-	reInstanciables = [espada1, slime1 ]
-	enemigos = [ slime1 ]
+	objetos = [ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD, boss ]
+	animables = [  reloj, player, vida, slime1, iconoEspada , boss]
+	reInstanciables = [espada1, slime1 , boss]
+	enemigos = [ slime1 , boss]
 		
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 	
