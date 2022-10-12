@@ -16,7 +16,7 @@ object juego {
 	const property visuals = []
 	var property monedas = 0
 
-	var property nivelActual = nivel1
+	var property nivelActual = nivel5
 	var property nivelAnterior = nivelActual
 	const property tickEvents = []
 	
