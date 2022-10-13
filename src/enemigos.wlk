@@ -172,7 +172,7 @@ class Slime inherits Enemigo(danho = 2,
 
 }
 
-//DISCUTIR SI BOSS DEBERIA HEREDAR O NO DE ENEMIGO, XQ SU LOGICA ES MUY DISTINTA
+//DISCUTIR SI BOSS DEBERIA HEREDAR O NO DE ENEMIGO, XQ SU LOGICA ES UN TANTO DISTINTA
 
 class Boss
 							 {
@@ -257,7 +257,7 @@ class Boss
 										2.times({i => self.crearSpike()})
 
 									}
-									else if (rng > 90){
+									else if (rng > 93){
 										self.crearLibro()
 
 										}
@@ -294,7 +294,7 @@ class SpikeEnCaida {
 		if (player.estaVivo()) { player.bajarSalud(1)
 			if (player.salud() > 0){
 				player.transportar(player.posicionInicial())
-				game.say(player, "deberia agarrar los libros")
+				game.say(player, ["Deberia agarrar los libros", "Cuantos pinches loco", "Esta feo el bicho ese"].anyOne())
 			}
 		}}
 	
