@@ -18,27 +18,28 @@ class NombreNivel{
 	
 }
 
-
-object vida {
-
-	const imagenes = [ "assets/hearts0.png", "assets/hearts1.png", "assets/hearts2.png", "assets/hearts3.png", "assets/hearts4.png", "assets/hearts5.png", "assets/hearts6.png" ]
-
+class Vida{
+	
+	const imagenes
+	
+	const objetivo
+	
+	const property position
+	
 	method image() {
-		return imagenes.get(player.salud())
+		return imagenes.get(objetivo.salud())
 	}
-
-	method position() = game.at(1, juego.tamanho() * (9 / 10) + 1)
-
-	method iniciar() {
-
-		player.todaLaVida()
-
-	}
-
-	method detener() {
-	}
+	
 
 }
+
+
+object vida inherits Vida( imagenes = [ "assets/hearts0.png", "assets/hearts1.png", "assets/hearts2.png", "assets/hearts3.png", "assets/hearts4.png", 
+										"assets/hearts5.png", "assets/hearts6.png" ],
+						   position = game.at(1, juego.tamanho() * (9 / 10) + 1),
+						   objetivo = player){}
+	
+
 
 object monedaHUD {
 

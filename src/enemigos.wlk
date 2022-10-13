@@ -172,13 +172,137 @@ class Slime inherits Enemigo(danho = 2,
 
 }
 
+//DISCUTIR SI BOSS DEBERIA HEREDAR O NO DE ENEMIGO, XQ SU LOGICA ES MUY DISTINTA
 
-class Boss inherits Enemigo(danho = 0,
-							position = game.at(15, 20),
-							derecha = 16,
-							izquierda = 14,
-							mensaje = [ "no deberias estar aquí..."], 
-							sprite_mov = [ "assets/bossRight1.png", "assets/bossRight2.png" ]
-							) {}
+class Boss
+							 {
+								
+							const sprite_mov = [ "assets/boss1.png", "assets/boss2.png","assets/boss3.png","assets/boss4.png",
+										"assets/boss5.png", "assets/boss6.png","assets/boss7.png", "assets/boss8.png", "assets/boss9.png"]	
+							
+							const sprite_mov_izquierda = [ "assets/boss1i.png", "assets/boss2i.png","assets/boss3i.png","assets/boss4i.png",
+										"assets/boss5i.png", "assets/boss6i.png","assets/boss7i.png", "assets/boss8i.png", "assets/boss9i.png"]
+							
+							const sprites_danho = [ "assets/bossDanho.png", "assets/bossDanhoi.png" ]						
+							var property salud = 10
+							var property position
+							var image = 1
+							var sprites = sprite_mov
+							var fueAtacado = false
+							var spikeProb = 20
+							
+							method image() {
+								return sprites.get(image)
+							}
+													
+													
+							
+							
+							method serAtacado(x){
+									fueAtacado = true
+									game.schedule(1000, {fueAtacado = false})
+									salud -= x
+									spikeProb += 5
+									if (salud == 0){
+										game.say(self, "auch che, duele una banda loco")
+									}
+								}
+							
+							method animate() {
+									if (player.position().x() <= 15){
+										sprites = sprite_mov_izquierda
+									} 
+									else{
+										sprites = sprite_mov
+									}
+									if (image < sprites.size() - 1) {
+										image += 1
+									} else {
+										image = 0
+									}
+								}
+														
+														
+							method crearSpike(){
+								const unSpike = new SpikeEnCaida(position = game.at((5..40).anyOne(), 24))
+								game.addVisual(unSpike)
+								juego.visuals().add(unSpike)
+								juego.nivelActual().objetos().add(unSpike)
+								juego.nivelActual().animables().add(unSpike)
+								juego.enemigos().add(unSpike)
+							}
+							
+							method crearLibro(){
+								const unLibro = new LibroEnCaida(blanco = self, position = game.at((5..40).anyOne(), 33))
+								game.addVisual(unLibro)
+								juego.visuals().add(unLibro)
+								juego.nivelActual().objetos().add(unLibro)
+								juego.nivelActual().animables().add(unLibro)
+								juego.enemigos().add(unLibro)
+							}
+							
+							method mover(){
+								if (!fueAtacado){
+									self.animate()}
+								else{
+									if (player.position().x() <= 15){
+									image = 1}
+									else{
+										image = 0
+									}
+									sprites = sprites_danho
+								}
+									const rng = (1..100).anyOne()
+									if (rng <= spikeProb){
+										2.times({i => self.crearSpike()})
+
+									}
+									else if (rng > 90){
+										self.crearLibro()
+
+										}
+
+										
+									
+								}
+							}
+
+class SpikeEnCaida {
+	
+	var property position
+	
+	method image() = "assets/spike A4.png"
+	
+	method iniciar() {}
+	
+	method mover(){
+		position = position.down(1)
+		if (position.y() == -3){
+			self.remover()
+		}
+		}
+		
+	method remover(){
+		game.removeVisual(self)
+		juego.enemigos().remove(self)
+		juego.visuals().remove(self)
+		juego.nivelActual().objetos().remove(self)
+		juego.nivelActual().animables().remove(self)
+	}
+	
+	method chocar() {
+		if (player.estaVivo()) { player.bajarSalud(1)
+			if (player.salud() > 0){
+				player.transportar(player.posicionInicial())
+				game.say(player, "deberia agarrar los libros")
+			}
+		}}
+	
+	method serAtacado(x) {
+		}
+		
+	method detener(){}
+	
+}
 
 

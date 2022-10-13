@@ -14,7 +14,7 @@ import enemigos.*
 
 program plat {
 
-	juego.instanciarNivel()
+	juego.iniciar()
 	
 	game.start()
 

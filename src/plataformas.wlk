@@ -29,3 +29,19 @@ class Spikes {
 	}
 }
 
+class SpikesInvertidas {
+	
+	var property position
+	
+	method image () = "assets/spike A.png"
+	
+	method chocar(){
+		if (player.estaVivo()) { player.bajarSalud(5)
+			if (player.salud() > 0){
+				player.transportar(player.posicionInicial())
+				game.say(player, "cuidado con los spikes, duelen mucho")
+			}
+		}
+	}
+}
+

@@ -67,3 +67,39 @@ class Librito inherits Obtenibles{
 		}
 	}
 }
+
+class LibroEnCaida inherits Obtenibles{
+	
+	const blanco
+	
+	
+	override method image() = "assets/libritoEnCaida.png"
+	
+	override method chocar() {
+		blanco.serAtacado(1)
+		self.remover()
+	}
+	
+	method mover(){
+
+		position = position.down(1)
+		if (position.y() == -3){
+			self.remover()
+		}}
+		
+	method remover(){
+		game.removeVisual(self)
+		juego.enemigos().remove(self)
+		juego.visuals().remove(self)
+		juego.nivelActual().objetos().remove(self)
+		juego.nivelActual().animables().remove(self)
+	}
+	
+	method iniciar() {}
+	
+	method detener(){}
+	
+	
+}
+
+
