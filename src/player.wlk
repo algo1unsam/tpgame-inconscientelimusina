@@ -250,7 +250,7 @@ object player {
 
 	method atacar1() {
 		if (self.grounded() and tieneEspada and !atacando and vivo) {
-			console.println("att1")
+
 			mov = true
 			atacando = true
 			self.animAtacar1()
@@ -265,7 +265,7 @@ object player {
 
 	method atacar2() {
 		if (ataque1) {
-			console.println("att2")
+	
 			mov = true
 			ataque1 = false
 			atacando = true
@@ -283,7 +283,7 @@ object player {
 
 	method atacar3() {
 		if (ataque2) {
-			console.println("att3")
+
 			mov = true
 			ataque2 = false // sacar si se quiere un combo mas buggeado pero copado
 			atacando = true
@@ -339,9 +339,9 @@ object player {
 
 
 	method detener() {
-		console.println("player seintenta detener")
+
 		if (juego.tickEvents().contains("anima")) {
-			console.println("player se dtuvo")
+
 			game.removeTickEvent("anima")
 			juego.tickEvents().remove("anima")
 		}
