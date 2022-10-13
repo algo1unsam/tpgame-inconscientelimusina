@@ -25,10 +25,16 @@ object player_hit {
 		
 		player.hitbox().clear()
 		const ancho = 2
-			// const alto = 3
-		var posHitbox = []
+		const posHitbox = []
 		(0 .. ancho).forEach{ n => posHitbox.add(new Position(x = player.position().x() + 2 + n, y = player.position().y()))} // bordeAbajo
 		posHitbox.forEach({ p => self.dibujar(new Player_hitbox(position = p))})
+	}
+	
+	method cargarHitBoxExtra(){
+		const ancho = 2
+		const posHitboxExtra = []
+		(0 .. ancho).forEach{ n => posHitboxExtra.add(new Position(x = player.position().x() + 2 + n, y = player.position().y() + 1))} // hitbox al cuerpo
+		posHitboxExtra.forEach({ p => self.dibujar(new Player_hitbox(position = p))})
 	}
 
 	method dibujar(dibujo) {

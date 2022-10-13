@@ -57,7 +57,7 @@ object player {
 		return sprites.get(image)
 	}
 
-	method posicionInicial() = game.at(1, 2)
+	method posicionInicial() = game.at(0, 2)
 
 	method aplicarAnimate() {
 		game.onTick(anim_time, "anima", { self.Animate()})
@@ -65,6 +65,7 @@ object player {
 	}
 
 	method cambiarAnimate(sprite_nuevo, anim_time_nuevo) {
+		
 		game.removeTickEvent("anima")
 		juego.tickEvents().remove("anima")
 		self.image(0)
@@ -338,7 +339,9 @@ object player {
 
 
 	method detener() {
-		if (vivo) {
+		console.println("player seintenta detener")
+		if (juego.tickEvents().contains("anima")) {
+			console.println("player se dtuvo")
 			game.removeTickEvent("anima")
 			juego.tickEvents().remove("anima")
 		}
@@ -375,12 +378,16 @@ object player {
 	}
 
 	method iniciar() {
+		vivo = true
+		self.todaLaVida()
 		self.transportar(self.posicionInicial())
 		tieneEspada = false
 		sprites = idle_right
 		anim_time = 200
-		self.aplicarAnimate()
-		vivo = true
+		if (!juego.tickEvents().contains("anima")){
+		self.aplicarAnimate()}
+		
+		
 	}
 
 	method estaVivo() {
@@ -395,5 +402,6 @@ object player {
 	}
 
 }
+
 
 

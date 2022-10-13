@@ -16,7 +16,9 @@ object juego {
 	const property visuals = []
 	var property monedas = 0
 
-	var property nivelActual = nivel5
+
+	var property nivelActual = nivelFinal
+
 	var property nivelAnterior = nivelActual
 	const property tickEvents = []
 	
@@ -62,34 +64,48 @@ object juego {
 
 	
 	
-	method instanciarNivel() { //separar en terminar e iniciar
+	method instanciarNivel() { 
+		//self.agregarTiempo()
+		self.terminar()
+		self.iniciar()
+
 		
+	}
+	
+	method terminar(){
 		nivelAnterior.animables().forEach({ unObjeto => self.detener(unObjeto)})
-		
 		game.clear()
+	}
+	
+	method iniciar() {
+		
 		self.configurar()
-		puerta.cerrarPuerta()
+		puerta.cerrarPuerta() 
 		monedas = 0
 				
 		nivelActual.cargar()
 		
-		self.iniciar()
+		self.agregarTiempo()
+		
 		player_hit.cargar()
+		if (nivelActual.esNivelFinal()){
+			player_hit.cargarHitBoxExtra()
+			reloj.pasoElTiempo(-150)
+		}
 		self.colisiones()
-		
-		
 	}
 	
-	method iniciar() {
+	method agregarTiempo(){
 		self.nivelActual().animables().forEach({ unObjeto => unObjeto.iniciar()})
+		
 		game.onTick(1000, "tiempo", { self.pasarTiempo()})
-
 		tickEvents.add("tiempo")
 	}
 	
 	method detenerTiempo(){
-			
+
 			if (self.tickEvents().contains("tiempo")) {
+
 			game.removeTickEvent("tiempo")
 			self.tickEvents().remove("tiempo")}
 			}
@@ -103,8 +119,7 @@ object juego {
 		3.times({i => game.schedule( (i-1) * 1000/3, { player.caer() 
 			nivelActual.enemigos().forEach({unEnemigo => unEnemigo.mover()})})})
 			
-		//3.times({i => game.schedule( (i-1) * 1000/3, { nivelActual.enemigos().forEach({unEnemigo => unEnemigo.mover()})})})
-
+		
 
 	}
 		
