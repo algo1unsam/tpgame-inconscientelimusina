@@ -19,6 +19,7 @@ object juego {
 
 	var property nivelActual = pantallaInicio
 
+
 	var property nivelAnterior = nivelActual
 	const property tickEvents = []
 	
@@ -114,7 +115,7 @@ object juego {
 		player_hit.cargar()
 		if (nivelActual.esNivelFinal()){
 			player_hit.cargarHitBoxExtra()
-			reloj.pasoElTiempo(-150)
+			reloj.cuentaRegresiva(-150)
 		}
 		self.colisiones()
 	}
@@ -137,7 +138,7 @@ object juego {
 	
 	method pasarTiempo(){
 		
-		reloj.pasoElTiempo(1)
+		reloj.cuentaRegresiva(1)
 		
 		
 		3.times({i => game.schedule( (i-1) * 1000/3, { player.caer() 

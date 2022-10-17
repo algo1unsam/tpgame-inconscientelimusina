@@ -10,7 +10,7 @@ class Enemigo {
 	var property sprites = sprite_mov
 	var image = (1..sprite_mov.size()).anyOne()
 	var property position
-	var direccion = true
+	var direccionIzq = true
 	const izquierda
 	const derecha
 	var vivo = true
@@ -33,7 +33,7 @@ class Enemigo {
 		}
 	}
 
-	method animate() {
+	method animar() {
 		if (image < sprites.size() - 1) {
 			image += 1
 		} else {
@@ -48,16 +48,16 @@ class Enemigo {
 	}
 
 	method mover() {
-		self.animate()
-		if (direccion) {
+		self.animar()
+		if (direccionIzq) {
 			position = position.left(1)
 			if (position.x() <= izquierda) {
-				direccion = !direccion
+				direccionIzq = !direccionIzq
 			}
 		} else {
 			position = position.right(1)
 			if (position.x() >= derecha) {
-				direccion = !direccion
+				direccionIzq = !direccionIzq
 			}
 		}
 	}
@@ -143,7 +143,7 @@ class Slime inherits Enemigo(danho = 2,
 			self.morir()
 		}
 		else{
-			direccion = !direccion
+			direccionIzq = !direccionIzq
 			
 			game.schedule(450, { self.iniciar() })
 		}
@@ -205,6 +205,7 @@ class Boss
 									spikeProb += 5
 									if (salud == 0){
 										game.say(self, "auch che, duele una banda loco")
+										self.dropear()
 									}
 								}
 							
@@ -265,6 +266,14 @@ class Boss
 										
 									
 								}
+								
+								method dropear(){
+									const dropearMoneda = juego.nivelActual().dropCoin().anyOne()
+									const dropeable = new Moneda(position = game.at(20,  1))
+									game.addVisual(dropeable)
+									juego.visuals().add(dropeable)
+									juego.nivelActual().dropCoin().remove(dropearMoneda)
+								}
 							}
 
 class SpikeEnCaida {
@@ -302,6 +311,8 @@ class SpikeEnCaida {
 		}
 		
 	method detener(){}
+	
+	
 	
 }
 

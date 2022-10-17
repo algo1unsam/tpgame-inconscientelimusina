@@ -101,7 +101,7 @@ object reloj {
 	
 	var tiempo = 100
 	
-	method pasoElTiempo(segundos){
+	method cuentaRegresiva(segundos){
 		tiempo -= segundos
 		if (tiempo < 0) {
 			player.morir()
