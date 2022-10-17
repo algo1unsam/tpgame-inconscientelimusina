@@ -17,18 +17,23 @@ object juego {
 	var property monedas = 0
 
 
-	var property nivelActual = nivelFinal
+	var property nivelActual = pantallaInicio
 
 	var property nivelAnterior = nivelActual
 	const property tickEvents = []
 	
-	
-	
-	method configurar() {
+	method configurarInicio(){
 		game.width(tamanho)
 		game.height(tamanho)
 		game.cellSize(12)
 		game.title("platformero")
+		keyboard.space().onPressDo{ self.PasarPantallaInicio()}
+		
+		
+	}
+	
+	method configurar() {
+
 
 		keyboard.space().onPressDo{ player.saltar()}
 		keyboard.right().onPressDo{ player.caminar(true)}
@@ -49,6 +54,26 @@ object juego {
 		}
 	}
 	
+	method iniciarPantallaInicio(){
+		self.configurarInicio()
+		game.onTick(700, "tiempo", { nivelActual.enemigos().forEach({unEnemigo => unEnemigo.mover()})})
+		nivelActual.cargar()
+	}
+	
+	method PasarPantallaInicio(){
+		if (pantallaInicio.primeraInstanciacion()){
+			nivelActual.mostrarInstrucciones()
+			pantallaInicio.primeraInstanciacion(false)
+		}
+		else{
+		nivelActual = nivelActual.nivelSiguiente()
+		nivelAnterior = nivelActual
+		self.instanciarNivel()
+		
+		}
+		
+	}
+	
 	
 	method ganar(){
 		player.transportar(game.at(tamanho, tamanho))
@@ -65,7 +90,6 @@ object juego {
 	
 	
 	method instanciarNivel() { 
-		//self.agregarTiempo()
 		self.terminar()
 		self.iniciar()
 

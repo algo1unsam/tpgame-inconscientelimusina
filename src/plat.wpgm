@@ -14,7 +14,7 @@ import enemigos.*
 
 program plat {
 
-	juego.iniciar()
+	juego.iniciarPantallaInicio()
 	
 	game.start()
 
