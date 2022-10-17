@@ -2,6 +2,43 @@ import juego.*
 import player.*
 import wollok.game.*
 
+object backgroundInicio{
+	
+	method position() = game.at(0,0)
+	
+	method image() = "assets/Inicio.png"
+	
+}
+
+object instrucciones{
+	
+	method position() = game.at(0,0)
+	
+	method image() = "assets/instrucciones.png"
+	
+}
+
+object espacioParaComenzar{
+	
+
+	var image = 0
+	
+	var sprites = ["assets/espacioParaComenzar1.png", "assets/espacioParaComenzar2.png"]
+	
+	method position() = game.at(0,0)
+	
+	method image() = sprites.get(image)
+	
+	method mover(){
+		if (image < sprites.size() - 1) {
+			image += 1
+		} else {
+			image = 0
+		}
+	}
+}
+
+
 object gameOver {
 
 	method position() = game.center()

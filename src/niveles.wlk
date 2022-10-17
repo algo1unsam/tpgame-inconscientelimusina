@@ -42,6 +42,44 @@ class Nivel {
 
 }
 
+object pantallaInicio inherits Nivel{
+	
+	var property primeraInstanciacion = true
+	
+	override method nivelSiguiente() = nivel1
+
+	override method cargar() {
+
+
+	objetos = [ backgroundInicio, espacioParaComenzar ]
+	animables = [  ]
+	reInstanciables = []
+	enemigos = [ espacioParaComenzar ]
+		
+	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
+	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+	
+
+	}
+	
+	method mostrarInstrucciones(){
+		
+		game.removeVisual(backgroundInicio)
+		juego.visuals().remove(backgroundInicio)
+		game.removeVisual(espacioParaComenzar)
+		juego.visuals().remove(espacioParaComenzar)
+		objetos = [ instrucciones ]
+		enemigos = []
+		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
+		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+	
+	
+	
+		
+}
+
+
+
 object nivel1 inherits Nivel {
 	
 	const property rng = [ true ]
@@ -49,6 +87,8 @@ object nivel1 inherits Nivel {
 	override method nivelSiguiente() = nivel2
 
 	override method cargar() {
+		
+	
 			
 	(1 .. game.width() - 2).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
@@ -161,19 +201,24 @@ object nivel3 inherits Nivel {
 	const moneda1 = new Moneda (position = game.at(4,  12))
 	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
 	const libro1 = new Librito(position = game.at(30,  12), blancos = [ghost1])
+	const nombreNivel3 = new NombreNivel(image = "assets/nivel_3.png")
+	
 	
 	
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
 	objetos = [ vida, reloj, espada1, ghost1, ataque, contadorMonedas, puerta, player, monedaHUD, moneda1,libro1 ]
-	animables = [ player, reloj, ghost1, iconoEspada ]
+
+	animables = [ player, reloj,  ghost1, iconoEspada ]
+
 	reInstanciables = [espada1, ghost1, moneda1, libro1 ]
 	enemigos = [ ghost1 ]
 		
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 	
 
-	
+	game.addVisual(nombreNivel3)
+	game.schedule(2000, {game.removeVisual(nombreNivel3)})
 
 	
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
@@ -229,6 +274,8 @@ object nivel4 inherits Nivel{
 		const libro1 = new Librito(position = game.at(1,  20), blancos = [ghost1])
 		const moneda1 = new Moneda (position = game.at(32,  20))
 		const moneda2 = new Moneda (position = game.at(27,  7))
+		const nombreNivel4 = new NombreNivel(image = "assets/nivel_4.png")
+		
 
 		
 		objetivoMonedas = 4
@@ -238,6 +285,8 @@ object nivel4 inherits Nivel{
 		reInstanciables = [ slime1,espada1,libro1,ghost1,moneda1,slime2,moneda2]
 		enemigos = [slime1,ghost1,slime2 ]
 		
+		game.addVisual(nombreNivel4)
+		game.schedule(2000, {game.removeVisual(nombreNivel4)})		
 		
 		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 
@@ -288,7 +337,7 @@ object nivel4 inherits Nivel{
 		const moneda2 = new Moneda (position = game.at(5, 9 ))
 		const moneda3 = new Moneda (position = game.at(12, 23 ))
 		const moneda4 = new Moneda (position = game.at(12, 31 ))
-		
+		const nombreNivel5 = new NombreNivel(image = "assets/nivel_5.png")
 		const slime1 = new Slime(position = game.at(10, 16), izquierda = 2, derecha = 15)
 		
 		
@@ -299,6 +348,8 @@ object nivel4 inherits Nivel{
 		reInstanciables = [moneda1,moneda2,moneda3,moneda4,slime1]
 		enemigos = [slime1]
 		
+		game.addVisual(nombreNivel5)
+		game.schedule(2000, {game.removeVisual(nombreNivel5)})
 		
 		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 
@@ -327,7 +378,7 @@ object nivelFinal inherits Nivel(esNivelFinal = true) {
 	posPlataformas2.forEach{ p => self.dibujar(new SpikesInvertidas (position = p))}
 
 
-	const nombreNivel1 = new NombreNivel(image = "assets/nivel_1.png")
+	const nombreNivelFinal = new NombreNivel(image = "assets/nivel_Final.png")
 	const boss = new Boss(position = game.at(15,25))
 	const vidaBoss =new Vida( imagenes = [ "assets/bossHearts0.png", "assets/bossHearts1.png", "assets/bossHearts2.png", "assets/bossHearts3.png", "assets/bossHearts4.png", "assets/bossHearts5.png", 
 											"assets/bossHearts6.png", "assets/bossHearts7.png", "assets/bossHearts8.png", "assets/bossHearts9.png", "assets/bossHearts10.png"],
@@ -345,13 +396,13 @@ object nivelFinal inherits Nivel(esNivelFinal = true) {
 	
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 	
+	game.addVisual(nombreNivelFinal)
+	game.schedule(2000, {game.removeVisual(nombreNivelFinal)})
 
-	
 
 	
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
-	game.addVisual(nombreNivel1)
-	game.schedule(2000, {game.removeVisual(nombreNivel1)})
+
 	}
 	
 
