@@ -372,6 +372,8 @@ object nivelFinal inherits Nivel(esNivelFinal = true) {
 
 	override method cargar() {
 			
+	puerta.position(game.at(33,1))	
+			
 	(1 .. game.width() - 2).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
 	(-1 .. game.width() +1).forEach{ n => posPlataformas2.add(new Position(x = n, y = 26))}
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
