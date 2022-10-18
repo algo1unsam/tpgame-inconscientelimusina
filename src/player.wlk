@@ -87,12 +87,11 @@ object player {
 		self.bajarSalud(1)
 	}
 
-	//method grounded() = if (miraDerecha) juego.plataformas().contains(game.at(self.position().x() + 3, self.position().y() - 1)) else juego.plataformas().contains(game.at(self.position().x() + 4, self.position().y() - 1)) 
-		
+			
 	method grounded() = juego.plataformas().contains(game.at(self.position().x() + 3, self.position().y() - 1)) or juego.plataformas().contains(game.at(self.position().x() + 4, self.position().y() - 1)) 
 	
 	method saltar() {
-		if (vivo and self.grounded()) {
+		if (vivo and (self.grounded() or (!cayendo and !saltando))) {  //coyote jump
 			
 			saltando = true
 			self.animSaltar(miraDerecha)

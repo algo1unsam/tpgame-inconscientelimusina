@@ -76,7 +76,7 @@ object pantallaInicio inherits Nivel{
 	
 	
 		
-}
+}}
 
 
 
