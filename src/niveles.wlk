@@ -21,7 +21,8 @@ class Nivel {
 	var property reInstanciables = []
 	var property enemigos = []
 	const property esNivelFinal = false
-	
+	const nombre
+	const nombreNivel = new NombreNivel(image = "assets/" + nombre + ".png")
 	
 	var property objetivoMonedas = 0
 	var property dropCoin = []
@@ -37,16 +38,21 @@ class Nivel {
 	
 	method nivelSiguiente()
 	
+	method mostrarNombreNivel(){
+		game.addVisual(nombreNivel)
+		game.schedule(2000, {game.removeVisual(nombreNivel)})
+	}
+	
 
 	
 
 }
 
-object pantallaInicio inherits Nivel{
+object pantallaInicio inherits Nivel(nombre = "inicio"){
 	
 	var property primeraInstanciacion = true
 	
-	override method nivelSiguiente() = nivel2
+	override method nivelSiguiente() = nivel1
 
 	override method cargar() {
 
@@ -80,7 +86,7 @@ object pantallaInicio inherits Nivel{
 
 
 
-object nivel1 inherits Nivel {
+object nivel1 inherits Nivel(nombre = "nivel1") {
 	
 	const property rng = [ true ]
 
@@ -95,7 +101,7 @@ object nivel1 inherits Nivel {
 	
 	const espada1 = new Espada(position = game.at(15,  1))
 	const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
-	const nombreNivel1 = new NombreNivel(image = "assets/nivel_1.png")
+
 	
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
@@ -110,22 +116,24 @@ object nivel1 inherits Nivel {
 
 	
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
-	game.addVisual(nombreNivel1)
-	game.schedule(2000, {game.removeVisual(nombreNivel1)})
-
-}
+	self.mostrarNombreNivel()
 
 
 }
 
 
-object nivel2 inherits Nivel {
+}
+
+
+object nivel4 inherits Nivel(nombre ="nivel4"){
 	
 	const property rng = [ true, false, false ]
 	
-	override method nivelSiguiente() = nivel3
+	override method nivelSiguiente() = nivel5
 
 	override method cargar() {
+		
+		puerta.position(game.at(32,1))	
 
 		const plataformasNivel = new CreadorDePlataformas (posicionesY = [0, 8, 16, 24, 28, 32],
 										posicionesX = [[(1 .. 7), (31.. 38)],
@@ -151,7 +159,7 @@ object nivel2 inherits Nivel {
 		const moneda3 = new Moneda(position = game.at(juego.tamanho() * (3 / 10), (2 / 5) * juego.tamanho() + 1))
 		const moneda4 = new Moneda(position = game.at(juego.tamanho() * (6 / 10), (2 / 5) * juego.tamanho() + 1))
 		const moneda5 = new Moneda(position = game.at(juego.tamanho() * (36 / 50), (1 / 5) * juego.tamanho() + 1))
-		const nombreNivel2 = new NombreNivel(image = "assets/nivel_2.png")
+		
 		const tp1 = new Teleporter(position = game.at(juego.tamanho() * (2 / 15) + 2, 1), sprite = "assets/tp1", x = juego.tamanho() - 4, y = (3 / 5) * juego.tamanho() + 1)
 		const tp2 = new Teleporter(position = game.at(juego.tamanho() - 6, (2 / 5) * juego.tamanho() + 1), sprite = "assets/tp2", x = juego.tamanho() * (2 / 10), y = (1 / 5) * juego.tamanho() + 1)
 		const tp3 = new Teleporter(position = game.at(juego.tamanho() * (1 / 10) + 2, (2 / 5) * juego.tamanho() + 1), sprite = "assets/tp3", x = 1, y = (7 / 10) * juego.tamanho() + 1)
@@ -173,39 +181,38 @@ object nivel2 inherits Nivel {
 
 		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
-		game.addVisual(nombreNivel2)
-		game.schedule(2000, { game.removeVisual(nombreNivel2)})
+		self.mostrarNombreNivel()
 	}
 
 
 }
 
-object nivel3 inherits Nivel {
+object nivel2 inherits Nivel(nombre ="nivel2") {
 	
 	const property rng = [ false ]
 
-	override method nivelSiguiente() = nivel4
+	override method nivelSiguiente() = nivel3
 
 	override method cargar() {
 		
-	
-			
-	(1 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-	(21 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-	(13 .. 20).forEach{ n => posPlataformas.add(new Position(x = n, y = 3))}
-	(20 .. 22).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
-	(13 .. 18).forEach{ n => posPlataformas.add(new Position(x = n, y = 9))}
-	(9 .. 11).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
-	(0 .. 5).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
-	(24 .. 27).forEach{ n => posPlataformas.add(new Position(x = n, y = 9))}
-	(27 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 11))}
+	const plataformasNivel = new CreadorDePlataformas (posicionesY = [0, 3, 6, 8, 10, 11],
+								posicionesX = [[(1 .. 12), (21.. 40)],
+												[(13..20)],
+												[(20..22)],
+												[(13..18), (24..27)],
+												[(9..11)],
+												[(0..5), (27..45)]
+												])
+
+
+	posPlataformas = plataformasNivel.posiciones()
+
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 	
 	const espada1 = new Espada (position = game.at(21,  7))
 	const moneda1 = new Moneda (position = game.at(4,  12))
 	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
 	const libro1 = new Librito(position = game.at(30,  12), blancos = [ghost1])
-	const nombreNivel3 = new NombreNivel(image = "assets/nivel_3.png")
 	
 	
 	
@@ -221,18 +228,16 @@ object nivel3 inherits Nivel {
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 	
 
-	game.addVisual(nombreNivel3)
-	game.schedule(2000, {game.removeVisual(nombreNivel3)})
-
-	
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+	
+	self.mostrarNombreNivel()
 	
 	}
 	
 
 }
 
-object nivel4 inherits Nivel{
+object nivel5 inherits Nivel(nombre ="nivel5"){
 	
 
 	var property posPlataformas2 = []
@@ -241,27 +246,24 @@ object nivel4 inherits Nivel{
 	
 	const property rng = [ true, true ]
 	
-	override method nivelSiguiente() = nivel5
+	override method nivelSiguiente() = nivelFinal
 	
 	override method cargar() {
 		
-		(0 .. 6).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+		
+		const plataformasNivel = new CreadorDePlataformas (posicionesY = [0, 6, 12, 19, 25, 30],
+								posicionesX = [[(0..6), (28.. 45)],
+												[(8..12), (17..20), (24..27)],
+												[(15..45)],
+												[(0 .. 4), (9 .. 12), (18..24), (29..45)],
+												[(0..9), (14..16), (20..23), (28..45)],
+												[(1..6)]
+												])
 
-		(1 .. 6).forEach{ n => posPlataformas.add(new Position(x = n, y = 30))}
-		(0 .. 9).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
-		(14 .. 16).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
-		(20.. 23).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
-		(29.. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 25))}
-		(28 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-		(9 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
-		(0 .. 4).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
-		(18 .. 24).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
-		(29 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 19))}
-		(15 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 12))}
-		(8 .. 12).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
-		(18 .. 20).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
-		(25 .. 28).forEach{ n => posPlataformas.add(new Position(x = n, y = 6))}
 
+		posPlataformas = plataformasNivel.posiciones()
+
+	
 		(7.. 26).forEach{ n => posPlataformas2.add(new Position(x = n, y = 0))}
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 		posPlataformas2.forEach{ p => self.dibujar(new Spikes (position = p))}
@@ -278,7 +280,7 @@ object nivel4 inherits Nivel{
 		const libro1 = new Librito(position = game.at(1,  20), blancos = [ghost1])
 		const moneda1 = new Moneda (position = game.at(32,  20))
 		const moneda2 = new Moneda (position = game.at(27,  7))
-		const nombreNivel4 = new NombreNivel(image = "assets/nivel_4.png")
+	
 		
 
 		
@@ -289,47 +291,53 @@ object nivel4 inherits Nivel{
 		reInstanciables = [ slime1,espada1,libro1,ghost1,moneda1,slime2,moneda2]
 		enemigos = [slime1,ghost1,slime2 ]
 		
-		game.addVisual(nombreNivel4)
-		game.schedule(2000, {game.removeVisual(nombreNivel4)})		
-		
 		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 
 		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+		
+		self.mostrarNombreNivel()
 		
 	}
 	
 	
 }
 
- object nivel5 inherits Nivel{
+ object nivel3 inherits Nivel(nombre ="nivel3"){
 	
 	var property posPlataformas2 = []
 	
 	const property rng = [ false ]
 	
-	override method nivelSiguiente() = nivelFinal
+	override method nivelSiguiente() = nivel4
 			
 	override method cargar(){
 		
 		puerta.position(game.at(33,31))
+		
+		const plataformasNivel = new CreadorDePlataformas (posicionesY = [0, 7, 13, 21, 30],
+												posicionesX = [[(0..6), (33.. 45)],
+												[(0..9)],
+												[(0..14)],
+												[(0 .. 20)],
+												[(0..45)]
+												])
+
+
+		posPlataformas = plataformasNivel.posiciones()
 			
-		(0 .. 8).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-		(0 .. game.width()+5).forEach{ n => posPlataformas.add(new Position(x = n, y = 30))}
-		(0 .. 25).forEach{ n => posPlataformas.add(new Position(x = n, y = 22))}
-		(0 .. 17).forEach{ n => posPlataformas.add(new Position(x = n, y = 15))}
-		(0 .. 10).forEach{ n => posPlataformas.add(new Position(x = n, y = 8))}
-		(31 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+		
+		
 		(18 .. 18).forEach{ n => posPlataformas2.add(new Position(x = n, y = 31))}
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 		posPlataformas2.forEach{ p => self.dibujar(new Spikes (position = p))}
 		
 		
-		const tp1 = new Teleporter(position = game.at(1, 1), sprite = "assets/tp1", x = 1,y =9)
-		const tp2 = new Teleporter(position = game.at(7,1), sprite = "assets/tp2", x = 31, y = 1)
-		const tp3 = new Teleporter(position = game.at(game.width()-2,1), sprite = "assets/tp3", x = 14, y = 16)
-		const tp4 = new Teleporter(position = game.at(9,9), sprite = "assets/tp4", x = 1, y = 23)
-		const tp5 = new Teleporter(position = game.at(1, 16), sprite = "assets/tp5", x = 1,y =31)
-		const tp6 = new Teleporter(position = game.at(24, 23), sprite = "assets/tp5", x = 1,y =31)
+		const tp1 = new Teleporter(position = game.at(0, 1), sprite = "assets/tp1", x = 0,y = 8)
+		const tp2 = new Teleporter(position = game.at(5,1), sprite = "assets/tp2", x = 33, y = 1)
+		const tp3 = new Teleporter(position = game.at(game.width()-2,1), sprite = "assets/tp3", x = 11, y = 14)
+		const tp4 = new Teleporter(position = game.at(8,8), sprite = "assets/tp4", x = 0, y = 22)
+		const tp5 = new Teleporter(position = game.at(0, 14), sprite = "assets/tp5", x = 0,y =31)
+		const tp6 = new Teleporter(position = game.at(19, 22), sprite = "assets/tp5", x = 0,y =31)
 		const r1 = new Receiver(teleporter = tp1)
 		const r2 = new Receiver(teleporter = tp2)
 		const r3 = new Receiver(teleporter = tp3)
@@ -337,12 +345,11 @@ object nivel4 inherits Nivel{
 		const r5 = new Receiver(teleporter = tp5)
 		const r6 = new Receiver(teleporter = tp6)
 		
-		const moneda1 = new Moneda (position = game.at(35, 1 ))
-		const moneda2 = new Moneda (position = game.at(5, 9 ))
-		const moneda3 = new Moneda (position = game.at(12, 23 ))
+		const moneda1 = new Moneda (position = game.at(36, 1 ))
+		const moneda2 = new Moneda (position = game.at(5, 8 ))
+		const moneda3 = new Moneda (position = game.at(12, 22 ))
 		const moneda4 = new Moneda (position = game.at(12, 31 ))
-		const nombreNivel5 = new NombreNivel(image = "assets/nivel_5.png")
-		const slime1 = new Slime(position = game.at(10, 16), izquierda = 2, derecha = 15)
+		const slime1 = new Slime(position = game.at(10, 14), izquierda = 2, derecha = 14)
 		
 		
 		objetivoMonedas = 4
@@ -352,12 +359,12 @@ object nivel4 inherits Nivel{
 		reInstanciables = [moneda1,moneda2,moneda3,moneda4,slime1]
 		enemigos = [slime1]
 		
-		game.addVisual(nombreNivel5)
-		game.schedule(2000, {game.removeVisual(nombreNivel5)})
 		
 		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 
 		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+		
+		self.mostrarNombreNivel()
 	
 	}
 	}
@@ -366,7 +373,7 @@ object nivel4 inherits Nivel{
 
 
 
-object nivelFinal inherits Nivel(esNivelFinal = true) {
+object nivelFinal inherits Nivel(nombre ="nivelFinal", esNivelFinal = true) {
 	
 	var property posPlataformas2 = []
 	
@@ -376,15 +383,19 @@ object nivelFinal inherits Nivel(esNivelFinal = true) {
 
 	override method cargar() {
 			
-	puerta.position(game.at(33,1))	
+	
+	
+	const plataformasNivel = new CreadorDePlataformas (posicionesY = [0],
+														posicionesX = [[(1..38)]])
+
+	posPlataformas = plataformasNivel.posiciones()
 			
-	(1 .. game.width() - 2).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+
 	(-1 .. game.width() +1).forEach{ n => posPlataformas2.add(new Position(x = n, y = 26))}
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 	posPlataformas2.forEach{ p => self.dibujar(new SpikesInvertidas (position = p))}
 
 
-	const nombreNivelFinal = new NombreNivel(image = "assets/nivel_Final.png")
 	const boss = new Boss(position = game.at(15,25))
 	const vidaBoss =new Vida( imagenes = [ "assets/bossHearts0.png", "assets/bossHearts1.png", "assets/bossHearts2.png", "assets/bossHearts3.png", "assets/bossHearts4.png", "assets/bossHearts5.png", 
 											"assets/bossHearts6.png", "assets/bossHearts7.png", "assets/bossHearts8.png", "assets/bossHearts9.png", "assets/bossHearts10.png"],
@@ -402,19 +413,17 @@ object nivelFinal inherits Nivel(esNivelFinal = true) {
 	
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 	
-	game.addVisual(nombreNivelFinal)
-	game.schedule(2000, {game.removeVisual(nombreNivelFinal)})
-
-
 	
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
+	
+	self.mostrarNombreNivel()
 
 	}
 	
 
 }
 
-object nivelGanador inherits Nivel{
+object nivelGanador inherits Nivel(nombre ="nivelGanador"){ //HACER UNA PANTALLA DE VICTORIA
 	
 	const property rng = [ true ]
 
@@ -434,9 +443,7 @@ object nivelGanador inherits Nivel{
 		
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 	
-	const nombreNivel1 = new NombreNivel(image = "assets/ganaste.png")
-	game.addVisual(nombreNivel1)
-	game.schedule(100000, {game.removeVisual(nombreNivel1)})
+	self.mostrarNombreNivel()
 	}
 }
 

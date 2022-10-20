@@ -122,8 +122,8 @@ object player inherits Animable(animator = playerAnimator,
 		} else if (vivo and !mov) {
 			mov = true
 			animator.cambiarAnimate(self, caida)			
-			2.times({ i => game.schedule(500 * (i-1) / 2, { self.mover(direccion)})})
-			game.schedule(500, { self.mov(false)})
+			2.times({ i => game.schedule(550 * (i-1) / 2, { self.mover(direccion)})})
+			game.schedule(550, { self.mov(false)})
 		}
 	}
 

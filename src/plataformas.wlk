@@ -7,9 +7,7 @@ class CreadorDePlataformas{
 	var posicionesY
 	
 	var posicionesX
-	
-	
-	
+		
 	method posiciones() {
 		const posiciones = []
 		(0.. posicionesY.size() - 1).forEach({unY => posicionesX.get(unY).forEach({
