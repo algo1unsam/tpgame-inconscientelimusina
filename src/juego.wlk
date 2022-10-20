@@ -69,7 +69,8 @@ object juego {
 		else{
 		nivelActual = nivelActual.nivelSiguiente()
 		nivelAnterior = nivelActual
-		self.instanciarNivel()
+		game.clear()
+		self.iniciar()
 		
 		}
 		
@@ -110,14 +111,14 @@ object juego {
 				
 		nivelActual.cargar()
 		
-		self.agregarTiempo()
+	 	self.agregarTiempo()
 		
 		player_hit.cargar()
 		if (nivelActual.esNivelFinal()){
 			player_hit.cargarHitBoxExtra()
-			reloj.cuentaRegresiva(-150)
+			reloj.cuentaRegresiva(-100)
 		}
-		self.colisiones()
+		self.colisiones()   
 	}
 	
 	method agregarTiempo(){

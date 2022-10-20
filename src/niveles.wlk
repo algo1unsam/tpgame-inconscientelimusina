@@ -46,7 +46,7 @@ object pantallaInicio inherits Nivel{
 	
 	var property primeraInstanciacion = true
 	
-	override method nivelSiguiente() = nivel1
+	override method nivelSiguiente() = nivel2
 
 	override method cargar() {
 
@@ -88,19 +88,19 @@ object nivel1 inherits Nivel {
 
 	override method cargar() {
 		
-	
-			
-	(1 .. game.width() - 2).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
+	const plataformasNivel = new CreadorDePlataformas (posicionesY = [0],
+										posicionesX = [[(1 .. game.width() - 2)]])
+	posPlataformas = plataformasNivel.posiciones()
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 	
 	const espada1 = new Espada(position = game.at(15,  1))
 	const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
-
 	const nombreNivel1 = new NombreNivel(image = "assets/nivel_1.png")
 	
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
-	objetos = [ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player, monedaHUD]
+	
+	objetos = [ vida, reloj, espada1, slime1, ataque, contadorMonedas, puerta, player,  monedaHUD]
 	animables = [  reloj, player, slime1, iconoEspada]
 	reInstanciables = [espada1, slime1]
 	enemigos = [ slime1 ]
@@ -112,8 +112,9 @@ object nivel1 inherits Nivel {
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 	game.addVisual(nombreNivel1)
 	game.schedule(2000, {game.removeVisual(nombreNivel1)})
-	}
-	
+
+}
+
 
 }
 
@@ -126,16 +127,19 @@ object nivel2 inherits Nivel {
 
 	override method cargar() {
 
+		const plataformasNivel = new CreadorDePlataformas (posicionesY = [0, 8, 16, 24, 28, 32],
+										posicionesX = [[(1 .. 7), (31.. 38)],
+														[(8..14), (18..21), (26..30)],
+														[(4..45)],
+														[(20..45)],
+														[(0..8)],
+														[(32..45)]	])
 
-		(1 .. game.width() * (3 / 15)).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-		(game.width() * (41 / 50) .. game.width() - 2).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
-		(game.width() * (1 / 10) .. game.width() + 5 ).forEach{ n => posPlataformas.add(new Position(x = n, y = (2 / 5) * game.height()))}
-		(game.width() * (5 / 10) .. game.width() + 5 ).forEach{ n => posPlataformas.add(new Position(x = n, y = (3 / 5) * game.height()))}
-		(0 .. game.width() * (2 / 10)).forEach{ n => posPlataformas.add(new Position(x = n, y = (7 / 10) * game.height()))}
-		(game.width() * (2 / 10) .. game.width() * (17 / 50)).forEach{ n => posPlataformas.add(new Position(x = n, y = (1 / 5) * game.height()))}
-		(game.width() * (22 / 50) .. game.width() * (5 / 10)).forEach{ n => posPlataformas.add(new Position(x = n, y = (1 / 5) * game.height()))}
-		(game.width() * (33 / 50) .. game.width() * (37 / 50)).forEach{ n => posPlataformas.add(new Position(x = n, y = (1 / 5) * game.height()))}
-		(game.width() * (40 / 50) .. game.width() + 5).forEach{ n => posPlataformas.add(new Position(x = n, y = (4 / 5) * game.height()))}
+
+		posPlataformas = plataformasNivel.posiciones()
+		
+
+
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma(position = p))}
 		
 		const espada2 = new Espada(position = game.at(juego.tamanho() * (41 / 50), (4 / 5) * juego.tamanho() + 1))

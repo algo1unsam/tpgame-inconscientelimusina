@@ -1,6 +1,30 @@
 import wollok.game.*
 import player.*
 
+
+class CreadorDePlataformas{
+	
+	var posicionesY
+	
+	var posicionesX
+	
+	
+	
+	method posiciones() {
+		const posiciones = []
+		(0.. posicionesY.size() - 1).forEach({unY => posicionesX.get(unY).forEach({
+					rangoX => rangoX.forEach{ n => posiciones.add(new Position(x = n, y = posicionesY.get(unY)))}		
+			})	
+			})
+		return posiciones
+		}
+	
+}
+
+
+
+
+
 class Plataforma {
 
 	var property position

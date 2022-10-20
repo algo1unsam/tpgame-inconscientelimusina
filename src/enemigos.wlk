@@ -3,13 +3,14 @@ import espada.*
 import juego.*
 import player.*
 import obtenibles.*
+import animator.*
 
-class Enemigo {
+class Enemigo inherits Animable(miraDerecha = false,
+							numeroDeSprite = 1
+								){
 
-	var sprite_mov
-	var property sprites = sprite_mov
-	var image = (1..sprite_mov.size()).anyOne()
-	var property position
+	
+
 	var direccionIzq = true
 	const izquierda
 	const derecha
@@ -18,9 +19,7 @@ class Enemigo {
 	const mensaje
 
 
-	method image() {
-		return sprites.get(image)
-	}
+
 
 
 
@@ -33,22 +32,15 @@ class Enemigo {
 		}
 	}
 
-	method animar() {
-		if (image < sprites.size() - 1) {
-			image += 1
-		} else {
-			image = 0
-		}
-	}
 
 
 	method iniciar() {
 		vivo = true
-		sprites = sprite_mov
+		sprites = spriteInicial
 	}
 
 	method mover() {
-		self.animar()
+		animator.animate(self)
 		if (direccionIzq) {
 			position = position.left(1)
 			if (position.x() <= izquierda) {
@@ -87,9 +79,8 @@ class Enemigo {
 
 class Ghost inherits Enemigo( danho = 2,
 							  mensaje = [ "Es la parca", "Que es esa cosa?"], 
-							  sprite_mov =["assets/ghost1.png","assets/ghost2.png","assets/ghost3.png","assets/ghost4.png","assets/ghost5.png",
-											"assets/ghost6.png","assets/ghost7.png","assets/ghost8.png"])
-{
+							spriteInicial = ghost,
+							animator = enemyAnimator){
 	
 	override method serAtacado(x){	
 				game.say(self,"jajaja soy inmune a tus ataques")
@@ -102,11 +93,11 @@ class Ghost inherits Enemigo( danho = 2,
 
 class Slime inherits Enemigo(danho = 2,
 							mensaje = [ "Más cuidado che", "Otra vez al comienzo..", "ouch...", "aaAaH!!!" ], 
-							sprite_mov = [ "assets/slime (1).png", "assets/slime (2).png", "assets/slime (3).png", "assets/slime (4).png", "assets/slime (5).png", 
-											"assets/slime (6).png", "assets/slime (7).png", "assets/slime (8).png", "assets/slime (9).png", "assets/slime (10).png" ]
+							spriteInicial = slime,
+							animator = enemyAnimator
 							) {
 
-	const sprite_danho = [ "assets/slime_red1.png", "assets/slime_red2.png", "assets/slime_red3.png", "assets/slime_red4.png", "assets/slime_red5.png", "assets/slime_red6.png", "assets/slime_red7.png", "assets/slime_red8.png", "assets/slime_red9.png", "assets/slime_red10.png", "slime_red11.png" ]
+	
 	var fueAtacado = false
 	var vida = 5
 	var transpasable = false
@@ -137,7 +128,7 @@ class Slime inherits Enemigo(danho = 2,
 		vida -= x
 		fueAtacado = true
 		ataque.position(game.at(juego.tamanho(), juego.tamanho()))
-		sprites = sprite_danho
+		animator.cambiarAnimate(self, slimeRojo)
 		transpasable = true
 		if (vida <= 0) {
 			self.morir()
@@ -167,9 +158,6 @@ class Slime inherits Enemigo(danho = 2,
 		juego.visuals().add(dropeable)
 		juego.nivelActual().dropCoin().remove(dropearMoneda)
 	}
-
-
-
 }
 
 //DISCUTIR SI BOSS DEBERIA HEREDAR O NO DE ENEMIGO, XQ SU LOGICA ES UN TANTO DISTINTA
@@ -177,31 +165,27 @@ class Slime inherits Enemigo(danho = 2,
 class Boss
 							 {
 								
-							const sprite_mov = [ "assets/boss1.png", "assets/boss2.png","assets/boss3.png","assets/boss4.png",
-										"assets/boss5.png", "assets/boss6.png","assets/boss7.png", "assets/boss8.png", "assets/boss9.png"]	
-							
-							const sprite_mov_izquierda = [ "assets/boss1i.png", "assets/boss2i.png","assets/boss3i.png","assets/boss4i.png",
-										"assets/boss5i.png", "assets/boss6i.png","assets/boss7i.png", "assets/boss8i.png", "assets/boss9i.png"]
-							
-							const sprites_danho = [ "assets/bossDanho.png", "assets/bossDanhoi.png" ]						
 							var property salud = 10
 							var property position
-							var image = 1
-							var sprites = sprite_mov
-							var fueAtacado = false
+							var property numeroDeSprite = 1
+							var property sprites = boss
 							var spikeProb = 20
+							const animator = bossAnimator
+							var property miraDerecha = false
 							
-							method image() {
-								return sprites.get(image)
-							}
+							method image() = animator.darImagen(self)
+
 													
+							method proximoSprite(){
+									numeroDeSprite += 1
+										}
 													
 							
 							
 							method serAtacado(x){
-									fueAtacado = true
-									game.schedule(1000, {fueAtacado = false})
-									salud -= x
+									animator.cambiarAnimate(self, bossDanho)
+									game.schedule(1000, {animator.cambiarAnimate(self, boss)})
+									salud = (salud - x).max(0)
 									spikeProb += 5
 									if (salud == 0){
 										game.say(self, "auch che, duele una banda loco")
@@ -209,19 +193,7 @@ class Boss
 									}
 								}
 							
-							method animate() {
-									if (player.position().x() <= 15){
-										sprites = sprite_mov_izquierda
-									} 
-									else{
-										sprites = sprite_mov
-									}
-									if (image < sprites.size() - 1) {
-										image += 1
-									} else {
-										image = 0
-									}
-								}
+
 														
 														
 							method crearSpike(){
@@ -243,25 +215,18 @@ class Boss
 							}
 							
 							method mover(){
-								if (!fueAtacado){
-									self.animate()}
-								else{
-									if (player.position().x() <= 15){
-									image = 1}
-									else{
-										image = 0
-									}
-									sprites = sprites_danho
+
+								animator.animate(self)
+
+								const rng = (1..100).anyOne()
+								if (rng <= spikeProb){
+									2.times({i => self.crearSpike()})
+
 								}
-									const rng = (1..100).anyOne()
-									if (rng <= spikeProb){
-										2.times({i => self.crearSpike()})
+								else if (rng > 93){
+									self.crearLibro()
 
 									}
-									else if (rng > 93){
-										self.crearLibro()
-
-										}
 
 										
 									

@@ -2,16 +2,21 @@ import wollok.game.*
 import juego.*
 import espada.*
 import playerHit.*
+import animator.*
 
 
-object player {
+object player inherits Animable(animator = playerAnimator,
+								miraDerecha = true,
+								spriteInicial = idle,
+								numeroDeSprite = 1,
+								position = game.at(0,2))
+				{
+
+
 
 	var vivo = true
 	var property salud = 6
-	var property position = self.posicionInicial()
-	var property anim_time = 400
-	const animIdleTime = 10**5
-	var property image = 0
+
 	var property mov = false
 	var property saltando = false
 	var property atacando = false
@@ -24,63 +29,16 @@ object player {
 	const property hitbox = []
 	
 
-	// ANIMACIONES
-	const salto_right = [ "assets/tile069.png"]
-	const salto_left = [ "assets/tile069i.png"]
-	const muere_right = [ "assets/tile065.png", "assets/tile066.png", "assets/tile067.png", "assets/tile068.png", "assets/tile068.png" ]
-	const muere_left = [ "assets/tile065i.png", "assets/tile066i.png", "assets/tile067i.png", "assets/tile068i.png", "assets/tile068i.png" ]
-	const att1_right = [ "assets/tile042.png", "assets/tile043.png", "assets/tile044.png", "assets/tile045.png", "assets/tile046.png", "assets/tile047.png", "assets/tile047.png" ]
-	const att1_left = [ "assets/tile042i.png", "assets/tile043i.png", "assets/tile044i.png", "assets/tile045i.png", "assets/tile046i.png", "assets/tile047i.png", "assets/tile047i.png" ]
-	const att2_right = [ "assets/tile047.png", "assets/tile048.png", "assets/tile049.png", "assets/tile050.png", "assets/tile051.png", "assets/tile052.png", "assets/tile052.png" ]
-	const att2_left = [ "assets/tile047i.png", "assets/tile048i.png", "assets/tile049i.png", "assets/tile050i.png", "assets/tile051i.png", "assets/tile052i.png", "assets/tile052i.png" ]
-	const att3_right = [ "assets/tile053.png", "assets/tile054.png", "assets/tile055.png", "assets/tile056.png", "assets/tile057.png", "assets/tile058.png", "assets/tile058.png" ]
-	const att3_left = [ "assets/tile053i.png", "assets/tile054i.png", "assets/tile055i.png", "assets/tile056i.png", "assets/tile057i.png", "assets/tile058i.png", "assets/tile058i.png" ]
-	const idle_right = [ "assets/tile000.png" ]
-	const idle_left = [ "assets/tile000i.png" ]
-	const idle_espada_right = [ "assets/tile038.png" ]
-	const idle_espada_left = [ "assets/tile038i.png" ]
-	const walk_right = [ "assets/tile008.png", "assets/tile009.png", "assets/tile010.png", "assets/tile011.png", "assets/tile012.png", "assets/tile013.png" ]
-	const walk_left = [ "assets/tile008i.png", "assets/tile009i.png", "assets/tile010i.png", "assets/tile011i.png", "assets/tile012i.png", "assets/tile013i.png" ]
-	const caida_right = [ "assets/tile022.png"]
-	const caida_left = [ "assets/tile022i.png"]
-	var miraDerecha = true
-	// SELECTOR DE LA ANIMACION ACTUAL
-	var property sprites = idle_right
 
-	method position() = position
 
 	method todaLaVida() {
 		self.salud(6)
 	}
 
-	method image() {
-		return sprites.get(image)
-	}
 
 	method posicionInicial() = game.at(0, 2)
 
-	method aplicarAnimate() {
-		game.onTick(anim_time, "anima", { self.Animate()})
-		juego.tickEvents().add("anima")
-	}
 
-	method cambiarAnimate(sprite_nuevo, anim_time_nuevo) {
-		
-		game.removeTickEvent("anima")
-		juego.tickEvents().remove("anima")
-		self.image(0)
-		self.sprites(sprite_nuevo)
-		anim_time = anim_time_nuevo
-		self.aplicarAnimate()
-	}
-
-	method Animate() {
-		if (image < sprites.size() - 1) {
-			image += 1
-		} else {
-			image = 0
-		}
-	}
 
 	method caerAlPozo() {
 		self.transportar(self.posicionInicial())
@@ -94,7 +52,7 @@ object player {
 		if (vivo and (self.grounded() or (!cayendo and !saltando))) {  //coyote jump
 			
 			saltando = true
-			self.animSaltar(miraDerecha)
+			animator.cambiarAnimate(self, salto)
 			self.subir()
 			game.schedule(150, { self.subir()})
 			game.schedule(300, { self.subir()})
@@ -124,7 +82,7 @@ object player {
 	method caer() {
 		if (!self.grounded() and !saltando) {
 			if (!cayendo) {
-				self.animCaer(miraDerecha)
+				animator.cambiarAnimate(self, caida)
 			}
 			if (self.position().y() == -4) {
 					self.caerAlPozo()}
@@ -132,7 +90,7 @@ object player {
 			position = position.down(1)
 			hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().down(1))})
 		}
-		else if (self.grounded() and (sprites == caida_right or sprites == caida_left)) {
+		else if (self.grounded() and (sprites == caida)) {
 			self.aterrizar()
 		}
 	}
@@ -146,62 +104,38 @@ object player {
 		mov = false
 		if (!atacando) {
 			if (tieneEspada) {
-				self.animarReposoConEspada()
+				animator.cambiarAnimate(self, idle_espada)
 			} else {
-				self.animarReposo()
+				animator.cambiarAnimate(self, idle)
 			}
 		}
 	}
 	
-	method animarReposoConEspada() {
-		if (miraDerecha) { 
-			self.cambiarAnimate(idle_espada_right, animIdleTime)
-		} else {
-			self.cambiarAnimate(idle_espada_left, animIdleTime)
-		}
-	}
-	
-	method animarReposo() {
-		if (miraDerecha) { 
-			self.cambiarAnimate(idle_right, animIdleTime)
-		} else {
-			self.cambiarAnimate(idle_left, animIdleTime)
-		}
-	}
 
 	method caminar(direccion) {
+		miraDerecha = direccion
 		if (vivo and self.grounded() and !mov) {
-			self.animCaminar(direccion)
+			animator.cambiarAnimate(self, walk)
 			mov = true
 			3.times({ i => game.schedule(400 * (i - 1) / 2, { self.mover(direccion)})}) 
 			game.schedule(400, { self.jugadorEnReposo()})
 		} else if (vivo and !mov) {
 			mov = true
-			self.animCaer(direccion)			
+			animator.cambiarAnimate(self, caida)			
 			2.times({ i => game.schedule(500 * (i-1) / 2, { self.mover(direccion)})})
 			game.schedule(500, { self.mov(false)})
 		}
 	}
 
-	method animCaminar(direccion) {
-		if (direccion) { 
-			self.cambiarAnimate(walk_right, 250)
-			miraDerecha = true
-		} else {
-			self.cambiarAnimate(walk_left, 250)
-			miraDerecha = false
-		}
-	}
 
 	method animAtacar1() {
-		if (miraDerecha) {
-			self.cambiarAnimate(att1_right, 75)
+		animator.cambiarAnimate(self, att1)
+		if (miraDerecha) {			
 			game.schedule(150, { ataque.position(self.position().right(3))})
 			ataque.danho(1)
 			4.times({ i => game.schedule(150 + 150 * (i / 4), { ataque.mover(false)})})
 			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		} else {
-			self.cambiarAnimate(att1_left, 75)
+		} else {			
 			game.schedule(150, { ataque.position(self.position().right(2))})
 			ataque.danho(1)
 			4.times({ i => game.schedule(150 + 150 * (i / 4), { ataque.mover(true)})})
@@ -210,14 +144,13 @@ object player {
 	}
 
 	method animAtacar2() {
+		animator.cambiarAnimate(self, att2)
 		if (miraDerecha) {
-			self.cambiarAnimate(att2_right, 75)
 			game.schedule(150, { ataque.position(self.position().right(3))})
 			ataque.danho(2)
 			5.times({ i => game.schedule(150 + 150 * (i / 5), { ataque.mover(false)})})
 			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
 		} else {
-			self.cambiarAnimate(att2_left, 75)
 			game.schedule(150, { ataque.position(self.position().right(2))})
 			ataque.danho(2)
 			5.times({ i => game.schedule(150 + 150 * (i / 5), { ataque.mover(true)})})
@@ -226,14 +159,13 @@ object player {
 	}
 
 	method animAtacar3() {
+		animator.cambiarAnimate(self, att3)
 		if (miraDerecha) {
-			self.cambiarAnimate(att3_right, 75)
 			game.schedule(75, { ataque.position(self.position().right(3))})
 			ataque.danho(5)
 			10.times({ i => game.schedule(75 + 150 * (i / 10), { ataque.mover(false)})})
 			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
 		} else {
-			self.cambiarAnimate(att3_left, 75)
 			game.schedule(75, { ataque.position(self.position().right(2))})
 			ataque.danho(5)
 			10.times({ i => game.schedule(75 + 150 * (i / 10), { ataque.mover(true)})})
@@ -298,25 +230,6 @@ object player {
 		}
 	}
 
-	method animSaltar(direccion) {
-		if (direccion) { 
-			self.cambiarAnimate(salto_right, animIdleTime)
-			miraDerecha = true
-		} else {
-			self.cambiarAnimate(salto_left, animIdleTime)
-			miraDerecha = false
-		}
-	}
-
-	method animCaer(direccion) {
-		if (direccion) { 
-			self.cambiarAnimate(caida_right, animIdleTime)
-			miraDerecha = true
-		} else {
-			self.cambiarAnimate(caida_left, animIdleTime)
-			miraDerecha = false
-		}
-	}
 
 	method transportar(pos) {
 		const diffX = pos.x() - position.x()
@@ -350,7 +263,7 @@ object player {
 
 	method morir() {
 		self.quitarVida()
-		self.animMorir(miraDerecha)
+		animator.cambiarAnimate(self, muere)
 		game.schedule(450, {game.removeTickEvent("anima")})
 		game.schedule(450,{juego.tickEvents().remove("anima")})
 
@@ -368,26 +281,24 @@ object player {
 	method quitarVida(){
 	vivo = false}
 
-	method animMorir(direccion) {
-		if (direccion) { // TODO
-			self.cambiarAnimate(muere_right, 125)
-		} else {
-			self.cambiarAnimate(muere_left, 125)
-		}
-	}
 
 	method iniciar() {
 		vivo = true
 		self.todaLaVida()
 		self.transportar(self.posicionInicial())
 		tieneEspada = false
-		sprites = idle_right
-		anim_time = 200
+		sprites = idle
+
 		if (!juego.tickEvents().contains("anima")){
-		self.aplicarAnimate()}
+		animator.aplicarAnimate(self, sprites)}
 		
 		
 	}
+	
+
+		
+		
+	
 
 	method estaVivo() {
 		return vivo
