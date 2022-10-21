@@ -128,49 +128,39 @@ object player inherits Animable(animator = playerAnimator,
 	}
 
 
-	method animAtacar1() {   //intentar abstraer
-		animator.cambiarAnimate(self, att1)
-		if (miraDerecha) {			
-			game.schedule(150, { ataque.position(self.position().right(3))})
-			ataque.danho(1)
-			4.times({ i => game.schedule(150 + 150 * (i / 4), { ataque.mover(false)})})
+	method animAtacarDerecha(tiempoAnimacion, cantAtaques,danho){
+		if (miraDerecha){
+			game.schedule(tiempoAnimacion,{ataque.position(self.position().right(3))})
+			ataque.danho(danho)
+			cantAtaques.times({i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(false)})})
 			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		} else {			
-			game.schedule(150, { ataque.position(self.position().right(2))})
-			ataque.danho(1)
-			4.times({ i => game.schedule(150 + 150 * (i / 4), { ataque.mover(true)})})
-			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
+			
 		}
+		else{
+			game.schedule(tiempoAnimacion, { ataque.position(self.position().right(2))})
+			ataque.danho(danho)
+			cantAtaques.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(true)})})
+			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
+			
+		}
+		
+	}
+
+	method animAtacar1() {   
+		animator.cambiarAnimate(self, att1)
+		self.animAtacarDerecha(150,4,1)
 	}
 
 	method animAtacar2() {
 		animator.cambiarAnimate(self, att2)
-		if (miraDerecha) {
-			game.schedule(150, { ataque.position(self.position().right(3))})
-			ataque.danho(2)
-			5.times({ i => game.schedule(150 + 150 * (i / 5), { ataque.mover(false)})})
-			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		} else {
-			game.schedule(150, { ataque.position(self.position().right(2))})
-			ataque.danho(2)
-			5.times({ i => game.schedule(150 + 150 * (i / 5), { ataque.mover(true)})})
-			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		}
+		self.animAtacarDerecha(150,5,2)
+		
 	}
 
 	method animAtacar3() {
 		animator.cambiarAnimate(self, att3)
-		if (miraDerecha) {
-			game.schedule(75, { ataque.position(self.position().right(3))})
-			ataque.danho(5)
-			10.times({ i => game.schedule(75 + 150 * (i / 10), { ataque.mover(false)})})
-			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		} else {
-			game.schedule(75, { ataque.position(self.position().right(2))})
-			ataque.danho(5)
-			10.times({ i => game.schedule(75 + 150 * (i / 10), { ataque.mover(true)})})
-			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		}
+		self.animAtacarDerecha(75,10,5)
+		
 	}
 
 	method atacando(bool) {
@@ -308,8 +298,7 @@ object player inherits Animable(animator = playerAnimator,
 		console.println(self.position())
 	}
 //
-//	method serAtacado(x) {
-//	}
+	method serAtacado(x) {	}
 
 }
 
