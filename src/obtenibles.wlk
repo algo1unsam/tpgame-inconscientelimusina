@@ -68,7 +68,8 @@ class Librito inherits Obtenibles{
 	}
 }
 
-class LibroEnCaida inherits Obtenibles{
+class LibroEnCaida inherits Obtenibles{   //libro
+
 	
 	const blanco
 	
