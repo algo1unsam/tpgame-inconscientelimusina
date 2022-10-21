@@ -41,6 +41,7 @@ object juego {
 		keyboard.left().onPressDo{ player.caminar(false)}
 		keyboard.r().onPressDo{ self.instanciarNivel()}
 		keyboard.g().onPressDo{ self.ganar()}
+		keyboard.s().onPressDo{ self.finalizar()}
 
 		
 		keyboard.q().onPressDo{ player.atacar1()}
@@ -74,6 +75,11 @@ object juego {
 		
 		}
 		
+		
+	}
+	
+		method finalizar(){
+		game.stop()
 	}
 	
 	

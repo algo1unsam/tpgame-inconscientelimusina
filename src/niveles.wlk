@@ -430,6 +430,8 @@ object nivelGanador inherits Nivel(nombre ="nivelGanador"){ //HACER UNA PANTALLA
 	override method nivelSiguiente() = nivel1
 	
 	override method cargar() {
+		
+	
 			
 	(1 .. game.width()).forEach{ n => posPlataformas.add(new Position(x = n, y = 0))}
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}

@@ -114,16 +114,19 @@ object player inherits Animable(animator = playerAnimator,
 
 	method caminar(direccion) { //(vivo and !mov) chequear 1 vez
 		miraDerecha = direccion
-		if (vivo and self.grounded() and !mov) {
+		if (vivo and !mov){
+		if (self.grounded()) {
 			animator.cambiarAnimate(self, walk)
 			mov = true
 			3.times({ i => game.schedule(400 * (i - 1) / 2, { self.mover(direccion)})}) 
 			game.schedule(400, { self.jugadorEnReposo()})
-		} else if (vivo and !mov) {
+		} else {
 			mov = true
 			animator.cambiarAnimate(self, caida)			
 			2.times({ i => game.schedule(550 * (i-1) / 2, { self.mover(direccion)})})
 			game.schedule(550, { self.mov(false)})
+		}
+		
 		}
 	}
 
