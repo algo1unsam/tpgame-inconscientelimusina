@@ -34,7 +34,7 @@ class Sprite{
 	const property cantidadDeSprites
 
 	const property nombre 
-
+	
 	const property time = 10**5
 
 	method image(animable) = "assets/" + nombre + "_" + if (animable.miraDerecha()) {"right"} else {"left"} + animable.numeroDeSprite().toString() + ".png"
@@ -42,7 +42,7 @@ class Sprite{
 		
 }
 
-
+//Player
 const salto = new Sprite(cantidadDeSprites = 1, nombre = "salto")
 const muere = new Sprite(cantidadDeSprites = 5, nombre = "muere", time = 125)
 const att1 = new Sprite(cantidadDeSprites = 7, nombre = "att1", time = 75)
@@ -52,6 +52,7 @@ const idle = new Sprite(cantidadDeSprites = 1, nombre = "idle")
 const idle_espada = new Sprite(cantidadDeSprites = 1, nombre = "idle_espada")
 const walk = new Sprite(cantidadDeSprites = 6, nombre = "walk", time = 250)
 const caida = new Sprite(cantidadDeSprites = 1, nombre = "caida")
+//Enemigos
 const slime = new Sprite(cantidadDeSprites = 10, nombre = "slime")
 const slimeRojo = new Sprite(cantidadDeSprites = 10, nombre = "slimeRojo")
 const ghost = new Sprite(cantidadDeSprites = 8, nombre = "ghost")
@@ -69,9 +70,6 @@ class Animator{
 			animable.numeroDeSprite(1)
 		}
 	}
-
-
-	
 
 	method cambiarAnimate(animable, nuevoSprite){
 		animable.sprites(nuevoSprite)

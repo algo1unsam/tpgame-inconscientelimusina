@@ -57,7 +57,7 @@ object juego {
 	
 	method iniciarPantallaInicio(){
 		self.configurarInicio()
-		game.onTick(700, "tiempo", { nivelActual.enemigos().forEach({unEnemigo => unEnemigo.mover()})})
+		game.onTick(700, "tiempo", { nivelActual.enemigos().forEach({unEnemigo => unEnemigo.mover()})}) //cambiar nombre de metodo
 		nivelActual.cargar()
 	}
 	

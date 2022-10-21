@@ -349,7 +349,7 @@ object nivel5 inherits Nivel(nombre ="nivel5"){
 		const moneda2 = new Moneda (position = game.at(5, 8 ))
 		const moneda3 = new Moneda (position = game.at(12, 22 ))
 		const moneda4 = new Moneda (position = game.at(12, 31 ))
-		const slime1 = new Slime(position = game.at(10, 14), izquierda = 2, derecha = 14)
+		const slime1 = new Slime(position = game.at(10, 14), izquierda = 2, derecha = 13)
 		
 		
 		objetivoMonedas = 4

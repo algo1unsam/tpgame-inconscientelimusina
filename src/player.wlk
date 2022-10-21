@@ -112,7 +112,7 @@ object player inherits Animable(animator = playerAnimator,
 	}
 	
 
-	method caminar(direccion) {
+	method caminar(direccion) { //(vivo and !mov) chequear 1 vez
 		miraDerecha = direccion
 		if (vivo and self.grounded() and !mov) {
 			animator.cambiarAnimate(self, walk)
@@ -128,7 +128,7 @@ object player inherits Animable(animator = playerAnimator,
 	}
 
 
-	method animAtacar1() {
+	method animAtacar1() {   //intentar abstraer
 		animator.cambiarAnimate(self, att1)
 		if (miraDerecha) {			
 			game.schedule(150, { ataque.position(self.position().right(3))})
@@ -307,9 +307,9 @@ object player inherits Animable(animator = playerAnimator,
 	method mostrarPosicion() {
 		console.println(self.position())
 	}
-
-	method serAtacado(x) {
-	}
+//
+//	method serAtacado(x) {
+//	}
 
 }
 
