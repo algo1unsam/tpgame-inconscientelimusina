@@ -131,7 +131,7 @@ object player inherits Animable(animator = playerAnimator,
 	}
 
 
-	method animAtacarDerecha(tiempoAnimacion, cantAtaques,danho){
+	method animadorAtaques(tiempoAnimacion, cantAtaques,danho){
 		if (miraDerecha){
 			game.schedule(tiempoAnimacion,{ataque.position(self.position().right(3))})
 			ataque.danho(danho)
@@ -151,18 +151,18 @@ object player inherits Animable(animator = playerAnimator,
 
 	method animAtacar1() {   
 		animator.cambiarAnimate(self, att1)
-		self.animAtacarDerecha(150,4,1)
+		self.animadorAtaques(150,4,1)
 	}
 
 	method animAtacar2() {
 		animator.cambiarAnimate(self, att2)
-		self.animAtacarDerecha(150,5,2)
+		self.animadorAtaques(150,5,2)
 		
 	}
 
 	method animAtacar3() {
 		animator.cambiarAnimate(self, att3)
-		self.animAtacarDerecha(75,10,5)
+		self.animadorAtaques(75,10,5)
 		
 	}
 
