@@ -4,41 +4,17 @@ import HUD.*
 import juego.*
 import obtenibles.*
 
-class Espada inherits Obtenibles{
-	
-	override method image() = "assets/sword11.png"
-	
+class Espada inherits Obtenibles (image = "assets/sword11.png") {
+
 	override method chocar() {
 		game.addVisual(iconoEspada)
 		juego.visuals().add(iconoEspada)
 		player.tieneEspada(true)
 		player.jugadorEnReposo()
 		super()
-
-
 	}
-	
-	method reiniciar() {
-		console.println("reiniciar espada")
-		if (!juego.visuals().contains(self)) {
-			
-			game.addVisual(self)
-			juego.visuals().add(self)
-			
-		}
-		console.println("reinicio espada")
-	}
+
 }
-
-
-
-
-
-	
-	
-
-
-
 
 object ataque {
 

@@ -16,6 +16,7 @@ import enemigos.*
 class Nivel {
 
 	var property posPlataformas = []
+	var property posSpikes = []
 	var property objetos = []
 	var property animables = []
 	var property enemigos = []
@@ -165,15 +166,10 @@ object nivel2 inherits Nivel(nombre ="nivel2") {
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 	
 	self.mostrarNombreNivel()
-	
+		}
 	}
-	
-
-}
 
 object nivel3 inherits Nivel(nombre ="nivel3"){
-	
-	var property posPlataformas2 = []
 	
 	const property rng = [ false ]
 	
@@ -191,15 +187,11 @@ object nivel3 inherits Nivel(nombre ="nivel3"){
 												[(0..45)]
 												])
 
-
 		posPlataformas = plataformasNivel.posiciones()
 			
-		
-		
-		(18 .. 18).forEach{ n => posPlataformas2.add(new Position(x = n, y = 31))}
+		(18 .. 18).forEach{ n => posSpikes.add(new Position(x = n, y = 31))}
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
-		posPlataformas2.forEach{ p => self.dibujar(new Spikes (position = p))}
-		
+		posSpikes.forEach{ p => self.dibujar(new Spikes (position = p))}
 		
 		const tp1 = new Teleporter(position = game.at(0, 1), sprite = "assets/tp1", x = 0,y = 8)
 		const tp2 = new Teleporter(position = game.at(5,1), sprite = "assets/tp2", x = 33, y = 1)
@@ -213,27 +205,22 @@ object nivel3 inherits Nivel(nombre ="nivel3"){
 		const r4 = new Receiver(teleporter = tp4)
 		const r5 = new Receiver(teleporter = tp5)
 		const r6 = new Receiver(teleporter = tp6)
-		
 		const moneda1 = new Moneda (position = game.at(36, 1 ))
 		const moneda2 = new Moneda (position = game.at(5, 8 ))
 		const moneda3 = new Moneda (position = game.at(12, 22 ))
 		const moneda4 = new Moneda (position = game.at(12, 31 ))
 		const slime1 = new Slime(position = game.at(10, 14), izquierda = 2, derecha = 13)
 		
-		
 		objetivoMonedas = 4
 		dropCoin = rng.copy()
 		objetos = [vida, reloj, ataque, contadorMonedas, puerta, player, monedaHUD,tp1,r1,tp2,r2,tp3,r3,tp4,r4,tp5,tp6,r5,r6,moneda1,moneda2,moneda3,moneda4,slime1 ]
 		animables = [ player, reloj, iconoEspada,slime1]
 		enemigos = [slime1]
-		
-		
+				
 		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
-
 		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 		
 		self.mostrarNombreNivel()
-	
 	}
 	}
 
@@ -264,20 +251,20 @@ object nivel4 inherits Nivel(nombre ="nivel4"){
 
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma(position = p))}
 		
-		const espada2 = new Espada(position = game.at(juego.tamanho() * (41 / 50), (4 / 5) * juego.tamanho() + 1))
-		const slime1 = new Slime(position = game.at(15, (2 / 5) * juego.tamanho() + 1), izquierda = 9, derecha = 22)
-		const slime2 = new Slime(position = game.at(30, (2 / 5) * juego.tamanho() + 1), izquierda = 26, derecha = 33)
-		const slime3 = new Slime(position = game.at(30, (3 / 5) * juego.tamanho() + 1), izquierda = 25, derecha = 35)
-		const moneda1 = new Moneda(position = game.at(juego.tamanho() * (7 / 10), (3 / 5) * juego.tamanho() + 1))
-		const moneda2 = new Moneda(position = game.at(juego.tamanho() * (1 / 10), (7 / 10) * juego.tamanho() + 1))
-		const moneda3 = new Moneda(position = game.at(juego.tamanho() * (3 / 10), (2 / 5) * juego.tamanho() + 1))
-		const moneda4 = new Moneda(position = game.at(juego.tamanho() * (6 / 10), (2 / 5) * juego.tamanho() + 1))
-		const moneda5 = new Moneda(position = game.at(juego.tamanho() * (36 / 50), (1 / 5) * juego.tamanho() + 1))
+		const espada2 = new Espada(position = game.at(33, 33))
+		const slime1 = new Slime(position = game.at(15, 17), izquierda = 9, derecha = 22)
+		const slime2 = new Slime(position = game.at(30, 17), izquierda = 26, derecha = 33)
+		const slime3 = new Slime(position = game.at(30, 25), izquierda = 25, derecha = 35)
+		const moneda1 = new Moneda(position = game.at(28, 25))
+		const moneda2 = new Moneda(position = game.at(4, 29))
+		const moneda3 = new Moneda(position = game.at(12, 17))
+		const moneda4 = new Moneda(position = game.at(24, 17))
+		const moneda5 = new Moneda(position = game.at(29, 9))
 		
-		const tp1 = new Teleporter(position = game.at(juego.tamanho() * (2 / 15) + 2, 1), sprite = "assets/tp1", x = juego.tamanho() - 4, y = (3 / 5) * juego.tamanho() + 1)
-		const tp2 = new Teleporter(position = game.at(juego.tamanho() - 6, (2 / 5) * juego.tamanho() + 1), sprite = "assets/tp2", x = juego.tamanho() * (2 / 10), y = (1 / 5) * juego.tamanho() + 1)
-		const tp3 = new Teleporter(position = game.at(juego.tamanho() * (1 / 10) + 2, (2 / 5) * juego.tamanho() + 1), sprite = "assets/tp3", x = 1, y = (7 / 10) * juego.tamanho() + 1)
-		const tp4 = new Teleporter(position = game.at(juego.tamanho() - 5, 1), sprite = "assets/tp4", x = juego.tamanho() - 4, y = (4 / 5) * juego.tamanho() + 1)
+		const tp1 = new Teleporter(position = game.at(7, 1), sprite = "assets/tp1", x = 36, y = 25)
+		const tp2 = new Teleporter(position = game.at(34, 17), sprite = "assets/tp2", x = 8, y = 9)
+		const tp3 = new Teleporter(position = game.at(6, 17), sprite = "assets/tp3", x = 1, y = 29)
+		const tp4 = new Teleporter(position = game.at(35, 1), sprite = "assets/tp4", x = 36, y = 33)
 		const r1 = new Receiver(teleporter = tp1)
 		const r2 = new Receiver(teleporter = tp2)
 		const r3 = new Receiver(teleporter = tp3)
@@ -288,7 +275,6 @@ object nivel4 inherits Nivel(nombre ="nivel4"){
 		objetos = [ vida, reloj, monedaHUD, contadorMonedas, ataque, espada2, slime1, slime2, slime3, moneda1, moneda2, moneda3, moneda4, moneda5, tp1, r1, tp2, r2, tp3, r3, tp4, r4, puerta, player ]
 		animables = [ player, reloj, slime1, slime2, slime3, iconoEspada ]
 		enemigos = [ slime1, slime2, slime3 ]
-
 		
 		dropCoin = rng.copy()
 
@@ -296,16 +282,9 @@ object nivel4 inherits Nivel(nombre ="nivel4"){
 		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 		self.mostrarNombreNivel()
 	}
-
-
 }
 
 object nivel5 inherits Nivel(nombre ="nivel5"){
-	
-
-	var property posPlataformas2 = []
-	
-	
 	
 	const property rng = [ true, true ]
 	
@@ -327,9 +306,9 @@ object nivel5 inherits Nivel(nombre ="nivel5"){
 		posPlataformas = plataformasNivel.posiciones()
 
 	
-		(7.. 26).forEach{ n => posPlataformas2.add(new Position(x = n, y = 0))}
+		(7.. 26).forEach{ n => posSpikes.add(new Position(x = n, y = 0))}
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
-		posPlataformas2.forEach{ p => self.dibujar(new Spikes (position = p))}
+		posSpikes.forEach{ p => self.dibujar(new Spikes (position = p))}
 		
 		
 		
@@ -370,7 +349,7 @@ object nivel5 inherits Nivel(nombre ="nivel5"){
 
 object nivelFinal inherits Nivel(nombre ="nivelFinal", esNivelFinal = true) {
 	
-	var property posPlataformas2 = []
+
 	
 	const property rng = [ true ]
 
@@ -386,9 +365,9 @@ object nivelFinal inherits Nivel(nombre ="nivelFinal", esNivelFinal = true) {
 	posPlataformas = plataformasNivel.posiciones()
 			
 
-	(-1 .. game.width() +1).forEach{ n => posPlataformas2.add(new Position(x = n, y = 26))}
+	(-1 .. game.width() +1).forEach{ n => posSpikes.add(new Position(x = n, y = 26))}
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
-	posPlataformas2.forEach{ p => self.dibujar(new SpikesInvertidas (position = p))}
+	posSpikes.forEach{ p => self.dibujar(new SpikesInvertidas (position = p))}
 
 
 	const boss = new Boss(position = game.at(15,25))
