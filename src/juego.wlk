@@ -122,7 +122,6 @@ object juego {
 		player_hit.cargar()
 		if (nivelActual.esNivelFinal()){
 			player_hit.cargarHitBoxExtra()
-			reloj.cuentaRegresiva(-100)
 		}
 		self.colisiones()   
 	}

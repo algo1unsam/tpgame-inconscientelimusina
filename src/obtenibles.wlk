@@ -1,4 +1,4 @@
-
+import HUD.*
 import wollok.game.*
 import juego.*
 import player.*
@@ -97,5 +97,20 @@ class LibroEnCaida inherits ObtenibleEnCaida(image = "assets/libritoEnCaida.png"
 	
 	
 }
+
+
+
+
+class RelojEnCaida inherits ObtenibleEnCaida(image = "assets/cronometro.png"){  
+
+	
+	override method chocar() {
+		reloj.cuentaRegresiva(-30)
+		self.remover()
+	}
+	
+	
+}
+
 
 
