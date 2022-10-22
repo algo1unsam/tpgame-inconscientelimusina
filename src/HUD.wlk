@@ -2,11 +2,24 @@ import juego.*
 import player.*
 import wollok.game.*
 
-object backgroundInicio{
-	
+class Background{
+
 	method position() = game.at(0,0)
 	
-	method image() = "assets/Inicio.png"
+	method image()
+
+}
+
+object backgroundInicio inherits Background{
+	
+	override method image() = "assets/Inicio.png"
+	
+}
+
+object backgroundFinal inherits Background {
+	
+	override method image() = "assets/ganaste.png"
+	
 	
 }
 
