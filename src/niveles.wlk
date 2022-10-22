@@ -10,9 +10,6 @@ import playerHit.*
 import obtenibles.*
 import enemigos.*
 
-
-
-
 class Nivel {
 
 	var property posPlataformas = []
@@ -42,10 +39,6 @@ class Nivel {
 		game.addVisual(nombreNivel)
 		game.schedule(2000, {game.removeVisual(nombreNivel)})
 	}
-	
-
-	
-
 }
 
 object pantallaInicio inherits Nivel(nombre = "inicio"){
@@ -56,15 +49,12 @@ object pantallaInicio inherits Nivel(nombre = "inicio"){
 
 	override method cargar() {
 
-
 	objetos = [ backgroundInicio, espacioParaComenzar ]
 	animables = [  ]
 	enemigos = [ espacioParaComenzar ]
 		
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
-	
-
 	}
 	
 	method mostrarInstrucciones(){
@@ -77,10 +67,6 @@ object pantallaInicio inherits Nivel(nombre = "inicio"){
 		enemigos = []
 		objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
 		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
-	
-	
-	
-		
 }}
 
 
@@ -115,15 +101,8 @@ object nivel1 inherits Nivel(nombre = "nivel1") {
 	
 	objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 	self.mostrarNombreNivel()
-
-
 }
-
-
 }
-
-
-
 
 object nivel2 inherits Nivel(nombre ="nivel2") {
 	
@@ -151,8 +130,6 @@ object nivel2 inherits Nivel(nombre ="nivel2") {
 	const moneda1 = new Moneda (position = game.at(4,  12))
 	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
 	const libro1 = new Librito(position = game.at(30,  12), blancos = [ghost1])
-	
-	
 	
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
@@ -224,8 +201,6 @@ object nivel3 inherits Nivel(nombre ="nivel3"){
 	}
 	}
 
-
-
 object nivel4 inherits Nivel(nombre ="nivel4"){
 	
 	const property rng = [ true, false, false ]
@@ -244,10 +219,8 @@ object nivel4 inherits Nivel(nombre ="nivel4"){
 														[(0..8)],
 														[(32..45)]	])
 
-
 		posPlataformas = plataformasNivel.posiciones()
 		
-
 
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma(position = p))}
 		
@@ -304,14 +277,9 @@ object nivel5 inherits Nivel(nombre ="nivel5"){
 
 
 		posPlataformas = plataformasNivel.posiciones()
-
-	
 		(7.. 26).forEach{ n => posSpikes.add(new Position(x = n, y = 0))}
 		posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 		posSpikes.forEach{ p => self.dibujar(new Spikes (position = p))}
-		
-		
-		
 
 		const slime1 = new Slime(position = game.at(30, 26), izquierda = 29, derecha = 34)
 		const slime2 = new Slime(position = game.at(20, 13), izquierda = 20, derecha = 28)
@@ -337,46 +305,28 @@ object nivel5 inherits Nivel(nombre ="nivel5"){
 		objetos.forEach({ unObjeto => juego.visuals().add(unObjeto)})
 		
 		self.mostrarNombreNivel()
-		
-	}
-	
-	
-}
-
-
-
-
+			}
+		}
 
 object nivelFinal inherits Nivel(nombre ="nivelFinal", esNivelFinal = true) {
-	
-
-	
 	const property rng = [ true ]
 
 	override method nivelSiguiente() = nivelGanador
 
 	override method cargar() {
-			
-	
-	
 	const plataformasNivel = new CreadorDePlataformas (posicionesY = [0],
-														posicionesX = [[(1..38)]])
-
-	posPlataformas = plataformasNivel.posiciones()
-			
+													posicionesX = [[(1..38)]])
+	posPlataformas = plataformasNivel.posiciones()	
 
 	(-1 .. game.width() +1).forEach{ n => posSpikes.add(new Position(x = n, y = 26))}
 	posPlataformas.forEach{ p => self.dibujar(new Plataforma (position = p))}
 	posSpikes.forEach{ p => self.dibujar(new SpikesInvertidas (position = p))}
-
 
 	const boss = new Boss(position = game.at(15,25))
 	const vidaBoss =new Vida(imagen = "bossHearts",
 						   position = game.at(29, 36),
 						   objetivo = boss)
 
-	
-	
 	objetivoMonedas = 1
 	dropCoin = rng.copy()
 	objetos = [ vida, vidaBoss, reloj, ataque, contadorMonedas, puerta, player, monedaHUD, boss ]
