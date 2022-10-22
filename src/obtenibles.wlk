@@ -7,7 +7,7 @@ class Obtenibles{
 	
 	var property position
 	
-	method image()
+	var property image
 	
 	method chocar(){
 		game.removeVisual(self)
@@ -19,9 +19,8 @@ class Obtenibles{
 
 }
 
-class HealPack inherits Obtenibles {
+class HealPack inherits Obtenibles(image = "assets/heal.png") {
 
-	override method image() = "assets/heal.png"
 
 	override method chocar() {
 		player.subirSalud(1)
@@ -31,9 +30,7 @@ class HealPack inherits Obtenibles {
 }
 
 
-class Moneda inherits Obtenibles{
-
-	override method image() = "assets/coin.png"
+class Moneda inherits Obtenibles (image = "assets/coin.png"){
 
 	override method chocar() {
 		juego.obtenerMoneda()
@@ -49,11 +46,10 @@ class Moneda inherits Obtenibles{
 
 }
 
-class Librito inherits Obtenibles{
+class Librito inherits Obtenibles (image = "assets/librito.png"){
 	
 	const blancos
 	
-	override method image() = "assets/librito.png"
 
 	override method chocar() {
 		blancos.forEach{unBlanco => unBlanco.morir()}
@@ -68,18 +64,9 @@ class Librito inherits Obtenibles{
 	}
 }
 
-class LibroEnCaida inherits Obtenibles{   //libro
+class ObtenibleEnCaida inherits Obtenibles{
+	
 
-	
-	const blanco
-	
-	
-	override method image() = "assets/libritoEnCaida.png"
-	
-	override method chocar() {
-		blanco.serAtacado(1)
-		self.remover()
-	}
 	
 	method mover(){
 
@@ -95,10 +82,18 @@ class LibroEnCaida inherits Obtenibles{   //libro
 		juego.nivelActual().objetos().remove(self)
 		juego.nivelActual().animables().remove(self)
 	}
+}
 	
-	method iniciar() {}
+
+class LibroEnCaida inherits ObtenibleEnCaida(image = "assets/libritoEnCaida.png"){  
+
 	
-	method detener(){}
+	const blanco
+	
+	override method chocar() {
+		blanco.serAtacado(1)
+		self.remover()
+	}
 	
 	
 }

@@ -1,6 +1,7 @@
 import juego.*
 import player.*
 import wollok.game.*
+import animator.*
 
 class Background{
 
@@ -31,24 +32,13 @@ object instrucciones{
 	
 }
 
-object espacioParaComenzar{
-	
+object espacioParaComenzar inherits Animable(position = game.at(0,0),
+											animator = enemyAnimator,
+											spriteInicial = apretaEspacio
+											){
 
-	var image = 0
-	
-	var sprites = ["assets/espacioParaComenzar1.png", "assets/espacioParaComenzar2.png"]
-	
-	method position() = game.at(0,0)
-	
-	method image() = sprites.get(image)
-	
 	method mover(){
-		if (image < sprites.size() - 1) {
-			image += 1
-		} else {
-			image = 0
-		}
-	}
+		animator.animate(self)}
 }
 
 
@@ -70,22 +60,21 @@ class NombreNivel{
 
 class Vida{
 	
-	const imagenes
+	const imagen
 	
 	const objetivo
 	
 	const property position
 	
-	method image() {
-		return imagenes.get(objetivo.salud())
-	}
+	method image() = "assets/" + imagen + objetivo.salud() + ".png"
+
+
 	
 
 }
 
 
-object vida inherits Vida( imagenes = [ "assets/hearts0.png", "assets/hearts1.png", "assets/hearts2.png", "assets/hearts3.png", "assets/hearts4.png", 
-										"assets/hearts5.png", "assets/hearts6.png" ],
+object vida inherits Vida( imagen = "hearts",
 						   position = game.at(1, juego.tamanho() * (9 / 10) + 1),
 						   objetivo = player){}
 	

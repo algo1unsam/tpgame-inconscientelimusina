@@ -5,13 +5,11 @@ import player.*
 import obtenibles.*
 import animator.*
 
-class Enemigo inherits Animable(miraDerecha = false,
-							numeroDeSprite = 1
-								){
+class Enemigo inherits Animable{
 
 	
 
-	var direccionIzq = true
+	var vaHaciaLaIzquierda = true
 	const izquierda
 	const derecha
 	var vivo = true
@@ -41,17 +39,10 @@ class Enemigo inherits Animable(miraDerecha = false,
 
 	method mover() {
 		animator.animate(self)
-		if (direccionIzq) {
-			position = position.left(1)
-			if (position.x() <= izquierda) {
-				direccionIzq = !direccionIzq
-			}
-		} else {
-			position = position.right(1)
-			if (position.x() >= derecha) {
-				direccionIzq = !direccionIzq
-			}
-		}
+		const direccion = if (vaHaciaLaIzquierda) 1 else -1
+		position = position.left(direccion)
+		if (!position.x().between(izquierda, derecha)) {
+				vaHaciaLaIzquierda = !vaHaciaLaIzquierda}
 	}
 
 	method serAtacado(x) {
@@ -134,7 +125,7 @@ class Slime inherits Enemigo(danho = 2,
 			self.morir()
 		}
 		else{
-			direccionIzq = !direccionIzq
+			vaHaciaLaIzquierda = !vaHaciaLaIzquierda
 			
 			game.schedule(450, { self.iniciar() })
 		}
@@ -162,56 +153,41 @@ class Slime inherits Enemigo(danho = 2,
 
 //DISCUTIR SI BOSS DEBERIA HEREDAR O NO DE ENEMIGO, XQ SU LOGICA ES UN TANTO DISTINTA
 
-class Boss
+class Boss inherits Animable(animator = bossAnimator,
+							spriteInicial = boss)
+
 							 {
 								
 							var property salud = 10
-							var property position
-							var property numeroDeSprite = 1
-							var property sprites = boss
 							var spikeProb = 20
-							const animator = bossAnimator
-							var property miraDerecha = false
-							
-							method image() = animator.darImagen(self)
 
-													
-							method proximoSprite(){
-									numeroDeSprite += 1
-										}
-													
-							
-							
+					
 							method serAtacado(x){
 									animator.cambiarAnimate(self, bossDanho)
 									game.schedule(1000, {animator.cambiarAnimate(self, boss)})
 									salud = (salud - x).max(0)
 									spikeProb += 5
 									if (salud == 0){
-										game.say(self, "auch che, duele una banda loco")
+										game.say(self, "Duele una banda loco")
 										self.dropear()
 									}
 								}
 							
 
-														
+							method crea(unObjeto){
+								game.addVisual(unObjeto)
+								juego.visuals().add(unObjeto)
+								juego.enemigos().add(unObjeto)
+							}
 														
 							method crearSpike(){
 								const unSpike = new SpikeEnCaida(position = game.at((5..40).anyOne(), 24))
-								game.addVisual(unSpike)
-								juego.visuals().add(unSpike)
-								juego.nivelActual().objetos().add(unSpike)
-								juego.nivelActual().animables().add(unSpike)
-								juego.enemigos().add(unSpike)
+								self.crea(unSpike)
 							}
 							
 							method crearLibro(){
 								const unLibro = new LibroEnCaida(blanco = self, position = game.at((5..40).anyOne(), 33))
-								game.addVisual(unLibro)
-								juego.visuals().add(unLibro)
-								juego.nivelActual().objetos().add(unLibro)
-								juego.nivelActual().animables().add(unLibro)
-								juego.enemigos().add(unLibro)
+								self.crea(unLibro)
 							}
 							
 							method mover(){
@@ -227,11 +203,7 @@ class Boss
 									self.crearLibro()
 
 									}
-
-										
-									
-								}
-								
+							}				
 								method dropear(){
 									const dropearMoneda = juego.nivelActual().dropCoin().anyOne()
 									const dropeable = new Moneda(position = game.at(20,  1))
@@ -241,43 +213,22 @@ class Boss
 								}
 							}
 
-class SpikeEnCaida {
+class SpikeEnCaida inherits ObtenibleEnCaida(image = "assets/spike A4.png"){
 	
-	var property position
-	
-	method image() = "assets/spike A4.png"
-	
-	method iniciar() {}
-	
-	method mover(){
-		position = position.down(1)
-		if (position.y() == -3){
-			self.remover()
-		}
-		}
-		
-	method remover(){
-		game.removeVisual(self)
-		juego.enemigos().remove(self)
-		juego.visuals().remove(self)
-		juego.nivelActual().objetos().remove(self)
-		juego.nivelActual().animables().remove(self)
-	}
-	
-	method chocar() {
+
+
+	override method chocar() {
 		if (player.estaVivo()) { player.bajarSalud(1)
 			if (player.salud() > 0){
 				player.transportar(player.posicionInicial())
-				game.say(player, ["Deberia agarrar los libros", "Cuantos pinches loco", "Esta feo el bicho ese"].anyOne())
+				game.say(player, ["Quiza debería agarrar los libros", "Cuantos pinches che", "Esta feo el bicho ese"].anyOne())
 			}
 		}}
 	
 	method serAtacado(x) {
 		}
 		
-	method detener(){}
-	
-	
+
 	
 }
 

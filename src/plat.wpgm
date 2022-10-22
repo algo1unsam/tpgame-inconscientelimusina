@@ -13,8 +13,6 @@ import enemigos.*
 import animator.*
 
 
-
-
 program plat {
 
 	juego.iniciarPantallaInicio()

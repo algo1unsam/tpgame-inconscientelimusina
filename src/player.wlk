@@ -8,7 +8,6 @@ import animator.*
 object player inherits Animable(animator = playerAnimator,
 								miraDerecha = true,
 								spriteInicial = idle,
-								numeroDeSprite = 1,
 								position = game.at(0,2))
 				{
 
@@ -53,9 +52,7 @@ object player inherits Animable(animator = playerAnimator,
 			
 			saltando = true
 			animator.cambiarAnimate(self, salto)
-			self.subir()
-			game.schedule(150, { self.subir()})
-			game.schedule(300, { self.subir()})
+			3.times(i => game.schedule((i-1)*150, {self.moverEnY(1)}))
 			game.schedule(350, { self.saltando(false)})
 		}
 	}
@@ -71,9 +68,9 @@ object player inherits Animable(animator = playerAnimator,
 		}
 	}
 
-	method subir() {
-		position = position.up(1)
-		hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().up(1))})
+	method moverEnY(cantidad) {
+		position = position.up(cantidad)
+		hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().up(cantidad))})
 	}
 	
 	
@@ -81,14 +78,13 @@ object player inherits Animable(animator = playerAnimator,
 
 	method caer() {
 		if (!self.grounded() and !saltando) {
-			if (!cayendo) {
-				animator.cambiarAnimate(self, caida)
-			}
+			animator.cambiarAnimate(self, caida)
+			
+
+			cayendo = true
+			self.moverEnY(-1)
 			if (self.position().y() == -4) {
 					self.caerAlPozo()}
-			cayendo = true
-			position = position.down(1)
-			hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().down(1))})
 		}
 		else if (self.grounded() and (sprites == caida)) {
 			self.aterrizar()
@@ -102,12 +98,13 @@ object player inherits Animable(animator = playerAnimator,
 
 	method jugadorEnReposo() {
 		mov = false
+		if (self.grounded()){  //si no esta en el piso en ese momento su animacion deberia ser salto o caida, no idle
 		if (!atacando) {
 			if (tieneEspada) {
 				animator.cambiarAnimate(self, idle_espada)
 			} else {
 				animator.cambiarAnimate(self, idle)
-			}
+			}}
 		}
 	}
 	

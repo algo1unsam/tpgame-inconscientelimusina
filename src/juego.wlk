@@ -105,7 +105,7 @@ object juego {
 	}
 	
 	method terminar(){
-		nivelAnterior.animables().forEach({ unObjeto => self.detener(unObjeto)})
+		juego.tickEvents().clear()
 		game.clear()
 	}
 	
@@ -116,7 +116,7 @@ object juego {
 		monedas = 0
 				
 		nivelActual.cargar()
-		
+		self.nivelActual().animables().forEach({ unObjeto => unObjeto.iniciar()})
 	 	self.agregarTiempo()
 		
 		player_hit.cargar()
@@ -128,8 +128,6 @@ object juego {
 	}
 	
 	method agregarTiempo(){
-		self.nivelActual().animables().forEach({ unObjeto => unObjeto.iniciar()})
-		
 		game.onTick(1000, "tiempo", { self.pasarTiempo()})
 		tickEvents.add("tiempo")
 	}

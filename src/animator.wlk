@@ -16,8 +16,8 @@ class Animable{
 	
 	var property position
 	const animator
-	var property miraDerecha
-	var property numeroDeSprite
+	var property miraDerecha = false
+	var property numeroDeSprite = 1
 	var spriteInicial
 	var property sprites = spriteInicial
 	
@@ -50,14 +50,17 @@ const att2 = new Sprite(cantidadDeSprites = 7, nombre = "att2", time = 75)
 const att3 = new Sprite(cantidadDeSprites = 7, nombre = "att3", time = 75)
 const idle = new Sprite(cantidadDeSprites = 1, nombre = "idle")
 const idle_espada = new Sprite(cantidadDeSprites = 1, nombre = "idle_espada")
-const walk = new Sprite(cantidadDeSprites = 6, nombre = "walk", time = 250)
+const walk = new Sprite(cantidadDeSprites = 6, nombre = "walk", time = 150)
 const caida = new Sprite(cantidadDeSprites = 1, nombre = "caida")
 //Enemigos
 const slime = new Sprite(cantidadDeSprites = 10, nombre = "slime")
 const slimeRojo = new Sprite(cantidadDeSprites = 10, nombre = "slimeRojo")
 const ghost = new Sprite(cantidadDeSprites = 8, nombre = "ghost")
 const boss = new Sprite(cantidadDeSprites = 9, nombre = "boss")
-const bossDanho =new Sprite(cantidadDeSprites = 1, nombre = "bossDanho")
+const bossDanho = new Sprite(cantidadDeSprites = 1, nombre = "bossDanho")
+//Extra
+const apretaEspacio = new Sprite(cantidadDeSprites = 2, nombre = "apretaEspacio")
+
 
 class Animator{
 
