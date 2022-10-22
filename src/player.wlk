@@ -11,11 +11,8 @@ object player inherits Animable(animator = playerAnimator,
 								position = game.at(0,2))
 				{
 
-
-
 	var vivo = true
 	var property salud = 6
-
 	var property mov = false
 	var property saltando = false
 	var property atacando = false
@@ -27,9 +24,7 @@ object player inherits Animable(animator = playerAnimator,
 	var property vulnerable = true
 	const property hitbox = []
 	
-
-
-
+	
 	method todaLaVida() {
 		self.salud(6)
 	}
@@ -52,7 +47,7 @@ object player inherits Animable(animator = playerAnimator,
 			
 			saltando = true
 			animator.cambiarAnimate(self, salto)
-			3.times(i => game.schedule((i-1)*150, {self.moverEnY(1)}))
+			3.times({i => game.schedule((i-1)*150, {self.moverEnY(1)})})
 			game.schedule(350, { self.saltando(false)})
 		}
 	}
@@ -73,9 +68,6 @@ object player inherits Animable(animator = playerAnimator,
 		hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().up(cantidad))})
 	}
 	
-	
-
-
 	method caer() {
 		if (!self.grounded() and !saltando) {
 			animator.cambiarAnimate(self, caida)
@@ -108,7 +100,6 @@ object player inherits Animable(animator = playerAnimator,
 		}
 	}
 	
-
 	method caminar(direccion) { //(vivo and !mov) chequear 1 vez
 		miraDerecha = direccion
 		if (vivo and !mov){
@@ -220,7 +211,6 @@ object player inherits Animable(animator = playerAnimator,
 		}
 	}
 
-
 	method transportar(pos) {
 		const diffX = pos.x() - position.x()
 		const diffY = pos.y() - position.y()
@@ -229,26 +219,18 @@ object player inherits Animable(animator = playerAnimator,
 	}
 
 	method mover(direccion) {
-		if (direccion) { 
-			position = position.right(1)
-			hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().right(1))})
-		} else {
-			position = position.left(1)
-			hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().left(1))})
-		}
+		const signo = if (direccion) 1 else -1
+		position = position.right(signo)
+		hitbox.forEach({ unHitbox => unHitbox.position(unHitbox.position().right(signo))})
+
 	}
 
-
-
 	method detener() {
-
 		if (juego.tickEvents().contains("anima")) {
 
 			game.removeTickEvent("anima")
 			juego.tickEvents().remove("anima")
 		}
-
-
 	}
 
 	method morir() {
@@ -267,7 +249,6 @@ object player inherits Animable(animator = playerAnimator,
 		
 	}
 	
-
 	method quitarVida(){
 	vivo = false}
 
@@ -281,15 +262,7 @@ object player inherits Animable(animator = playerAnimator,
 
 		if (!juego.tickEvents().contains("anima")){
 		animator.aplicarAnimate(self, sprites)}
-		
-		
 	}
-	
-
-		
-		
-	
-
 	method estaVivo() {
 		return vivo
 	}
@@ -297,7 +270,7 @@ object player inherits Animable(animator = playerAnimator,
 	method mostrarPosicion() {
 		console.println(self.position())
 	}
-//
+
 	method serAtacado(x) {	}
 
 }
