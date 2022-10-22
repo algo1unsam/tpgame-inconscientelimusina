@@ -315,7 +315,7 @@ object nivelFinal inherits Nivel(nombre ="nivelFinal", esNivelFinal = true) {
 
 	override method cargar() {
 	const plataformasNivel = new CreadorDePlataformas (posicionesY = [0],
-													posicionesX = [[(1..38)]])
+													posicionesX = [[(2..37)]])
 	posPlataformas = plataformasNivel.posiciones()	
 
 	(-1 .. game.width() +1).forEach{ n => posSpikes.add(new Position(x = n, y = 26))}

@@ -7,10 +7,14 @@ class Obtenibles {
 
 	var property position
 	var property image
-
-	method chocar() {
+	
+	method remover(){
 		game.removeVisual(self)
 		juego.visuals().remove(self)
+	}
+	
+	method chocar() {
+		self.remover()
 	}
 
 	method serAtacado(x) {
@@ -70,12 +74,9 @@ class ObtenibleEnCaida inherits Obtenibles {
 		}
 	}
 
-	method remover() {
-		game.removeVisual(self)
+	override method remover() {
+		super()
 		juego.enemigos().remove(self)
-		juego.visuals().remove(self)
-		juego.nivelActual().objetos().remove(self)
-		juego.nivelActual().animables().remove(self)
 	}
 
 }
@@ -94,9 +95,17 @@ class LibroEnCaida inherits ObtenibleEnCaida(image = "assets/libritoEnCaida.png"
 class RelojEnCaida inherits ObtenibleEnCaida(image = "assets/cronometro.png") {
 
 	override method chocar() {
-		reloj.cuentaRegresiva(-30)
+		reloj.cuentaRegresiva(-20)
 		self.remover()
 	}
 
 }
 
+class HealPackEnCaida inherits ObtenibleEnCaida(image = "assets/heal.png") {
+
+	override method chocar() {
+		player.subirSalud(1)
+		self.remover()
+	}
+
+}

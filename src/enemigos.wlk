@@ -124,13 +124,13 @@ class Slime inherits Enemigo(danho = 2, mensaje = [ "Más cuidado che", "Otra ve
 class Boss inherits Animable(animator = bossAnimator, spriteInicial = boss) {
 
 	var property salud = 10
-	var spikeProb = 20
+	var spikeProb = 18
 
 	method serAtacado(x) {
 		animator.cambiarAnimate(self, bossDanho)
 		game.schedule(1000, { animator.cambiarAnimate(self, boss)})
 		salud = (salud - x).max(0)
-		spikeProb += 5
+		spikeProb += 4
 		if (salud == 0) {
 			game.say(self, "Duele una banda loco")
 			self.dropear()
@@ -144,31 +144,39 @@ class Boss inherits Animable(animator = bossAnimator, spriteInicial = boss) {
 	}
 
 	method crearSpike() {
-		const unSpike = new SpikeEnCaida(position = game.at((5 .. 40).anyOne(), 24))
+		const unSpike = new SpikeEnCaida(position = game.at((5 .. 36).anyOne(), 24))
 		self.crea(unSpike)
 	}
 
 	method crearLibro() {
-		const unLibro = new LibroEnCaida(blanco = self, position = game.at((5 .. 40).anyOne(), 33))
+		const unLibro = new LibroEnCaida(blanco = self, position = game.at((7 .. 34).anyOne(), 33))
 		self.crea(unLibro)
 	}
 	
 	method crearReloj(){
-		const unReloj = new RelojEnCaida(position = game.at((5 .. 40).anyOne(), 33))
+		const unReloj = new RelojEnCaida(position = game.at((7 .. 34).anyOne(), 33))
 		self.crea(unReloj)
+	}
+	
+	method crearVida(){
+		const unaVida = new HealPackEnCaida(position = game.at((7 .. 34).anyOne(), 33))
+		self.crea(unaVida)
 	}
 
 	method mover() {
 		animator.animate(self)
-		const rng = (1 .. 100).anyOne()
+		const rng = (1 .. 50).anyOne()
 		if (rng <= spikeProb) {
-			2.times({ i => self.crearSpike()})
+			self.crearSpike()
 		}  
-		if (rng > 93) {
+		if (rng > 47) {
 			self.crearLibro()
 		}
-		if (rng < 7){
+		else if (rng < 3){
 			self.crearReloj()
+		}
+		else if (rng.between(25,26)){
+			self.crearVida()
 		}
 		
 	}
@@ -187,15 +195,12 @@ class SpikeEnCaida inherits ObtenibleEnCaida(image = "assets/spike A4.png") {
 
 	override method chocar() {
 		if (player.estaVivo()) {
-			player.bajarSalud(1)
+			player.bajarSalud(2)
 			if (player.salud() > 0) {
 				player.transportar(player.posicionInicial())
 				game.say(player, [ "Quiza debería agarrar los libros", "Cuantos pinches che", "Esta feo el bicho ese" ].anyOne())
 			}
 		}
-	}
-
-	method serAtacado(x) {
 	}
 
 }
