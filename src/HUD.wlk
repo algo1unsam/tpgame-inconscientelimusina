@@ -87,7 +87,7 @@ object contadorMonedas {
 
 object reloj {
 
-	var tiempo = 100
+	var property tiempo = 100
 
 	method cuentaRegresiva(segundos) {
 		tiempo -= segundos

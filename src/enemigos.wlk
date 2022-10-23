@@ -67,7 +67,7 @@ class Ghost inherits Enemigo(danho = 2, mensaje = [ "Es la parca", "Que es esa c
 class Slime inherits Enemigo(danho = 2, mensaje = [ "Más cuidado che", "Otra vez al comienzo..", "ouch...", "aaAaH!!!" ], spriteInicial = slime, animator = enemyAnimator) {
 
 	var fueAtacado = false
-	var vida = 5
+	var property vida = 5
 	var transpasable = false
 
 	override method chocar() {
