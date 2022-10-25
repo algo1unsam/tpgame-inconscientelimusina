@@ -121,16 +121,16 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 
 	method ataqueDePlayer(numero) = ataquesDePlayer.get(numero - 1)
 
-	method animadorAtaques(tiempoAnimacion, cantAtaques, danho) {
+	method animadorAtaques(tiempoAnimacion, alcanceAtaque, danho) {
 		if (miraDerecha) {
 			game.schedule(tiempoAnimacion, { ataque.position(self.position().right(3))})
 			ataque.danho(danho)
-			cantAtaques.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(false)})})
+			alcanceAtaque.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(false)})})
 			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
 		} else {
 			game.schedule(tiempoAnimacion, { ataque.position(self.position().right(2))})
 			ataque.danho(danho)
-			cantAtaques.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(true)})})
+			alcanceAtaque.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(true)})})
 			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
 		}
 	}
@@ -138,7 +138,7 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 	method animAtacar(numeroDeAtaque) {
 		animator.cambiarAnimate(self, self.ataqueDePlayer(numeroDeAtaque))
 		self.animadorAtaques(self.ataqueDePlayer(numeroDeAtaque).tiempoAnimacion(),
-								self.ataqueDePlayer(numeroDeAtaque).cantAtaques(),
+								self.ataqueDePlayer(numeroDeAtaque).alcanceAtaque(),
 								self.ataqueDePlayer(numeroDeAtaque).danho()
 								)
 	}
@@ -154,7 +154,7 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 			mov = true
 			atacando = true
 			self.animAtacar(numeroDeAtaque)
-			game.schedule(550, { self.atacando(false) vulnerable = true} )
+			game.schedule(550, { self.atacando(false)} )
 			game.schedule(325, { self.ataquesEnCombo(numeroDeAtaque, {true})})
 			game.schedule(575, {self.ataquesEnCombo(numeroDeAtaque, {false})})
 			game.schedule(600, { self.jugadorEnReposo()})
@@ -168,6 +168,7 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 		if (numeroDeAtaque == 3){
 			5.times({ i => game.schedule(150 + 200 * (i / 8), { self.mover(miraDerecha)})})
 			vulnerable = false
+			game.schedule(550, { vulnerable = true } )
 		}
 	}
 	}

@@ -42,7 +42,7 @@ class SpriteDeAtaque inherits Sprite(time = 75, cantidadDeSprites = 7){
 
 	const property tiempoAnimacion
 
-	const property cantAtaques
+	const property alcanceAtaque
 
 	const property danho
 
@@ -55,11 +55,11 @@ const salto = new Sprite(cantidadDeSprites = 1, nombre = "salto")
 
 const muere = new Sprite(cantidadDeSprites = 5, nombre = "muere", time = 125)
 
-const att1 = new SpriteDeAtaque(nombre = "att1", tiempoAnimacion = 150 , cantAtaques = 4 , danho = 1)
+const att1 = new SpriteDeAtaque(nombre = "att1", tiempoAnimacion = 150 , alcanceAtaque = 3 , danho = 1)
 
-const att2 = new SpriteDeAtaque(nombre = "att2", tiempoAnimacion = 150 , cantAtaques = 5 , danho = 2)
+const att2 = new SpriteDeAtaque(nombre = "att2", tiempoAnimacion = 150 , alcanceAtaque = 4 , danho = 2)
 
-const att3 = new SpriteDeAtaque(nombre = "att3", tiempoAnimacion = 75 , cantAtaques = 10 , danho = 5)
+const att3 = new SpriteDeAtaque(nombre = "att3", tiempoAnimacion = 75 , alcanceAtaque = 11 , danho = 5)
 
 const idle = new Sprite(cantidadDeSprites = 1, nombre = "idle")
 
