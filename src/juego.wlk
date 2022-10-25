@@ -32,9 +32,9 @@ object juego {
 		keyboard.r().onPressDo{ self.instanciarNivel()}
 		keyboard.g().onPressDo{ self.ganar()}
 		keyboard.s().onPressDo{ self.finalizar()}
-		keyboard.q().onPressDo{ player.atacar1()}
-		keyboard.w().onPressDo{ player.atacar2()}
-		keyboard.e().onPressDo{ player.atacar3()}
+		keyboard.q().onPressDo{ player.atacar(1)}
+		keyboard.w().onPressDo{ player.atacar(2)}
+		keyboard.e().onPressDo{ player.atacar(3)}
 	}
 
 	method obtenerMoneda() {
