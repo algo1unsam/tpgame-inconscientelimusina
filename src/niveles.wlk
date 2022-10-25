@@ -352,8 +352,8 @@ object nivelGanador inherits Nivel(nombre = "nivelGanador"){
 	override method cargar() {
 
 
-	objetos = [ backgroundFinal, ataque ]
-	animables = [  ]
+	objetos = [ backgroundFinal, ataque]
+	animables = [player]
 	enemigos = [ ]
 		
 	objetos.forEach({ unObjeto => game.addVisual(unObjeto)})
