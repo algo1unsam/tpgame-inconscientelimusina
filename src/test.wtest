@@ -88,7 +88,7 @@ test "player inicia sin espada y luego agarra la espada"{
 test "player no puede atacar sin la espada"{
 	
 	player.tieneEspada(false)
-	player.atacar1()
+	player.atacar(1)
 	assert.notThat(player.atacando())
 }
 
@@ -106,9 +106,9 @@ test "lista de niveles ordenadas"{
 
 test "slime puede ser atacado y recibir daño"{
 	
-	slime1.vida(5)
+	slime1.salud(5)
 	slime1.serAtacado(2)
-	assert.equals(3,slime1.vida())
+	assert.equals(3,slime1.salud())
 }
 
 

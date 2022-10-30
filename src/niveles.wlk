@@ -45,7 +45,7 @@ object pantallaInicio inherits Nivel(nombre = "inicio"){
 	
 	var property primeraInstanciacion = true
 	
-	override method nivelSiguiente() = nivelFinal
+	override method nivelSiguiente() = nivel1
 
 	override method cargar() {
 

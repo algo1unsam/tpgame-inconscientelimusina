@@ -85,7 +85,17 @@ object contadorMonedas {
 
 }
 
-object reloj {
+class Indicadores{
+	
+	var property position
+	
+	method iniciar() {}
+	
+	method detener() {}
+	
+}
+
+object reloj inherits Indicadores (position = game.at(juego.tamanho() / 2, game.height() - juego.tamanho() / 10) ) { 
 
 	var property tiempo = 100
 
@@ -98,26 +108,20 @@ object reloj {
 
 	method text() = tiempo.roundUp().toString()
 
-	method position() = game.at(juego.tamanho() / 2, game.height() - juego.tamanho() / 10)
-
-	method iniciar() {
+	
+	override method iniciar() {
 		tiempo = 100
 	}
 
-	method detener() {
-	}
-
+	
 }
 
-object iconoEspada {
+object iconoEspada inherits Indicadores (position =game.at(6, juego.tamanho() * (9 / 10) - 1)) {
 
 	var property image = "assets/sword11.png"
-	var property position = game.at(6, juego.tamanho() * (9 / 10) - 1)
 
-	method iniciar() {
-	}
-
-	method detener() {
+	
+	override method detener() {
 		game.removeVisual(self)
 		juego.visuals().remove(self)
 	}
