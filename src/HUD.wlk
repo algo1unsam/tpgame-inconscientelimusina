@@ -23,11 +23,9 @@ object backgroundFinal inherits Background {
 
 }
 
-object instrucciones {
+object instrucciones inherits Background {
 
-	method position() = game.at(0, 0)
-
-	method image() = "assets/instrucciones.png"
+	override method image() = "assets/instrucciones.png"
 
 }
 
@@ -65,7 +63,7 @@ class Vida {
 
 }
 
-object vida inherits Vida(imagen = "hearts", position = game.at(1, juego.tamanho() * (9 / 10) + 1), objetivo = player) {
+object vida inherits Vida(imagen = "hearts", position = game.at(1, juego.tamanhoRelativo() + 1), objetivo = player) {
 
 }
 
@@ -73,7 +71,7 @@ object monedaHUD {
 
 	method image() = "assets/coinPequenha.png"
 
-	method position() = game.at(1, juego.tamanho() * (9 / 10) - 1)
+	method position() = game.at(1, juego.tamanhoRelativo() - 1)
 
 }
 
@@ -81,7 +79,7 @@ object contadorMonedas {
 
 	method text() = juego.monedas().toString() + "/ " + juego.nivelActual().objetivoMonedas()
 
-	method position() = game.at(2, juego.tamanho() * (9 / 10) - 3)
+	method position() = game.at(2, juego.tamanhoRelativo() - 3)
 
 }
 
@@ -116,7 +114,7 @@ object reloj inherits Indicadores (position = game.at(juego.tamanho() / 2, game.
 	
 }
 
-object iconoEspada inherits Indicadores (position =game.at(6, juego.tamanho() * (9 / 10) - 1)) {
+object iconoEspada inherits Indicadores (position =game.at(6, juego.tamanhoRelativo() - 1)) {
 
 	var property image = "assets/sword11.png"
 

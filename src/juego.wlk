@@ -133,6 +133,8 @@ object juego {
 			objeto.detener()
 		}
 	}
+	
+	method tamanhoRelativo() = (juego.tamanho() * (9 / 10))
 
 }
 
