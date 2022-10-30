@@ -45,7 +45,7 @@ object pantallaInicio inherits Nivel(nombre = "inicio"){
 	
 	var property primeraInstanciacion = true
 	
-	override method nivelSiguiente() = nivel1
+	override method nivelSiguiente() = nivelFinal
 
 	override method cargar() {
 
@@ -128,7 +128,7 @@ object nivel2 inherits Nivel(nombre ="nivel2") {
 	
 	const espada1 = new Espada (position = game.at(21,  7))
 	const moneda1 = new Moneda (position = game.at(4,  12))
-	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
+	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 19, derecha = 27)
 	const libro1 = new Librito(position = game.at(30,  12), blancos = [ghost1])
 	
 	objetivoMonedas = 1
