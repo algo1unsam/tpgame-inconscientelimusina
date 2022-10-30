@@ -45,6 +45,10 @@ class Moneda inherits Obtenibles (image = "assets/coin.png") {
 		}
 	}
 
+	method relocalizar(unaPosicion){
+		position = unaPosicion
+	}
+
 }
 
 class Librito inherits Obtenibles (image = "assets/librito.png") {
@@ -65,7 +69,11 @@ class Librito inherits Obtenibles (image = "assets/librito.png") {
 
 }
 
-class ObtenibleEnCaida inherits Obtenibles {
+class ObtenibleEnCaida inherits Obtenibles{
+
+	const tipoDeObtenibleEnCaida
+	
+	const property blanco
 
 	method mover() {
 		position = position.down(1)
@@ -79,33 +87,48 @@ class ObtenibleEnCaida inherits Obtenibles {
 		juego.enemigos().remove(self)
 	}
 
-}
-
-class LibroEnCaida inherits ObtenibleEnCaida(image = "assets/libritoEnCaida.png") {
-
-	const blanco
-
-	override method chocar() {
-		blanco.serAtacado(1)
-		self.remover()
+	override method chocar(){
+		tipoDeObtenibleEnCaida.chocar(self)
 	}
-
 }
 
-class RelojEnCaida inherits ObtenibleEnCaida(image = "assets/cronometro.png") {
+class TipoDeObtenibleEnCaida{
+	
+	const property limiteIzquierda = 7
+	const property limiteDerecha = 34
+	const property altura = 33
 
-	override method chocar() {
-		reloj.cuentaRegresiva(-20)
-		self.remover()
-	}
-
+	method chocar(unObjeto)
 }
 
-class HealPackEnCaida inherits ObtenibleEnCaida(image = "assets/heal.png") {
+object tipoHealPack inherits TipoDeObtenibleEnCaida{
 
-	override method chocar() {
+	const property image = "assets/heal.png"
+
+	override method chocar(unObjeto) {
 		player.subirSalud(1)
-		self.remover()
+		unObjeto.remover()
+	}
+}
+
+object tipoReloj inherits TipoDeObtenibleEnCaida{
+
+	const property image = "assets/cronometro.png"
+
+	override method chocar(unObjeto) {
+		reloj.cuentaRegresiva(-20)
+		unObjeto.remover()
 	}
 
 }
+
+object tipoLibro inherits TipoDeObtenibleEnCaida{
+	
+	const property image = "assets/libritoEnCaida.png"
+	
+	override method chocar(unObjeto) {
+		unObjeto.blanco().serAtacado(1)
+		unObjeto.remover()
+	}
+}
+

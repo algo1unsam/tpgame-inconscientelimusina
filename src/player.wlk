@@ -27,8 +27,9 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 	method posicionInicial() = game.at(0, 2)
 
 	method caerAlPozo() {
+		if (self.position().y() == -4) {
 		self.transportar(self.posicionInicial())
-		self.bajarSalud(1)
+		self.bajarSalud(1)}
 	}
 
 	method grounded() = juego.plataformas().contains(game.at(self.position().x() + 3, self.position().y() - 1)) or juego.plataformas().contains(game.at(self.position().x() + 4, self.position().y() - 1))
@@ -63,9 +64,7 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 			animator.cambiarAnimate(self, caida)
 			cayendo = true
 			self.moverEnY(-1)
-			if (self.position().y() == -4) {
-				self.caerAlPozo()
-			}
+			self.caerAlPozo()
 		} else if (self.grounded() and (sprites == caida)) {
 			self.aterrizar()
 		}
@@ -78,8 +77,7 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 
 	method jugadorEnReposo() {
 		mov = false
-		if (self.grounded()) { // si no esta en el piso en ese momento su animacion deberia ser salto o caida, no idle
-			if (!atacando) {
+		if (self.grounded() && !atacando ) { // si no esta en el piso en ese momento su animacion deberia ser salto o caida, no idle
 				if (tieneEspada) {
 					animator.cambiarAnimate(self, idle_espada)
 				} else {
@@ -87,7 +85,6 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 				}
 			}
 		}
-	}
 
 	method caminar(direccion) {
 		miraDerecha = direccion
@@ -95,17 +92,19 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 		if (vivo and !mov) {
 			mov = true
 			if (self.grounded()) {
-				animator.cambiarAnimate(self, walk)
-				3.times({ i => game.schedule(400 * (i - 1) / 2, { self.mover(direccion)})})
-				game.schedule(400, { self.jugadorEnReposo()})
+				self.ejecutarMovimiento(walk, 3, 400, {self.jugadorEnReposo()}, direccion)
 			} else {
-				animator.cambiarAnimate(self, caida)
-				2.times({ i => game.schedule(550 * (i - 1) / 2, { self.mover(direccion)})})
-				game.schedule(550, { self.mov(false)})
+				self.ejecutarMovimiento(caida, 2, 550, {self.mov(false)}, direccion)
 			}
 		}
 	}
 	
+	method ejecutarMovimiento(sprite, velocidad, tiempoRefractario, tipoDeReposo, direccion){
+				animator.cambiarAnimate(self, sprite)
+				velocidad.times({ i => game.schedule(tiempoRefractario * (i - 1) / 2, { self.mover(direccion)})})
+				game.schedule(tiempoRefractario, tipoDeReposo)
+
+	}
 		
 	//ATAQUES
 		
@@ -114,9 +113,7 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 	method ataquesEnCombo(numeroDeAtaque) = ataquesEnCombo.get(numeroDeAtaque - 1)
 
 	method ataquesEnCombo(numeroDeAtaque, bool){
-		const ataque1 = if (numeroDeAtaque == 1) bool else self.ataquesEnCombo(2)
-		const ataque2 = if (numeroDeAtaque == 2) bool else self.ataquesEnCombo(3)
-		ataquesEnCombo = [{self.condicionesDeAtaque()}, ataque1, ataque2]
+		ataquesEnCombo = [{self.condicionesDeAtaque()}, if (numeroDeAtaque == 1) bool else self.ataquesEnCombo(2), if (numeroDeAtaque == 2) bool else self.ataquesEnCombo(3)]
 	}
 
 	method ataqueDePlayer(numero) = ataquesDePlayer.get(numero - 1)

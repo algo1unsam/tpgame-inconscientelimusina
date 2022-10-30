@@ -56,6 +56,51 @@ class Enemigo inherits Animable {
 
 }
 
+class EnemigoQueDropea inherits Enemigo{
+	
+	var property salud
+	const spriteDanho
+	const tiempoRefractario
+	const posicionDeDropeo = {self.position()}
+
+	override method morir() {
+		super()
+		self.dropear()
+	}
+
+	override method serAtacado(x){
+		if (vivo){
+		salud -= x
+		animator.cambiarAnimate(self, spriteDanho)
+		self.verificarPulso()
+	}
+	}
+
+	method verificarPulso(){
+		if (salud <= 0) {
+			self.morir()
+		} else {
+			game.schedule(tiempoRefractario, {self.iniciar()})
+		}
+	}
+
+	method dropear() {
+		const dropearMoneda = juego.nivelActual().dropCoin().anyOne()
+		if (dropearMoneda) {
+			const dropeable = new Moneda(position = posicionDeDropeo.apply())
+		} else {
+			const dropeable = new HealPack(position = posicionDeDropeo.apply())
+		}
+		game.addVisual(dropeable)
+		juego.visuals().add(dropeable)
+		juego.nivelActual().dropCoin().remove(dropearMoneda)
+	}
+
+	}
+
+	
+
+
 class Ghost inherits Enemigo(danho = 2, mensaje = [ "Es la parca", "Que es esa cosa?" ], spriteInicial = ghost, animator = enemyAnimator) {
 
 	override method serAtacado(x) {
@@ -64,10 +109,9 @@ class Ghost inherits Enemigo(danho = 2, mensaje = [ "Es la parca", "Que es esa c
 
 }
 
-class Slime inherits Enemigo(danho = 2, mensaje = [ "Más cuidado che", "Otra vez al comienzo..", "ouch...", "aaAaH!!!" ], spriteInicial = slime, animator = enemyAnimator) {
+class Slime inherits EnemigoQueDropea(spriteDanho = slimeRojo, salud = 5, danho = 2, mensaje = [ "Más cuidado che", "Otra vez al comienzo..", "ouch...", "aaAaH!!!" ], spriteInicial = slime, animator = enemyAnimator, tiempoRefractario = 450) {
 
 	var fueAtacado = false
-	var property vida = 5
 	var transpasable = false
 
 	override method chocar() {
@@ -89,119 +133,70 @@ class Slime inherits Enemigo(danho = 2, mensaje = [ "Más cuidado che", "Otra ve
 	}
 
 	override method serAtacado(x) {
-		vida -= x
+		super(x)
 		fueAtacado = true
 		ataque.position(game.at(juego.tamanho(), juego.tamanho()))
-		animator.cambiarAnimate(self, slimeRojo)
 		transpasable = true
-		if (vida <= 0) {
-			self.morir()
-		} else {
-			vaHaciaLaIzquierda = !vaHaciaLaIzquierda
-			game.schedule(450, { self.iniciar()})
+		vaHaciaLaIzquierda = !vaHaciaLaIzquierda
 		}
-	}
-
-	override method morir() {
-		super()
-		self.dropear()
-	}
-
-	method dropear() {
-		const dropearMoneda = juego.nivelActual().dropCoin().anyOne()
-		if (dropearMoneda) {
-			const dropeable = new Moneda(position = self.position())
-		} else {
-			const dropeable = new HealPack(position = self.position())
-		}
-		game.addVisual(dropeable)
-		juego.visuals().add(dropeable)
-		juego.nivelActual().dropCoin().remove(dropearMoneda)
-	}
 
 }
 
-class Boss inherits Animable(animator = bossAnimator, spriteInicial = boss) {
+class Boss inherits EnemigoQueDropea( danho = 6, izquierda = 0, derecha = 0,mensaje = "Duele una banda loco", spriteDanho = bossDanho, salud = 10, animator = bossAnimator, spriteInicial = boss, tiempoRefractario = 1000, posicionDeDropeo = {game.at(20, 1)}) {
 
-	var property salud = 10
+
 	var spikeProb = 18
 
-	method serAtacado(x) {
-		animator.cambiarAnimate(self, bossDanho)
-		game.schedule(1000, { animator.cambiarAnimate(self, boss)})
-		salud = (salud - x).max(0)
+	override method serAtacado(x) {
 		spikeProb += 4
-		if (salud == 0) {
-			game.say(self, "Duele una banda loco")
-			self.dropear()
-		}
+		super(x)
 	}
 
-	method crea(unObjeto) {
-		game.addVisual(unObjeto)
-		juego.visuals().add(unObjeto)
-		juego.enemigos().add(unObjeto)
+	override method detener(){
+		vivo = !vivo
+		game.say(self, mensaje)
 	}
 
-	method crearSpike() {
-		const unSpike = new SpikeEnCaida(position = game.at((5 .. 36).anyOne(), 24))
-		self.crea(unSpike)
+
+	method creaObjeto(tipoDeObjeto) {
+		const objetoEnCaida = new ObtenibleEnCaida(tipoDeObtenibleEnCaida = tipoDeObjeto, blanco = self, position = game.at((tipoDeObjeto.limiteIzquierda() .. tipoDeObjeto.limiteDerecha()).anyOne(), tipoDeObjeto.altura()), image = tipoDeObjeto.image())
+		game.addVisual(objetoEnCaida)
+		juego.visuals().add(objetoEnCaida)
+		juego.enemigos().add(objetoEnCaida)
 	}
 
-	method crearLibro() {
-		const unLibro = new LibroEnCaida(blanco = self, position = game.at((7 .. 34).anyOne(), 33))
-		self.crea(unLibro)
-	}
-	
-	method crearReloj(){
-		const unReloj = new RelojEnCaida(position = game.at((7 .. 34).anyOne(), 33))
-		self.crea(unReloj)
-	}
-	
-	method crearVida(){
-		const unaVida = new HealPackEnCaida(position = game.at((7 .. 34).anyOne(), 33))
-		self.crea(unaVida)
-	}
-
-	method mover() {
+	override method mover() {
 		animator.animate(self)
 		const rng = (1 .. 50).anyOne()
 		if (rng <= spikeProb) {
-			self.crearSpike()
+			self.creaObjeto(tipoSpike)
 		}  
 		if (rng > 47) {
-			self.crearLibro()
+			self.creaObjeto(tipoLibro)
 		}
 		else if (rng < 3){
-			self.crearReloj()
+			self.creaObjeto(tipoReloj)
 		}
 		else if (rng.between(25,26)){
-			self.crearVida()
+			self.creaObjeto(tipoHealPack)
 		}
+
 		
 	}
-
-	method dropear() {
-		const dropearMoneda = juego.nivelActual().dropCoin().anyOne()
-		const dropeable = new Moneda(position = game.at(20, 1))
-		game.addVisual(dropeable)
-		juego.visuals().add(dropeable)
-		juego.nivelActual().dropCoin().remove(dropearMoneda)
-	}
-
 }
 
-class SpikeEnCaida inherits ObtenibleEnCaida(image = "assets/spike A4.png") {
 
-	override method chocar() {
+object tipoSpike inherits TipoDeObtenibleEnCaida(limiteIzquierda = 5, limiteDerecha = 36, altura = 24){
+
+	const property image = "assets/spike A4.png"
+
+	override method chocar(unObjeto) {
 		if (player.estaVivo()) {
 			player.bajarSalud(2)
 			if (player.salud() > 0) {
 				player.transportar(player.posicionInicial())
 				game.say(player, [ "Quiza debería agarrar los libros", "Cuantos pinches che", "Esta feo el bicho ese" ].anyOne())
-			}
-		}
+
 	}
-
 }
-
+}}
