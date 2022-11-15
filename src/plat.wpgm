@@ -1,0 +1,22 @@
+import wollok.game.*
+import juego.*
+import player.*
+import HUD.*
+import espada.*
+import plataformas.* 
+import teletransportadores.*
+import puerta.*
+import niveles.*
+import playerHit.*
+import obtenibles.*
+import enemigos.*
+import animator.*
+
+
+program plat {
+
+	juego.iniciarPantallaInicio()
+	
+	game.start()
+
+}

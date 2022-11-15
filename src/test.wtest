@@ -1,0 +1,115 @@
+
+import wollok.game.*
+import juego.*
+import player.*
+import HUD.*
+import espada.*
+import plataformas.* 
+import teletransportadores.*
+import puerta.*
+import niveles.*
+import playerHit.*
+import obtenibles.*
+import enemigos.*
+import animator.*
+
+
+describe "game tests"{
+	
+	
+	const slime1 = new Slime(position = game.at(15, 1), izquierda = 9, derecha = 22)
+	const ghost1 = new Ghost(position = game.at(21, 1), izquierda = 23, derecha = 27)
+	const libro1 = new Librito(position = game.at(30,  12), blancos = [ghost1])
+	
+	test "player esta vivo al inciar el juego" {
+	
+	assert.that(player.estaVivo())
+
+}
+
+test "inicia en la pantalla de inicio"{
+	
+
+	assert.that(pantallaInicio.primeraInstanciacion())
+	
+}
+
+test "el tiempo pasa"{
+	
+	reloj.cuentaRegresiva(10)
+	assert.equals(90,reloj.tiempo())
+	
+	
+}
+
+test "se pueden obtener monedas"{
+	
+	juego.obtenerMoneda()
+	juego.obtenerMoneda()
+	assert.equals(2,juego.monedas())
+		
+}
+
+test "player recibe 2 de daño"{
+	
+	player.bajarSalud(2)
+	assert.equals(4, player.salud())
+	
+}
+
+test "player recupera 2 puntos de salud"{
+	
+	player.salud(4)
+	player.subirSalud(2)
+	assert.equals(6,player.salud())
+}
+
+test "player no puede tener mas de 6 de salud"{
+	
+	player.salud(6)
+	player.subirSalud(2)
+	assert.equals(6,player.salud())
+}
+
+
+test "player puede morir"{
+	
+	player.quitarVida()
+	assert.notThat(player.estaVivo())
+}
+
+test "player inicia sin espada y luego agarra la espada"{
+	
+	assert.notThat(player.tieneEspada())
+	player.tieneEspada(true)
+	assert.that(player.tieneEspada())
+}
+
+test "player no puede atacar sin la espada"{
+	
+	player.tieneEspada(false)
+	player.atacar(1)
+	assert.notThat(player.atacando())
+}
+
+test "lista de niveles ordenadas"{
+	
+	assert.equals(nivel1, pantallaInicio.nivelSiguiente())
+	assert.equals(nivel2, nivel1.nivelSiguiente())
+	assert.equals(nivel3, nivel2.nivelSiguiente())
+	assert.equals(nivel4, nivel3.nivelSiguiente())
+	assert.equals(nivel5, nivel4.nivelSiguiente())
+	assert.equals(nivelFinal, nivel5.nivelSiguiente())
+	assert.equals(nivelGanador, nivelFinal.nivelSiguiente())
+	
+}
+
+test "slime puede ser atacado y recibir daño"{
+	
+	slime1.salud(5)
+	slime1.serAtacado(2)
+	assert.equals(3,slime1.salud())
+}
+
+
+}

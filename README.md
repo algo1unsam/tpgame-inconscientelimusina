@@ -1,10 +1,10 @@
-# Nombre del juego (<- borrar y completar)
+# Nombre Pendiente
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+- Pablo La Spina
+- Lucas Donsella
+
 
 ## Capturas
 
