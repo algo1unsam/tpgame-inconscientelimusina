@@ -60,6 +60,7 @@ object juego {
 			nivelAnterior = nivelActual
 			game.clear()
 			self.iniciar()
+
 		}
 	}
 
@@ -74,7 +75,6 @@ object juego {
 		nivelActual = nivelActual.nivelSiguiente()
 		self.detenerTiempo()
 		game.schedule(1000, { self.instanciarNivel()})
-		game.schedule(1200, { nivelAnterior += 1})
 	}
 
 	method instanciarNivel() {
@@ -83,8 +83,12 @@ object juego {
 	}
 
 	method terminar() {
-		juego.tickEvents().clear()
+		self.tickEvents().clear()
 		game.clear()
+		if (nivelActual != nivelAnterior){
+			console.println("A")
+			nivelAnterior.limpiar()
+		} 
 	}
 
 	method iniciar() {
