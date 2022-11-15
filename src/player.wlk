@@ -11,13 +11,12 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 	var property mov = false
 	var property saltando = false
 	var property atacando = false
-	var property ataquesEnCombo = [{self.condicionesDeAtaque()}, {false}, {false}]
 	var cayendo = false
 	var property tieneEspada = false
 	var property att_combo = false
 	var property vulnerable = true
 	const property hitbox = []
-	const ataquesDePlayer = [att1, att2, att3]
+
 
 
 	method todaLaVida() {
@@ -108,37 +107,8 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 		
 	//ATAQUES
 		
-	method condicionesDeAtaque() = self.grounded() and tieneEspada and !atacando and vivo 
+	method condicionesDeAtt1() = self.grounded() and tieneEspada and !atacando and vivo 
 
-	method ataquesEnCombo(numeroDeAtaque) = ataquesEnCombo.get(numeroDeAtaque - 1)
-
-	method ataquesEnCombo(numeroDeAtaque, bool){
-		ataquesEnCombo = [{self.condicionesDeAtaque()}, if (numeroDeAtaque == 1) bool else self.ataquesEnCombo(2), if (numeroDeAtaque == 2) bool else self.ataquesEnCombo(3)]
-	}
-
-	method ataqueDePlayer(numero) = ataquesDePlayer.get(numero - 1)
-
-	method animadorAtaques(tiempoAnimacion, alcanceAtaque, danho) {
-		if (miraDerecha) {
-			game.schedule(tiempoAnimacion, { ataque.position(self.position().right(3))})
-			ataque.danho(danho)
-			alcanceAtaque.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(false)})})
-			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		} else {
-			game.schedule(tiempoAnimacion, { ataque.position(self.position().right(2))})
-			ataque.danho(danho)
-			alcanceAtaque.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(true)})})
-			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
-		}
-	}
-
-	method animAtacar(numeroDeAtaque) {
-		animator.cambiarAnimate(self, self.ataqueDePlayer(numeroDeAtaque))
-		self.animadorAtaques(self.ataqueDePlayer(numeroDeAtaque).tiempoAnimacion(),
-								self.ataqueDePlayer(numeroDeAtaque).alcanceAtaque(),
-								self.ataqueDePlayer(numeroDeAtaque).danho()
-								)
-	}
 
 	method atacando(bool) {
 		if (!att_combo) {
@@ -146,28 +116,10 @@ object player inherits Animable(animator = playerAnimator, miraDerecha = true, s
 		}
 	}
 
-	method atacar(numeroDeAtaque){
-		if (self.ataquesEnCombo(numeroDeAtaque).apply()){
-			mov = true
-			atacando = true
-			self.animAtacar(numeroDeAtaque)
-			game.schedule(550, { self.atacando(false)} )
-			game.schedule(325, { self.ataquesEnCombo(numeroDeAtaque, {true})})
-			game.schedule(575, {self.ataquesEnCombo(numeroDeAtaque, {false})})
-			game.schedule(600, { self.jugadorEnReposo()})
-		
-		if (numeroDeAtaque > 1){
-			self.ataquesEnCombo(numeroDeAtaque - 1, {false})
-			att_combo = true
-			game.schedule(350, { self.att_combo(false)})
-			game.schedule(350 / 2, { self.mover(miraDerecha)})
-		}
-		if (numeroDeAtaque == 3){
-			5.times({ i => game.schedule(150 + 200 * (i / 8), { self.mover(miraDerecha)})})
-			vulnerable = false
-			game.schedule(550, { vulnerable = true } )
-		}
-	}
+	method atacar(tipoDeAtaque){
+		if (tipoDeAtaque.condicion(self)){
+		tipoDeAtaque.realizarAtaque(self)}
+
 	}
 
 

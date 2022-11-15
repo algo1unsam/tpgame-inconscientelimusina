@@ -14,7 +14,7 @@ import enemigos.*
 class Animable {
 
 	var property position
-	const animator
+	const property animator
 	var property miraDerecha = false
 	var property numeroDeSprite = 1
 	var spriteInicial
@@ -46,20 +46,96 @@ class SpriteDeAtaque inherits Sprite(time = 75, cantidadDeSprites = 7){
 
 	const property danho
 
+	var property ataqueEnCombo = false
 
+	var miraDerecha = false
+
+	method condicion(jugador) 
+
+	method animarAtaques(jugador) {
+		if (miraDerecha) {
+			game.schedule(tiempoAnimacion, { ataque.position(jugador.position().right(3))})
+			ataque.danho(danho)
+			alcanceAtaque.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(false)})})
+			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
+		} else {
+			game.schedule(tiempoAnimacion, { ataque.position(jugador.position().right(2))})
+			ataque.danho(danho)
+			alcanceAtaque.times({ i => game.schedule(tiempoAnimacion + 150 * (i / 4), { ataque.mover(true)})})
+			game.schedule(375, { ataque.position(game.at(juego.tamanho(), juego.tamanho()))})
+		}
+	}
+
+	method animAtacar(jugador)
+	 {
+		jugador.animator().cambiarAnimate(jugador, self)
+		self.animarAtaques(jugador)
+	}
+
+	method realizarAtaque(jugador){
+			miraDerecha = jugador.miraDerecha()
+			jugador.mov(true)
+			jugador.atacando(true)
+			self.animAtacar(jugador)
+			game.schedule(550, { jugador.atacando(false)} )
+			game.schedule(325, { self.ataqueEnCombo(true)}) 
+			game.schedule(575, { self.ataqueEnCombo(false)})
+			game.schedule(600, { jugador.jugadorEnReposo()})
+		
+	}
+	}
+
+object att1 inherits SpriteDeAtaque(nombre = "att1", tiempoAnimacion = 150 , alcanceAtaque = 3 , danho = 1){
+
+	override method condicion(jugador) = jugador.condicionesDeAtt1()
 
 }
+
+object att2 inherits SpriteDeAtaque(nombre = "att2", tiempoAnimacion = 150 , alcanceAtaque = 4 , danho = 2){
+
+	method ataqueAnterior() = att1
+
+	override method condicion(jugador) = self.ataqueAnterior().ataqueEnCombo()
+
+	override method realizarAtaque(jugador){
+		super(jugador)
+		self.ataqueAnterior().ataqueEnCombo(false)
+		player.att_combo(true)
+		game.schedule(350, { jugador.att_combo(false)})
+		game.schedule(350 / 2, { jugador.mover(miraDerecha)})
+
+	}
+
+}
+
+object att3 inherits SpriteDeAtaque(nombre = "att3", tiempoAnimacion = 75 , alcanceAtaque = 11 , danho = 5){
+	
+	method ataqueAnterior() = att2
+
+	override method condicion(jugador) = self.ataqueAnterior().ataqueEnCombo()
+
+	override method realizarAtaque(jugador){
+		super(jugador)
+		self.ataqueAnterior().ataqueEnCombo(false)
+		player.att_combo(true)
+		game.schedule(350, { jugador.att_combo(false)})
+		game.schedule(350 / 2, { jugador.mover(miraDerecha)})
+		5.times({ i => game.schedule(150 + 200 * (i / 8), { jugador.mover(miraDerecha)})})
+		jugador.vulnerable(false)
+		game.schedule(550, { jugador.vulnerable(true) } )
+
+	}
+
+}
+
+
+
+
 
 //Player
 const salto = new Sprite(cantidadDeSprites = 1, nombre = "salto")
 
 const muere = new Sprite(cantidadDeSprites = 5, nombre = "muere", time = 125)
-
-const att1 = new SpriteDeAtaque(nombre = "att1", tiempoAnimacion = 150 , alcanceAtaque = 3 , danho = 1)
-
-const att2 = new SpriteDeAtaque(nombre = "att2", tiempoAnimacion = 150 , alcanceAtaque = 4 , danho = 2)
-
-const att3 = new SpriteDeAtaque(nombre = "att3", tiempoAnimacion = 75 , alcanceAtaque = 11 , danho = 5)
 
 const idle = new Sprite(cantidadDeSprites = 1, nombre = "idle")
 
